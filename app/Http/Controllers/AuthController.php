@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Microsoft\Graph\Graph;
 use Microsoft\Graph\Model;
+use App\TokenStore\TokenCache;
 
 class AuthController extends Controller
 {
@@ -77,10 +78,10 @@ class AuthController extends Controller
                     ->setReturnType(Model\User::class)
                     ->execute();
 
-                // TEMPORARY FOR TESTING!
-                return redirect('/')
-                    ->with('error', 'Access token received')
-                    ->with('errorDetail', 'User:'.$user->getDisplayName().', Token:'.$accessToken->getToken());
+                $tokenCache = new TokenCache();
+                $tokenCache->storeTokens($accessToken, $user);
+
+                return redirect('/');
             }
             catch (League\OAuth2\Client\Provider\Exception\IdentityProviderException $e) {
                 return redirect('/')
@@ -92,5 +93,12 @@ class AuthController extends Controller
         return redirect('/')
             ->with('error', $request->query('error'))
             ->with('errorDetail', $request->query('error_description'));
+    }
+
+    public function signout()
+    {
+        $tokenCache = new TokenCache();
+        $tokenCache->clearTokens();
+        return redirect('/');
     }
 }
