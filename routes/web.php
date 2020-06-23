@@ -10,3 +10,6 @@ Route::get('/signout', 'AuthController@signout');
 
 // Calendar Routes
 Route::get('/calendar', 'CalendarController@calendar');
+
+// Profile
+Route:: get('/profile', 'UserController@profile');

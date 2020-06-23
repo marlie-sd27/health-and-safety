@@ -49,6 +49,7 @@
                             <h5 class="dropdown-item-text mb-0">{{ $userName }}</h5>
                             <p class="dropdown-item-text text-muted mb-0">{{ $userEmail }}</p>
                             <div class="dropdown-divider"></div>
+                            <a href="/profile" class="dropdown-item">Profile</a>
                             <a href="/signout" class="dropdown-item">Sign Out</a>
                         </div>
                     </li>
