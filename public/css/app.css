@@ -32,6 +32,12 @@ a[data-toggle="collapse"] {
     position: relative;
 }
 
+article {
+    padding: 1em;
+    margin: 1em;
+    background-color: var(--accent);
+}
+
 @media (max-width: 768px) {
     #sidebar {
         margin-left: -250px;

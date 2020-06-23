@@ -13,3 +13,6 @@ Route::get('/calendar', 'CalendarController@calendar');
 
 // Profile
 Route:: get('/profile', 'UserController@profile');
+
+//Forms
+Route::get('/hschecklist', 'FormsController@hschecklist');

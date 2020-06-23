@@ -77,7 +77,7 @@
                     <a href="#">Asbestos Training</a>
                 </li>
                 <li>
-                    <a href="#">Sept. Health & Safety Checklist</a>
+                    <a href="/hschecklist">Sept. Health & Safety Checklist</a>
                 </li>
                 <li>
                     <a href="#">School Fire Drill Report</a>
