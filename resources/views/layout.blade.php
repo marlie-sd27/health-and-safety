@@ -1,19 +1,21 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>PHP Graph Tutorial</title>
+    <title>Health and Safety Dashboard</title>
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
           integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
           crossorigin="anonymous">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css">
     <link rel="stylesheet" href="{{ asset('/css/app.css') }}">
+    <script src="{{ asset('/js/app.js') }}"></script>
 </head>
 
 <body>
+<!-- Top nav bar -->
 <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
     <div class="container">
-        <a href="/" class="navbar-brand">PHP Graph Tutorial</a>
+        <a href="/" class="navbar-brand">Health and Safety Dashboard</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
                 aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -24,25 +26,27 @@
                     <a href="/" class="nav-link {{$_SERVER['REQUEST_URI'] == '/' ? ' active' : ''}}">Home</a>
                 </li>
                 @if(isset($userName))
-                    <li class="nav-item" data-turbolinks="false">
-                        <a href="/calendar" class="nav-link{{$_SERVER['REQUEST_URI'] == '/calendar' ? ' active' : ''}}">Calendar</a>
-                    </li>
+                    {{--                    <li class="nav-item" data-turbolinks="false">--}}
+                    {{--                        <a href="/calendar" class="nav-link{{$_SERVER['REQUEST_URI'] == '/calendar' ? ' active' : ''}}">Calendar</a>--}}
+                    {{--                    </li>--}}
                 @endif
             </ul>
             <ul class="navbar-nav justify-content-end">
-                <li class="nav-item">
-                    <a class="nav-link" href="https://docs.microsoft.com/graph/overview" target="_blank">
-                        <i class="fas fa-external-link-alt mr-1"></i>Docs
-                    </a>
-                </li>
+                {{--                <li class="nav-item">--}}
+                {{--                    <a class="nav-link" href="https://docs.microsoft.com/graph/overview" target="_blank">--}}
+                {{--                        <i class="fas fa-external-link-alt mr-1"></i>Docs--}}
+                {{--                    </a>--}}
+                {{--                </li>--}}
                 @if(isset($userName))
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
                            aria-haspopup="true" aria-expanded="false">
                             @if(isset($user_avatar))
-                                <img src="{{ $user_avatar }}" class="rounded-circle align-self-center mr-2" style="width: 32px;">
+                                <img src="{{ $user_avatar }}" class="rounded-circle align-self-center mr-2"
+                                     style="width: 32px;">
                             @else
-                                <i class="far fa-user-circle fa-lg rounded-circle align-self-center mr-2" style="width: 32px;"></i>
+                                <i class="far fa-user-circle fa-lg rounded-circle align-self-center mr-2"
+                                   style="width: 32px;"></i>
                             @endif
                         </a>
                         <div class="dropdown-menu dropdown-menu-right">
@@ -62,18 +66,50 @@
         </div>
     </div>
 </nav>
-<main role="main" class="container">
-    @if(session('error'))
-        <div class="alert alert-danger" role="alert">
-            <p class="mb-3">{{ session('error') }}</p>
-            @if(session('errorDetail'))
-                <pre class="alert-pre border bg-light p-2"><code>{{ session('errorDetail') }}</code></pre>
-            @endif
-        </div>
-    @endif
 
-    @yield('content')
-</main>
+<div class="wrapper">
+    <!-- Sidebar -->
+    @if( isset( $userName))
+        <nav id="sidebar">
+            <ul class="list-unstyled components">
+                <p>Links to Forms</p>
+                <li>
+                    <a href="#">Asbestos Training</a>
+                </li>
+                <li>
+                    <a href="#">Sept. Health & Safety Checklist</a>
+                </li>
+                <li>
+                    <a href="#">School Fire Drill Report</a>
+                </li>
+                <li>
+                    <a href="#">Elementary School Inspection</a>
+                </li>
+                <li>
+                    <a href="#">Secondary School Inspection</a>
+                </li>
+                <li>
+                    <a href="#">Joint Health & Safety Minutes</a>
+                </li>
+            </ul>
+
+        </nav>
+@endif
+<!-- Page Content -->
+    <main role="main" class="container">
+        @if(session('error'))
+            <div class="alert alert-danger" role="alert">
+                <p class="mb-3">{{ session('error') }}</p>
+                @if(session('errorDetail'))
+                    <pre class="alert-pre border bg-light p-2"><code>{{ session('errorDetail') }}</code></pre>
+                @endif
+            </div>
+        @endif
+
+        @yield('content')
+    </main>
+</div>
+
 
 <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
         integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"

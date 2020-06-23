@@ -1,12 +1,41 @@
 @extends('layout')
 
 @section('content')
-    <div class="jumbotron">
-        <h1>PHP Graph Tutorial</h1>
-        <p class="lead">This sample app shows how to use the Microsoft Graph API to access a user's data from PHP</p>
+    <div>
         @if(isset($userName))
-            <h4>Welcome {{ $userName }}!</h4>
-            <p>Use the navigation bar at the top of the page to get started.</p>
+            <h1>{{ $userName }}'s Dashboard</h1>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md card">
+                        <h2>Overdue</h2>
+                        <ul>
+                            @foreach( $overdues as $key => $value)
+                                <li>{{ $key }} was due {{ $value }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                    <div class="col-md card">
+                        <h2>Upcoming</h2>
+                        <ul>
+                            @foreach( $upcomings as $key => $value)
+                                <li>{{ $key }} is due {{ $value }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg card">
+                        <h2>Completed</h2>
+                        <ul>
+                            @foreach( $completed as $key => $value)
+                                <li>{{ $key }} was completed {{ $value }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+
         @else
             <a href="/signin" class="btn btn-primary btn-large">Click here to sign in</a>
         @endif

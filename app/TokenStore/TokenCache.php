@@ -10,7 +10,6 @@ class TokenCache {
             'tokenExpires' => $accessToken->getExpires(),
             'userName' => $user->getDisplayName(),
             'userEmail' => null !== $user->getMail() ? $user->getMail() : $user->getUserPrincipalName(),
-            'userId' => $user->getEmployeeId()
         ]);
     }
 
