@@ -35,7 +35,8 @@ a[data-toggle="collapse"] {
 article {
     padding: 1em;
     margin: 1em;
-    background-color: var(--accent);
+    border: solid 1pt var(--light-font);
+    border-radius: 3pt;
 }
 
 @media (max-width: 768px) {

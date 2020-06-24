@@ -1,0 +1,10 @@
+Nicole and Dean's Project
+- admin can email straight from application to a late/overdue thing
+- admin can see summary of each user's/school's late things
+
+- each user can see what they've submitted
+- principal can see what their school has submitted ****
+- admin to assign principals to schools
+
+- for users assigned to multiple schools, the principal must be able to see everything the user at their school has done
+- for Asbestos, quiz doesn't matter, just that the user has completed and signed the training
