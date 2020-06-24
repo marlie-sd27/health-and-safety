@@ -2,18 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Forms;
+use App\Fields;
 use Illuminate\Http\Request;
 
-class FormsController extends Controller
+class FieldsController extends Controller
 {
-    public function hschecklist()
-    {
-
-        $viewData = $this->loadViewData();
-
-        return view('Forms/HSchecklist', $viewData);
-    }
     /**
      * Display a listing of the resource.
      *
@@ -48,10 +41,10 @@ class FormsController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Forms  $forms
+     * @param  \App\Fields  $fields
      * @return \Illuminate\Http\Response
      */
-    public function show(Forms $forms)
+    public function show(Fields $fields)
     {
         //
     }
@@ -59,10 +52,10 @@ class FormsController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Forms  $forms
+     * @param  \App\Fields  $fields
      * @return \Illuminate\Http\Response
      */
-    public function edit(Forms $forms)
+    public function edit(Fields $fields)
     {
         //
     }
@@ -71,10 +64,10 @@ class FormsController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Forms  $forms
+     * @param  \App\Fields  $fields
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Forms $forms)
+    public function update(Request $request, Fields $fields)
     {
         //
     }
@@ -82,10 +75,10 @@ class FormsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Forms  $forms
+     * @param  \App\Fields  $fields
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Forms $forms)
+    public function destroy(Fields $fields)
     {
         //
     }

@@ -4,9 +4,9 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Asbestos extends Model
+class Sections extends Model
 {
     protected $fillable = [
-        'userEmail'
+        'title', 'form_id', 'columns', 'description'
     ];
 }

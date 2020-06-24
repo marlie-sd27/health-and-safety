@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Asbestos;
+use App\Sections;
 use Illuminate\Http\Request;
 
-class AsbestosController extends Controller
+class SectionsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +14,7 @@ class AsbestosController extends Controller
      */
     public function index()
     {
-
+        //
     }
 
     /**
@@ -41,10 +41,10 @@ class AsbestosController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Asbestos  $asbestos
+     * @param  \App\Sections  $sections
      * @return \Illuminate\Http\Response
      */
-    public function show(Asbestos $asbestos)
+    public function show(Sections $sections)
     {
         //
     }
@@ -52,10 +52,10 @@ class AsbestosController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Asbestos  $asbestos
+     * @param  \App\Sections  $sections
      * @return \Illuminate\Http\Response
      */
-    public function edit(Asbestos $asbestos)
+    public function edit(Sections $sections)
     {
         //
     }
@@ -64,10 +64,10 @@ class AsbestosController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Asbestos  $asbestos
+     * @param  \App\Sections  $sections
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Asbestos $asbestos)
+    public function update(Request $request, Sections $sections)
     {
         //
     }
@@ -75,10 +75,10 @@ class AsbestosController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Asbestos  $asbestos
+     * @param  \App\Sections  $sections
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Asbestos $asbestos)
+    public function destroy(Sections $sections)
     {
         //
     }

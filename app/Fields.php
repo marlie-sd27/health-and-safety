@@ -4,9 +4,9 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Forms extends Model
+class Fields extends Model
 {
     protected $fillable = [
-        'title', 'description', 'recurrence', 'required_role'
+        'section_id', 'label', 'name', 'type', 'required', 'options'
     ];
 }

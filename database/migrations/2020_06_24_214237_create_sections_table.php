@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateAsbestosTable extends Migration
+class CreateSectionsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,13 @@ class CreateAsbestosTable extends Migration
      */
     public function up()
     {
-        Schema::create('asbestos', function (Blueprint $table) {
+        Schema::create('sections', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->string('userEmail');
+            $table->bigInteger('form_id');
+            $table->string('title');
+            $table->string('description');
+            $table->string('columns');
         });
     }
 
@@ -27,6 +30,6 @@ class CreateAsbestosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('asbestos');
+        Schema::dropIfExists('sections');
     }
 }
