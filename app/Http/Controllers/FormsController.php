@@ -31,7 +31,9 @@ class FormsController extends Controller
      */
     public function create()
     {
-        //
+        $viewData = $this->loadViewData();
+
+        return view('Forms/create', $viewData);
     }
 
     /**

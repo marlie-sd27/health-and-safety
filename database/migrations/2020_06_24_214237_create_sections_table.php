@@ -17,9 +17,9 @@ class CreateSectionsTable extends Migration
             $table->id();
             $table->timestamps();
             $table->bigInteger('form_id');
-            $table->string('title');
-            $table->string('description');
-            $table->string('columns');
+            $table->string('title')->nullable();
+            $table->string('description')->nullable();
+            $table->integer('columns')->nullable()->default(1);
         });
     }
 

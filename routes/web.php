@@ -16,3 +16,5 @@ Route:: get('/profile', 'UserController@profile');
 
 //Forms
 Route::get('/hschecklist', 'FormsController@hschecklist');
+
+Route::resource('forms', 'FormsController');
