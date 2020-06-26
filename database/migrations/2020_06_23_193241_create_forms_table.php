@@ -20,6 +20,7 @@ class CreateFormsTable extends Migration
             $table->string('description')->nullable();
             $table->string('recurrence')->nullable();
             $table->string('required_role')->nullable()->default('all');
+            $table->boolean('full_year')->default(false);
         });
     }
 

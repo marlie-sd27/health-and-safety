@@ -3,18 +3,23 @@
 use Illuminate\Support\Facades\Route;
 
 // Authentication
-Route::get('/', 'HomeController@welcome');
-Route::get('/signin', 'AuthController@signin');
+Route::get('/', 'HomeController@welcome')->name('dashboard');
+Route::get('/signin', 'AuthController@signin')->name('signin');
 Route::get('/callback', 'AuthController@callback');
-Route::get('/signout', 'AuthController@signout');
+Route::get('/signout', 'AuthController@signout')->name('signout');
 
 // Calendar Routes
 Route::get('/calendar', 'CalendarController@calendar');
 
-// Profile
-Route:: get('/profile', 'UserController@profile');
 
-//Forms
-Route::get('/hschecklist', 'FormsController@hschecklist');
+// make sure authenticated
+//Route::middleware('auth')->group(function() {
 
-Route::resource('forms', 'FormsController');
+    //Forms
+    Route::get('/hschecklist', 'FormsController@hschecklist');
+    Route::resource('forms', 'FormsController');
+
+    // Profile
+    Route:: get('/profile', 'UserController@profile')->name('profile');
+//});
+

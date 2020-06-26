@@ -26,9 +26,15 @@
                     <a href="/" class="nav-link {{$_SERVER['REQUEST_URI'] == '/' ? ' active' : ''}}">Home</a>
                 </li>
                 @if(isset($userName))
-                    {{--                    <li class="nav-item" data-turbolinks="false">--}}
-                    {{--                        <a href="/calendar" class="nav-link{{$_SERVER['REQUEST_URI'] == '/calendar' ? ' active' : ''}}">Calendar</a>--}}
-                    {{--                    </li>--}}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
+                           aria-haspopup="true" aria-expanded="false">Forms
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a href="{{route('forms.create')}}" class="dropdown-item">Create</a>
+                            <a href="/signout" class="dropdown-item">Sign Out</a>
+                        </div>
+                    </li>
                 @endif
             </ul>
             <ul class="navbar-nav justify-content-end">
