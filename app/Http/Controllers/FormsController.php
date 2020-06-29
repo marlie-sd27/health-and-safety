@@ -21,13 +21,17 @@ class FormsController extends Controller
      */
     public function index()
     {
-        //
+        $viewData = $this->loadViewData();
+
+        $viewData['forms'] = Forms::all();
+
+        return view('Forms/index', $viewData);
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function create()
     {
@@ -44,7 +48,19 @@ class FormsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+        $validated = $request->validate([
+            'form_title' => 'required|max:255',
+            'full_year' => 'required|boolean'
+        ]);
+
+        $form = Forms::create([
+            'title' => $validated['form_title'],
+            'description' => $request['form_description'],
+            'recurrence' => join(",", array([$request['rec_quantity'], $request['rec_repeat'], $request['req_time_unit']])),
+            'required_role' => $request['required_role'],
+            'full_year' => $validated['full_year']
+        ]);
     }
 
     /**

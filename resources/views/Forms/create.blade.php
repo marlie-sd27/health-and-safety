@@ -10,6 +10,7 @@
         edit it
         again later</p>
     <form action="/forms" method="post">
+        @csrf
         <div class="form-group">
             <label for="form_title">Title</label>
             <input class="form-control" type="text" name="form_title" placeholder="Title" required>
@@ -36,7 +37,7 @@
 
                 <input class="form-control col-md-2" type="number" name="rec_repeat" placeholder="Ex. 2">
 
-                <select class="form-control col-md-2" type="number" name="rec_repeat"
+                <select class="form-control col-md-2" type="number" name="rec_time_unit"
                         placeholder="Choose a unit of time">
                     <option>week(s)</option>
                     <option>month(s)</option>

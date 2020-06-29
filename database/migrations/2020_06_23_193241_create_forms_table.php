@@ -17,7 +17,7 @@ class CreateFormsTable extends Migration
             $table->id();
             $table->timestamps();
             $table->string('title');
-            $table->string('description')->nullable();
+            $table->text('description')->nullable();
             $table->string('recurrence')->nullable();
             $table->string('required_role')->nullable()->default('all');
             $table->boolean('full_year')->default(false);
