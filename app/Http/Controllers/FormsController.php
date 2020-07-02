@@ -48,6 +48,7 @@ class FormsController extends Controller
      */
     public function store(Request $request)
     {
+        dd($request);
 
         $validated = $request->validate([
             'form_title' => 'required|max:255',

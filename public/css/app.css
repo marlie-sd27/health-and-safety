@@ -29,7 +29,7 @@ h4 {
 }
 
 a[data-toggle="collapse"] {
-    position: relative;
+    position: absolute;
 }
 
 article {
@@ -47,6 +47,10 @@ article {
         margin-left: 0;
     }
 }
+.btn {
+    color: white;
+}
+
 .card{
     padding: 0.4em;
     margin: 1em;
@@ -56,6 +60,10 @@ article {
 .wrapper {
     display: flex;
     align-items: stretch;
+}
+
+#removeSection {
+    margin: 0.2em;
 }
 
 #sidebar {
