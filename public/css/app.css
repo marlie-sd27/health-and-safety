@@ -39,6 +39,11 @@ article {
     border-radius: 3pt;
 }
 
+tr, td, th {
+    padding: 0.4em;
+    border: solid 1pt var(--dark-font);
+}
+
 @media (max-width: 768px) {
     #sidebar {
         margin-left: -250px;

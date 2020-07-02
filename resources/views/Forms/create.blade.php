@@ -56,7 +56,7 @@
 
                     <div class="form-group">
                         <label for="required_role">Who is required to submit this form?</label>
-                        <select class="form-control">
+                        <select class="form-control" name="required_role">
                             <option value="all">All staff</option>
                             <option value="principals">Principals and Vice Principals</option>
                         </select>

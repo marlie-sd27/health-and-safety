@@ -31,7 +31,7 @@
                         </a>
                         <div class="dropdown-menu dropdown-menu-right">
                             <a href="{{route('forms.create')}}" class="dropdown-item">Create</a>
-                            <a href="/signout" class="dropdown-item">Sign Out</a>
+                            <a href="{{ route('forms.index') }}" class="dropdown-item">Index</a>
                         </div>
                     </li>
                 @endif

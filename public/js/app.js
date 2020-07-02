@@ -44,17 +44,18 @@ $(document).ready(function () {
                 '<input class="form-control" type="text" name="label[]" placeholder="Label ' + j + '"/>' +
                 '</div>' +
                 '<div class="form-group">' +
-                '<input type="checkbox" name="required[]" placeholder="Label"/>' +
+                '<input type="checkbox" name="required[]" value="off" placeholder="Label"/>' +
                 '<label for="required">Required?</label>' +
                 '</div>' +
                 '<div class="form-group">' +
                 '<label for="type">Type of Input</label><br/>' +
-                '<input type="radio" name="type[]" id="text"/>Single Line Text<br/>' +
-                '<input type="radio" name="type[]" id="textarea"/>Multi Line Text<br/>' +
-                '<input type="radio" name="type[]" id="number"/>Numeric<br>' +
-                '<input type="radio" name="type[]" id="radio"/>Radio Button<br>' +
-                '<input type="radio" name="type[]" id="checkbox"/>Checkboxes<br>' +
-                '<input type="radio" name="type[]" id="slider"/>Slider<br>' +
+                '<select class="form-control" name="type[]" placeholder="Choose an input type">' +
+                '<option type="radio" value="text">Single Line Text</option>' +
+                '<option type="radio" value="textarea">Multi Line Text</option>' +
+                '<option type="radio" value="number">Numeric</option>' +
+                '<option type="radio" value="radio">Radio Button</option>' +
+                '<option type="radio" value="checkbox">Checkboxes</option>' +
+                '<option type="radio" value="slider">Slider</option>>' +
                 '</div></article>').appendTo(fields_div);
 
             j++;
