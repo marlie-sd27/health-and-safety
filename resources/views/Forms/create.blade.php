@@ -42,9 +42,9 @@
 
                         <select class="form-control col-md-2" name="rec_time_unit"
                                 placeholder="Choose a unit of time">
-                            <option value="w">week(s)</option>
-                            <option value="m">month(s)</option>
-                            <option value="y">year(s)</option>
+                            <option value="week(s)">week(s)</option>
+                            <option value="month(s)">month(s)</option>
+                            <option value="year(s)">year(s)</option>
                         </select>
 
 
@@ -57,8 +57,8 @@
                     <div class="form-group">
                         <label for="required_role">Who is required to submit this form?</label>
                         <select class="form-control" name="required_role">
-                            <option value="all">All staff</option>
-                            <option value="principals">Principals and Vice Principals</option>
+                            <option value="All Staff">All staff</option>
+                            <option value="Principals and Vice Principals">Principals and Vice Principals</option>
                         </select>
                     </div>
                 </section>

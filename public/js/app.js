@@ -6,13 +6,14 @@ $(document).ready(function () {
     // j keeps track of field numbers
 
     // each time you click button #add (Add a Section), JQuery dynamically adds a section to the #section div
-    $('#addSection').on('click', function() {
+    $('#addSection').unbind().on('click', function() {
 
         let j = 0;
 
         let section = $('#sections');
 
         $('<article>' +
+            '<input type="hidden" value="' + i + '" name="id[]" />' +
             '<a class="btn btn-secondary" id="removeSection">Remove Section</a>' +
             '<div class="form-group">' +
             '<label for="section_title">Title</label>' +
@@ -26,7 +27,6 @@ $(document).ready(function () {
             '</div><a class="btn btn-primary" id="addField">Add Field</a> ' +
             '</article>').appendTo(section);
 
-        i++;
 
         // when #removeSection is clicked, remove the whole article containing the section
         $('body').on('click', '#removeSection', function() {
@@ -38,6 +38,7 @@ $(document).ready(function () {
             let fields_div = $(this).prev();
 
             $('<article>' +
+                '<input type="hidden" name="section_id[]" value="' + i + '" />' +
                 '<a class="btn btn-secondary" id="removeField">Remove Field</a>' +
                 '<div class="form-group">' +
                 '<label for="type">Label</label>' +
@@ -49,7 +50,7 @@ $(document).ready(function () {
                 '</div>' +
                 '<div class="form-group">' +
                 '<label for="type">Type of Input</label><br/>' +
-                '<select class="form-control" name="type[]" placeholder="Choose an input type">' +
+                '<select class="form-control" name="type[]" value="text">' +
                 '<option type="radio" value="text">Single Line Text</option>' +
                 '<option type="radio" value="textarea">Multi Line Text</option>' +
                 '<option type="radio" value="number">Numeric</option>' +
@@ -60,11 +61,14 @@ $(document).ready(function () {
 
             j++;
 
+            // when #removeField is clicked, remove the whole article containing the field
             $('body').on('click', '#removeField', function() {
                 $(this).parent('article').remove();
             });
 
         });
+
+        i++;
 
     });
 

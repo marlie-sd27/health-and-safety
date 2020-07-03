@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Forms;
 use App\Sections;
+use App\Fields;
 use Illuminate\Http\Request;
 
 class FormsController extends Controller
@@ -15,6 +16,7 @@ class FormsController extends Controller
 
         return view('Forms/HSchecklist', $viewData);
     }
+
 
     /**
      * Display a listing of the resource.
@@ -30,6 +32,7 @@ class FormsController extends Controller
         return view('Forms/index', $viewData);
     }
 
+
     /**
      * Show the form for creating a new resource.
      *
@@ -42,12 +45,8 @@ class FormsController extends Controller
         return view('Forms/create', $viewData);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
+
+    // Store the newly created Form in database
     public function store(Request $request)
     {
 
@@ -56,20 +55,16 @@ class FormsController extends Controller
 //            'full_year' => 'required|boolean'
 //        ]);
 
-//        dd($request);
+        dd($request);
 
         // Recurrence schedule is blank if null
         // otherwise, join the recurrence quantity, repeat and time unit into a string separated by commas
         $recurrence = "";
 
-        if ($request['rec_quantity'] !== null) {
+        if ($request['rec_quantity'] !== null)
+        {
             $recurrence = $request['rec_quantity'] . "," . $request['rec_repeat'] . "," . $request['rec_time_unit'];
         }
-
-        // if the full_year box is not set (ie unchecked), set the value to false. Otherwise set the value to true
-        if (!isset($request['full_year'])) {
-            $request['full_year'] = false;
-        } else $request['full_year'] = true;
 
 
         // create the form and get the ID
@@ -78,30 +73,48 @@ class FormsController extends Controller
             'description' => $request['form_description'],
             'recurrence' => $recurrence,
             'required_role' => $request['required_role'],
-            'full_year' => $request['full_year']
+            'full_year' => isset($request['full_year'])
         ]);
 
+
+        $section_ids = array();
+
         // create each section in the form
-        foreach ($request->section_title as $key => $value) {
+        foreach ($request->section_title as $key => $value)
+        {
             $section = Sections::create([
-                'form_id' => $form->id,
                 'title' => $value,
+                'forms_id' => $form->id,
                 'description' => $request->section_description[$key],
+            ]);
+
+            $section_ids[$request['id'][$key]] = $section->id;
+        }
+
+
+
+        // create each field in the form
+        foreach ($request->label as $key => $value)
+        {
+            Fields::create([
+                'sections_id' => $section_ids[$request['section_id'][$key]],
+                'label' => $value,
+                'name' => $value,
+                'type' => $request['type'][$key],
+                'required' => isset($request['required'][$key]),
             ]);
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param \App\Forms $forms
-     * @return \Illuminate\Http\Response
-     */
+
+    // Show a specific form with its sections
     public function show(Forms $form)
     {
         $viewData = $this->loadViewData();
 
-        $viewData['form'] = $form;
+        $viewData['form'] = $form->fullForm();
+
+        // get each section's associated fields
 
         return(view('Forms/show', $viewData));
     }

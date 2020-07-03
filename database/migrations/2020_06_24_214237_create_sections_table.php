@@ -16,7 +16,7 @@ class CreateSectionsTable extends Migration
         Schema::create('sections', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->bigInteger('form_id');
+            $table->bigInteger('forms_id');
             $table->string('title')->nullable();
             $table->string('description')->nullable();
             $table->integer('columns')->nullable()->default(1);
