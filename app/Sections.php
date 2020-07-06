@@ -22,5 +22,6 @@ class Sections extends Model
     public function fields()
     {
         return $this->hasMany('App\Fields');
+
     }
 }

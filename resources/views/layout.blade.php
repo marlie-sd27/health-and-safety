@@ -38,17 +38,13 @@
                 @endif
             </ul>
             <ul class="navbar-nav justify-content-end">
-                {{--                <li class="nav-item">--}}
-                {{--                    <a class="nav-link" href="https://docs.microsoft.com/graph/overview" target="_blank">--}}
-                {{--                        <i class="fas fa-external-link-alt mr-1"></i>Docs--}}
-                {{--                    </a>--}}
-                {{--                </li>--}}
                 @if(isset($userName))
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
                            aria-haspopup="true" aria-expanded="false">
                             @if(isset($user_avatar))
-                                <img src="{{ $user_avatar }}" class="rounded-circle align-self-center mr-2" alt="user_avatar"
+                                <img src="{{ $user_avatar }}" class="rounded-circle align-self-center mr-2"
+                                     alt="user_avatar"
                                      style="width: 32px;">
                             @else
                                 <i class="far fa-user-circle fa-lg rounded-circle align-self-center mr-2"
@@ -80,12 +76,11 @@
             <ul class="list-unstyled components">
                 <p>Links to Forms</p>
                 @foreach($links as $link)
-                <li>
-                    <a href="{{ route('forms.show', $form=$link->id) }}">{{ $link->title }}</a>
-                </li>
+                    <li>
+                        <a href="{{ route('forms.show', $form=$link->id) }}">{{ $link->title }}</a>
+                    </li>
                 @endforeach
             </ul>
-
         </nav>
 @endif
 <!-- Page Content -->
@@ -99,21 +94,21 @@
             </div>
         @endif
 
-            @if ($errors->any())
-                <div class="alert alert-danger">
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                            <p>{{ $error }}</p>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <p>{{ $error }}</p>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
 
-            @if(session()->has('message'))
-                <div class="alert alert-success">
-                    {{ session()->get('message') }}
-                </div>
-            @endif
+        @if(session()->has('message'))
+            <div class="alert alert-success">
+                {{ session()->get('message') }}
+            </div>
+        @endif
 
         @yield('content')
     </main>

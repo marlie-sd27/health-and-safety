@@ -60,6 +60,7 @@ $(document).ready(function () {
             '<select class="form-control" name="type[]">' +
             '<option value="text">Single Line Text</option>' +
             '<option value="textarea">Multi Line Text</option>' +
+            '<option value="select">Drop Down Menu</option>' +
             '<option value="number">Numeric</option>' +
             '<option value="radio">Radio Button</option>' +
             '<option value="checkbox">Checkboxes</option>' +

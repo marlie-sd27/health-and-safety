@@ -7,16 +7,6 @@ use Illuminate\Http\Request;
 
 class FormsController extends Controller
 {
-    // to be deleted
-    public function hschecklist()
-    {
-
-        $viewData = $this->loadViewData();
-
-        return view('Forms/HSchecklist', $viewData);
-    }
-
-
     // list all forms
     public function index()
     {
@@ -88,9 +78,8 @@ class FormsController extends Controller
     {
         $viewData = $this->loadViewData();
 
+        $form->recurrence = explode(',', $form->recurrence);
         $viewData['form'] = $form->fullForm();
-
-        // get each section's associated fields
 
         return (view('Forms/show', $viewData));
     }

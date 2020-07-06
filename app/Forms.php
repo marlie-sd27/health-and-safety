@@ -20,8 +20,15 @@ class Forms extends Model
         foreach ($this['sections'] as $section)
         {
             $section['fields'] = $section->fields;
+
+            // convert string into array on comma delimiter
+            foreach ($section['fields'] as $field)
+            {
+                $field->options = explode(',', $field->options);
+            }
         }
 
+//        dd($this);
         return $this;
     }
 

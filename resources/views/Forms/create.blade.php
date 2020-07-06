@@ -19,7 +19,7 @@
                 </div>
                 <div class="form-group">
                     <label for="form_description">Description</label>
-                    <textarea class="form-control" type="text" name="form_description" placeholder="Description">{{ old('form_description') }}</textarea>
+                    <textarea class="form-control" name="form_description" placeholder="Description">{{ old('form_description') }}</textarea>
                 </div>
                 <section class="container">
                     <h2>Defining Recurrences</h2>
