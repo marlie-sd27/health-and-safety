@@ -15,9 +15,9 @@ Route::get('/calendar', 'CalendarController@calendar');
 // make sure authenticated
 //Route::middleware('auth')->group(function() {
 
-    //Forms
-    Route::get('/hschecklist', 'FormsController@hschecklist');
+    //Resources
     Route::resource('forms', 'FormsController');
+    Route::resource('submissions', 'SubmissionsController');
 
     // Profile
     Route:: get('/profile', 'UserController@profile')->name('profile');

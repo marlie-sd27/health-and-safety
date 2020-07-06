@@ -27,15 +27,20 @@ class SubmissionsController extends Controller
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+
+    // store the newly created submission in the database
     public function store(Request $request)
     {
-        //
+        $viewData = $this->loadViewData();
+
+        dd($request);
+
+        Submissions::create([
+            'form_id' => $request->form_id,
+            'username' => $viewData->userName,
+            'email' => $viewData->userEmail,
+            'data' => join(',', $request->parameters)
+        ]);
     }
 
     /**

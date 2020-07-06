@@ -9,18 +9,20 @@
         <p>To be completed by <b>{{ $form->required_role }}</b></p>
         <p>{{ $form->full_year }}</p>
     </div>
-    <div class="container">
+    <form method="post" action="{{ route('submissions.store') }}">
+        @csrf
+
+        <input type="hidden" value="{{ $form->id }}" name="form_id"/>
         @foreach($form['sections'] as $s)
             <article>
                 <h2>{{ $s->title }}</h2>
                 <p>{{ $s->description }}</p>
                 @foreach($s['fields'] as $f)
-                    <div class="form-group">
                         <label for="{{ $f->name }}">{{ $f->label }}</label>
                         @switch($f->type)
                             @case("select")
                             <div class="form-group">
-                                <select name="{{ $f->name }}" {{ $f->required ? 'required' : '' }}>
+                                <select name="{{ $f->name }}" class="form-control" {{ $f->required ? 'required' : '' }}>
                                     @foreach($f->options as $option)
                                         <option>{{ $option }}</option>
                                     @endforeach
@@ -52,7 +54,7 @@
 
                             @case("slider")
                             <div class="form-group">
-                                {{ $f->options[0] }}<input type="range" min="{{ $f->options[0] }}" max="{{ $f->options[1] }}">{{ $f->options[1] }}
+                                {{ $f->options[0] }}<input type="range" min="{{ $f->options[0] }}" max="{{ $f->options[1] }}" >{{ $f->options[1] }}
                                 <p>value: <span class="slider_value"></span></p>
                             </div>
                             @break
@@ -60,9 +62,11 @@
                             @default
                             <input type="{{ $f->type }}" name="{{ $f->name }}" {{ $f->required ? 'required' : '' }} class="form-control"/>
                         @endswitch
-                    </div>
                 @endforeach
             </article>
         @endforeach
-    </div>
+
+        <button class="btn btn-primary" type="submit">Submit</button>
+        <button class="btn btn-secondary" type="reset">Reset</button>
+    </form>
 @endsection
