@@ -14,12 +14,12 @@
                 @csrf
                 <div class="form-group">
                     <label for="form_title">Title</label>
-                    <input class="form-control" type="text" name="form_title" placeholder="Title" required>
+                    <input class="form-control" type="text" name="form_title" placeholder="Title" required
+                           value="{{ old('form_title') }}">
                 </div>
                 <div class="form-group">
                     <label for="form_description">Description</label>
-                    <textarea class="form-control" type="text" name="form_description"
-                              placeholder="Description"></textarea>
+                    <textarea class="form-control" type="text" name="form_description" placeholder="Description">{{ old('form_description') }}</textarea>
                 </div>
                 <section class="container">
                     <h2>Defining Recurrences</h2>
@@ -35,30 +35,42 @@
                                 any
                                 employee, but will still be available to fill out and submit.</b></small></p>
                     <div class="form-group row">
-                        <input class="form-control col-md-2" type="number" name="rec_quantity" placeholder="Ex. 1">
+                        <input class="form-control col-md-2" type="number" name="rec_quantity" placeholder="Ex. 1"
+                               value="{{ old('rec_quantity') }}">
                         <p> time(s) per </p>
 
-                        <input class="form-control col-md-2" type="number" name="rec_repeat" placeholder="Ex. 2">
+                        <input class="form-control col-md-2" type="number" name="rec_repeat" placeholder="Ex. 2"
+                               value="{{ old('rec_repeat') }}">
 
-                        <select class="form-control col-md-2" name="rec_time_unit"
-                                placeholder="Choose a unit of time">
-                            <option value="week(s)">week(s)</option>
-                            <option value="month(s)">month(s)</option>
-                            <option value="year(s)">year(s)</option>
+                        <select class="form-control col-md-2" name="rec_time_unit">
+                            <option value="week(s)" @if (old('rec_time_unit') == "week(s)") {{ 'selected' }} @endif>
+                                week(s)
+                            </option>
+                            <option value="month(s)" @if (old('rec_time_unit') == "month(s)") {{ 'selected' }} @endif>
+                                month(s)
+                            </option>
+                            <option value="year(s)" @if (old('rec_time_unit') == "year(s)") {{ 'selected' }} @endif>
+                                year(s)
+                            </option>
                         </select>
 
 
                     </div>
                     <div class="form-group">
-                        <input type="checkbox" name="full_year">
+                        <input type="checkbox" name="full_year" @if (is_array(old('full_year'))) checked @endif>
                         <label for="full_year">Include July and August in the year?</label>
                     </div>
 
                     <div class="form-group">
                         <label for="required_role">Who is required to submit this form?</label>
                         <select class="form-control" name="required_role">
-                            <option value="All Staff">All staff</option>
-                            <option value="Principals and Vice Principals">Principals and Vice Principals</option>
+                            <option value="All Staff" @if (old('required_role') == "All Staff") {{ 'selected' }} @endif>
+                                All staff
+                            </option>
+                            <option
+                                value="Principals and Vice Principals" @if (old('required_role') == "Principals and Vice Principals") {{ 'selected' }} @endif>
+                                Principals and Vice Principals
+                            </option>
                         </select>
                     </div>
                 </section>

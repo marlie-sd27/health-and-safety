@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 
 class FormsController extends Controller
 {
+    // to be deleted
     public function hschecklist()
     {
 
@@ -18,11 +19,7 @@ class FormsController extends Controller
     }
 
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    // list all forms
     public function index()
     {
         $viewData = $this->loadViewData();
@@ -33,11 +30,7 @@ class FormsController extends Controller
     }
 
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
+    // show view for creating a new form
     public function create()
     {
         $viewData = $this->loadViewData();
@@ -55,7 +48,7 @@ class FormsController extends Controller
 //            'full_year' => 'required|boolean'
 //        ]);
 
-        dd($request);
+//        dd($request);
 
         // Recurrence schedule is blank if null
         // otherwise, join the recurrence quantity, repeat and time unit into a string separated by commas
@@ -67,7 +60,7 @@ class FormsController extends Controller
         }
 
 
-        // create the form and get the ID
+        // create the form
         $form = Forms::create([
             'title' => $request['form_title'],
             'description' => $request['form_description'],
@@ -77,33 +70,18 @@ class FormsController extends Controller
         ]);
 
 
-        $section_ids = array();
+        // create sections and fields in database for the form
+        $errors = $form->createSectionsandFields($request);
 
-        // create each section in the form
-        foreach ($request->section_title as $key => $value)
+        // if there are errors, reload the form to fix them
+        if (!empty($errors))
         {
-            $section = Sections::create([
-                'title' => $value,
-                'forms_id' => $form->id,
-                'description' => $request->section_description[$key],
-            ]);
-
-            $section_ids[$request['id'][$key]] = $section->id;
+            $viewData = $this->loadViewData();
+            return redirect(route('forms.create'))->withErrors($errors)->withInput();
         }
 
-
-
-        // create each field in the form
-        foreach ($request->label as $key => $value)
-        {
-            Fields::create([
-                'sections_id' => $section_ids[$request['section_id'][$key]],
-                'label' => $value,
-                'name' => $value,
-                'type' => $request['type'][$key],
-                'required' => isset($request['required'][$key]),
-            ]);
-        }
+        // otherwise redirect to the forms index
+        return redirect(route('forms.index'));
     }
 
 
@@ -116,39 +94,26 @@ class FormsController extends Controller
 
         // get each section's associated fields
 
-        return(view('Forms/show', $viewData));
+        return (view('Forms/show', $viewData));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param \App\Forms $forms
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Forms $forms)
+
+    // show view for editing a form
+    public function edit(Forms $form)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param \App\Forms $forms
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Forms $forms)
+
+    // update the form in the database with new data
+    public function update(Request $request, Forms $form)
     {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param \App\Forms $forms
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Forms $forms)
+
+    // delete form from database
+    public function destroy(Forms $form)
     {
         //
     }
