@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <title>Health and Safety Dashboard</title>
+
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
           integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
@@ -47,7 +48,7 @@
                         <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
                            aria-haspopup="true" aria-expanded="false">
                             @if(isset($user_avatar))
-                                <img src="{{ $user_avatar }}" class="rounded-circle align-self-center mr-2"
+                                <img src="{{ $user_avatar }}" class="rounded-circle align-self-center mr-2" alt="user_avatar"
                                      style="width: 32px;">
                             @else
                                 <i class="far fa-user-circle fa-lg rounded-circle align-self-center mr-2"
@@ -58,13 +59,13 @@
                             <h5 class="dropdown-item-text mb-0">{{ $userName }}</h5>
                             <p class="dropdown-item-text text-muted mb-0">{{ $userEmail }}</p>
                             <div class="dropdown-divider"></div>
-                            <a href="/profile" class="dropdown-item">Profile</a>
-                            <a href="/signout" class="dropdown-item">Sign Out</a>
+                            <a href="{{ route('profile') }}" class="dropdown-item">Profile</a>
+                            <a href="{{ route('signout') }}" class="dropdown-item">Sign Out</a>
                         </div>
                     </li>
                 @else
                     <li class="nav-item">
-                        <a href="/signin" class="nav-link">Sign In</a>
+                        <a href="{{ route('signin') }}" class="nav-link">Sign In</a>
                     </li>
                 @endif
             </ul>
@@ -78,24 +79,11 @@
         <nav id="sidebar">
             <ul class="list-unstyled components">
                 <p>Links to Forms</p>
+                @foreach($links as $link)
                 <li>
-                    <a href="#">Asbestos Training</a>
+                    <a href="{{ route('forms.show', $form=$link->id) }}">{{ $link->title }}</a>
                 </li>
-                <li>
-                    <a href="/hschecklist">Sept. Health & Safety Checklist</a>
-                </li>
-                <li>
-                    <a href="#">School Fire Drill Report</a>
-                </li>
-                <li>
-                    <a href="#">Elementary School Inspection</a>
-                </li>
-                <li>
-                    <a href="#">Secondary School Inspection</a>
-                </li>
-                <li>
-                    <a href="#">Joint Health & Safety Minutes</a>
-                </li>
+                @endforeach
             </ul>
 
         </nav>
@@ -115,9 +103,15 @@
                 <div class="alert alert-danger">
                     <ul>
                         @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
+                            <p>{{ $error }}</p>
                         @endforeach
                     </ul>
+                </div>
+            @endif
+
+            @if(session()->has('message'))
+                <div class="alert alert-success">
+                    {{ session()->get('message') }}
                 </div>
             @endif
 

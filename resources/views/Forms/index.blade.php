@@ -23,7 +23,12 @@
                 <td>{{ $form->required_role }}</td>
                 <td>{{ $form->full_year }}</td>
                 <td><a href="{{ route('forms.edit', ['form' => $form->id]) }}">Edit</a></td>
-                <td><a href="{{ route('forms.destroy', ['form' => $form->id]) }}">Delete</a></td>
+                <td>
+                    <form method="post" class="delete_form" action="{{route('forms.destroy', $form->id)}}">
+                        @csrf
+                        @method('delete')
+                        <button type="submit">Delete</button>
+                    </form></td>
             </tr>
         @endforeach
     </table>

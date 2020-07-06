@@ -45,7 +45,7 @@ class Forms extends Model
     {
 
         // keep track of any errors that exist while submitting the form
-        $errors = ["i"=>"v", "i2"=>"v2"];
+        $errors = array();
 
 
         // create each section in the form

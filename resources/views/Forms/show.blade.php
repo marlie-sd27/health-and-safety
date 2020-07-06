@@ -1,7 +1,7 @@
 @extends('layout')
 
 @section('content')
-    <a href="{{ route('forms.index') }}">Back</a>
+    <a href="{{ route('forms.index') }}">Back to Index</a>
     <div class="container">
         <h1>{{ $form->title }}</h1>
         <p>{{ $form->description }}</p>
@@ -15,7 +15,7 @@
             <p>{{ $s->description }}</p>
             @foreach($s['fields'] as $f)
                 <h3>Label</h3>
-                <p>{{ $f->label }}</p>
+                <label for="{{ $f->name }}">{{ $f->label }}</label>
                 <input type="{{ $f->type }}" name="{{ $f->name }}" required="{{ $f->required }}"/>
             @endforeach
 

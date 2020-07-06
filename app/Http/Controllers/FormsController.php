@@ -3,8 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Forms;
-use App\Sections;
-use App\Fields;
 use Illuminate\Http\Request;
 
 class FormsController extends Controller
@@ -77,7 +75,7 @@ class FormsController extends Controller
         if (!empty($errors))
         {
             $viewData = $this->loadViewData();
-            return redirect(route('forms.create'))->withErrors($errors)->withInput();
+            return redirect(route('forms.create', $viewData))->withErrors($errors)->withInput();
         }
 
         // otherwise redirect to the forms index
@@ -115,6 +113,8 @@ class FormsController extends Controller
     // delete form from database
     public function destroy(Forms $form)
     {
-        //
+        Forms::destroy($form->id);
+
+        return redirect(route('forms.index'))->with('message', "Sucessfully deleted $form->title");
     }
 }
