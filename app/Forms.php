@@ -28,7 +28,6 @@ class Forms extends Model
             }
         }
 
-//        dd($this);
         return $this;
     }
 
@@ -54,10 +53,9 @@ class Forms extends Model
         // keep track of any errors that exist while submitting the form
         $errors = array();
 
-
-        // create each section in the form
         $section_ids = array();
 
+        // create each section in the form
         if (isset($request['section_title']))
         {
             foreach ($request->section_title as $key => $value)
@@ -71,7 +69,7 @@ class Forms extends Model
                 // store the newly created section ID in an array
                 // key: ID of the section passed in the request. value: newly created section ID in database
                 // to be used when creating fields associated with the section
-                $section_ids[$request['id'][$key]] = $section->id;
+                $section_ids[$request['s_id'][$key]] = $section->id;
             }
         }
 
@@ -87,6 +85,7 @@ class Forms extends Model
                     'name' => $value,
                     'type' => $request['type'][$key],
                     'required' => isset($request['required'][$key]),
+                    'options' => $request['options'][$key],
                 ]);
             }
         }

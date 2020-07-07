@@ -36,7 +36,13 @@ article {
     padding: 1em;
     margin: 1em;
     border: solid 1pt var(--light-font);
+    background-color: whitesmoke;
     border-radius: 3pt;
+}
+
+article article {
+    background-color: var(--light-font);
+    border: solid 1pt var(--main);
 }
 
 tr, td, th {
@@ -67,15 +73,25 @@ tr, td, th {
     align-items: stretch;
 }
 
-#removeSection {
-    margin: 0.2em;
+#removeSection, #removeField {
+    float: right;
+    padding: 0 1px 1px 5px;
+    width: 24px;
+    height: 24px;
+    border: 1pt solid var(--dark-font);
+    border-radius: 10pt;
+}
+
+#removeField:hover, #removeSection:hover {
+    color: #000;
+    cursor: pointer;
 }
 
 #sidebar {
     min-width: 250px;
     max-width: 250px;
     min-height: 100vh;
-    padding: 0em 1em;
+    padding: 0 1em;
     background-color: var(--light-font);
 }
 
