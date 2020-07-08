@@ -3,9 +3,8 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use App\Http\Controllers\Controller;
 
-class IsAdmin extends Controller
+class IsAdmin
 {
     /**
      * Handle an incoming request.
@@ -16,10 +15,10 @@ class IsAdmin extends Controller
      */
     public function handle($request, Closure $next)
     {
-        $viewData = $this->loadViewData();
-
-        if ($viewData['admin'])
+        if (session('admin'))
+        {
             return $next($request);
+        }
 
         else return redirect(route('unauthorized'));
     }

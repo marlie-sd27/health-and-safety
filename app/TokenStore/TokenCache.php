@@ -2,6 +2,8 @@
 
 namespace App\TokenStore;
 
+use App\User;
+
 class TokenCache {
     public function storeTokens($accessToken, $user) {
         session([
@@ -10,6 +12,7 @@ class TokenCache {
             'tokenExpires' => $accessToken->getExpires(),
             'userName' => $user->getDisplayName(),
             'userEmail' => null !== $user->getMail() ? $user->getMail() : $user->getUserPrincipalName(),
+            'admin' => User::select('admin')->where('email', $user->getMail())->first(),
         ]);
     }
 
@@ -19,6 +22,7 @@ class TokenCache {
         session()->forget('tokenExpires');
         session()->forget('userName');
         session()->forget('userEmail');
+        session()->forget('admin');
     }
 
     public function getAccessToken() {

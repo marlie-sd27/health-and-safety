@@ -3,20 +3,22 @@
 namespace App\Http\Middleware;
 
 use Illuminate\Auth\Middleware\Authenticate as Middleware;
+use Closure;
 
 class Authenticate extends Middleware
 {
     /**
      * Get the path the user should be redirected to when they are not authenticated.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     * @param Closure $next
      * @return string|null
      */
-    protected function redirectTo($request)
+    public function handle($request, Closure $next)
     {
-        if (false) {
-            return route('login');
+        if ((session('userName'))) {
+            return $next($request);
         }
-        else echo  'not signed in';
+        else return redirect(route('signin'));
     }
 }

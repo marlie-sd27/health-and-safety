@@ -13,7 +13,7 @@ Route::get('/calendar', 'CalendarController@calendar');
 
 
 // make sure authenticated
-//Route::middleware('auth')->group(function() {
+Route::middleware('auth')->group(function() {
 
     //Resources
     Route::resource('forms', 'FormsController');
@@ -21,8 +21,7 @@ Route::get('/calendar', 'CalendarController@calendar');
 
     // Profile
     Route:: get('/profile', 'UserController@profile')->name('profile');
+});
 
-    // Admin Access Only View
-    Route::get('unauthorized', 'Controller@unauthorized')->name('unauthorized');
-//});
-
+// Admin Access Only View
+Route::get('unauthorized', 'Controller@unauthorized')->name('unauthorized');

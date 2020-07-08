@@ -4,30 +4,29 @@ namespace App\Http\Controllers;
 
 use App\Forms;
 use Illuminate\Http\Request;
-use App\Http\Middleware;
 
 class FormsController extends Controller
 {
+
     public function __construct()
     {
         $this->middleware('isadmin', ['except' => ['show']]);
+        parent::__construct();
     }
 
     // list all forms
     public function index()
     {
-        $viewData = $this->loadViewData();
-        $viewData['forms'] = Forms::all();
+        $this->viewData['forms'] = Forms::all();
 
-        return view('Forms/index', $viewData);
+        return view('Forms/index', $this->viewData);
     }
 
 
     // show view for creating a new form
     public function create()
     {
-        $viewData = $this->loadViewData();
-        return view('Forms/create', $viewData);
+        return view('Forms/create', $this->viewData);
     }
 
 
@@ -59,8 +58,7 @@ class FormsController extends Controller
         // if there are errors, reload the form to fix them
         if (!empty($errors))
         {
-            $viewData = $this->loadViewData();
-            return redirect(route('forms.create', $viewData))->withErrors($errors)->withInput();
+            return redirect(route('forms.create', $this->viewData))->withErrors($errors)->withInput();
         }
 
         // otherwise redirect to the forms index
@@ -71,20 +69,17 @@ class FormsController extends Controller
     // Show a specific form with its sections
     public function show(Forms $form)
     {
-        $viewData = $this->loadViewData();
         $viewData['form'] = $form->fullForm();
-
-        return (view('Forms/show', $viewData));
+        return (view('Forms/show', $this->viewData));
     }
 
 
     // show view for editing a form
     public function edit(Forms $form)
     {
-        $viewData = $this->loadViewData();
         $viewData['form'] = $form->fullForm();
 
-        return view('Forms/edit', $viewData);
+        return view('Forms/edit', $this->viewData);
     }
 
 
