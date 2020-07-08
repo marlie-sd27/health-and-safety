@@ -88,7 +88,13 @@ class FormsController extends Controller
     // show view for editing a form
     public function edit(Forms $form)
     {
-        //
+        $viewData = $this->loadViewData();
+
+        $viewData['form'] = $form->fullForm();
+
+        $form->recurrence = explode(',', $form->recurrence);
+
+        return view('Forms/edit', $viewData);
     }
 
 

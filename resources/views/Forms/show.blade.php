@@ -2,10 +2,13 @@
 
 @section('content')
     <a href="{{ route('forms.index') }}">Back to Index</a>
+    <a class="float-right" href="{{ route('forms.edit', ['form' => $form->id]) }}">Edit</a>
     <div class="container">
         <h1>{{ $form->title }}</h1>
         <p>{{ $form->description }}</p>
-        <p>To be completed {{ $form->recurrence[0] }} time(s) every {{ $form->recurrence[1] }} {{ $form->recurrence[2] }}</p>
+        @if ($form->recurrence[0] != "")
+            <p>To be completed {{ $form->recurrence[0] }} time(s) every {{ $form->recurrence[1] }} {{ $form->recurrence[2] }}</p>
+        @endif
         <p>To be completed by <b>{{ $form->required_role }}</b></p>
         <p>{{ $form->full_year }}</p>
     </div>

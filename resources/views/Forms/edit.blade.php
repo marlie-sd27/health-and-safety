@@ -1,0 +1,132 @@
+@extends('../layout')
+
+@section('content')
+    <div class="container">
+        <h1>Edit</h1>
+        <form action="{{ route('forms.store') }}" method="post">
+            @csrf
+            <article class="container">
+                <div class="form-group">
+                    <label for="form_title">Title</label>
+                    <input class="form-control" type="text" name="form_title" required value="{{ $form->title }}">
+                </div>
+                <div class="form-group">
+                    <label for="form_description">Description</label>
+                    <textarea class="form-control" name="form_description">{{ $form->description }}</textarea>
+                </div>
+            </article>
+            <article class="container">
+                <h2>Defining Recurrences</h2>
+
+                <p>This describes how often per time unit the form is required to be completed. For example, it can
+                    be one time per month or six times per year. </p>
+                <p><small><b>Note that July and August will be excluded from the year unless you specify otherwise
+                            in the box below</b>
+                    </small></p>
+                <p><small><b>Note that if you do not specify a required recurrence, it will not be required to
+                            complete by
+                            any
+                            employee, but will still be available to fill out and submit.</b></small></p>
+                <div class="form-group row">
+                    <input class="form-control col-md-2" type="number" name="rec_quantity"
+                           value="{{ $form->recurrence[0] }}">
+                    <p> time(s) per </p>
+
+                    <input class="form-control col-md-2" type="number" name="rec_repeat"
+                           value="{{ $form->recurrence[1] }}">
+
+                    <select class="form-control col-md-2" name="rec_time_unit">
+                        <option value="week(s)" @if ($form->recurrence[2] == "week(s)") {{ 'selected' }} @endif>
+                            week(s)
+                        </option>
+                        <option value="month(s)" @if ($form->recurrence[2] == "month(s)") {{ 'selected' }} @endif>
+                            month(s)
+                        </option>
+                        <option value="year(s)" @if ($form->recurrence[2] == "year(s)") {{ 'selected' }} @endif>
+                            year(s)
+                        </option>
+                    </select>
+
+
+                </div>
+                <div class="form-group">
+                    <input type="checkbox" name="full_year" @if (is_array($form->full_year)) checked @endif>
+                    <label for="full_year">Include July and August in the year?</label>
+                </div>
+
+                <div class="form-group">
+                    <label for="required_role">Who is required to submit this form?</label>
+                    <select class="form-control" name="required_role">
+                        <option value="All Staff" @if ($form->required_role == "All Staff") {{ 'selected' }} @endif>
+                            All staff
+                        </option>
+                        <option
+                            value="Principals and Vice Principals" @if ($form->required_role == "Principals and Vice Principals") {{ 'selected' }} @endif>
+                            Principals and Vice Principals
+                        </option>
+                    </select>
+                </div>
+            </article>
+
+            <section>
+                <h2>Adding Sections</h2>
+                <p>Use sections to group your form fields! </p>
+
+                <div id="sections">
+                    @foreach($form->sections as $section)
+                        <article class="container">
+                            <input type="hidden" value="{{ $section->id }}" name="s_id[]"/>
+                            <p id="removeSection"><b>X</b></p>
+                            <div class="form-group">
+                                <label for="section_title">Title</label>
+                                <input class="form-control" type="text" name="section_title[]" value="{{ $section->title }}" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="section_description">Description</label>
+                                <textarea class="form-control" name="section_description[]">{{ $section->description }}</textarea>
+                            </div>
+                            <h3>Add fields to your section</h3>
+                            <div id="fields">
+                                @foreach($section->fields as $field)
+                                <article>
+                                    <input type="hidden" name="section_id[]" value="{{ $section->id }}" />
+                                    <p id="removeField"><b>X</b></p>
+                                    <div class="form-group">
+                                        <label for="type">Label</label>
+                                        <input class="form-control" type="text" name="label[]" value="{{ $field->label }}"/>
+                                        </div>
+                                    <div class="form-group">
+                                        <input type="checkbox" name="required[]" value="{{ $field->required == true ? "on" : "off" }}"/>
+                                        <label for="required">Required?</label>
+                                        </div>
+                                    <div class="form-group">
+                                        <label for="type">Type of Input</label><br/>
+                                        <select class="form-control" name="type[]" id="type">
+                                            <option value="text" @if ($field->type == "text") {{ 'selected' }} @endif>Single Line Text</option>
+                                            <option value="textarea" @if ($field->type == "textarea") {{ 'selected' }} @endif>Multi Line Text</option>
+                                            <option value="select" @if ($field->type == "select") {{ 'selected' }} @endif>Drop Down Menu</option>
+                                            <option value="number" @if ($field->type == "number") {{ 'selected' }} @endif>Numeric</option>
+                                            <option value="radio" @if ($field->type == "radio") {{ 'selected' }} @endif>Radio Button</option>
+                                            <option value="checkbox" @if ($field->type == "checkbox") {{ 'selected' }} @endif>Checkboxes</option>
+                                            <option value="slider" @if ($field->type == "slider") {{ 'selected' }} @endif>Slider</option>
+                                            </select></div>
+                                    <div id="options" class="d-none">
+                                        <input type="hidden" name="field_id[]" value="{{ $field->id }}"/>
+                                        <label for="options[]">Options (enter each option separated by a comma)</label>
+                                        <input type="text" name="options[]" class="form-control" value="{{ join(",", $field->options) }}"/>
+                                        </div></article>
+                                @endforeach
+                            </div>
+                            <button class="btn btn-info" id="addField" type="button">Add Field</button>
+                        </article>
+                    @endforeach
+                </div>
+                <button class="btn btn-info" type="button" id="addSection">Add a Section</button>
+            </section>
+
+            <button class="btn btn-success" type="submit">Submit</button>
+            <button class="btn btn-secondary" type="reset">Reset</button>
+
+        </form>
+    </div>
+@endsection

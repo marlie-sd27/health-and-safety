@@ -65,7 +65,7 @@ $(document).ready(function () {
             '<option value="number">Numeric</option>' +
             '<option value="radio">Radio Button</option>' +
             '<option value="checkbox">Checkboxes</option>' +
-            '<option value="slider">Slider</option>>' +
+            '<option value="slider">Slider</option>' +
             '</select></div>' +
             '<div id="options" class="d-none">'+
             '<input type="hidden" name="field_id[]" value="' + j + '"/>' +
