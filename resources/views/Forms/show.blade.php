@@ -6,7 +6,7 @@
     <div class="container">
         <h1>{{ $form->title }}</h1>
         <p>{{ $form->description }}</p>
-        @if ($form->recurrence[0] != "")
+        @if ($form->recurrence != null)
             <p>To be completed {{ $form->recurrence[0] }} time(s) every {{ $form->recurrence[1] }} {{ $form->recurrence[2] }}</p>
         @endif
         <p>To be completed by <b>{{ $form->required_role }}</b></p>
@@ -16,11 +16,11 @@
         @csrf
 
         <input type="hidden" value="{{ $form->id }}" name="form_id"/>
-        @foreach($form['sections'] as $s)
+        @foreach($form->sections as $s)
             <article>
                 <h2>{{ $s->title }}</h2>
                 <p>{{ $s->description }}</p>
-                @foreach($s['fields'] as $f)
+                @foreach($s->fields as $f)
                         <label for="{{ $f->name }}">{{ $f->label }}</label>
                         @switch($f->type)
                             @case("select")

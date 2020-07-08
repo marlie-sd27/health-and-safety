@@ -3,8 +3,6 @@ $(document).ready(function () {
     // i keeps track of section numbers
     let i = 0;
 
-    // j keeps track of field numbers
-    let j = 0;
 
     // when #addSection is clicked, add a section to the #section div
     $('#addSection').on('click', function () {
@@ -53,7 +51,7 @@ $(document).ready(function () {
             '<input class="form-control" type="text" name="label[]" placeholder="Label"/>' +
             '</div>' +
             '<div class="form-group">' +
-            '<input type="checkbox" name="required[]" value="off" placeholder="Label"/>' +
+            '<input type="checkbox" name="required[]" placeholder="Label"/>' +
             '<label for="required">Required?</label>' +
             '</div>' +
             '<div class="form-group">' +
@@ -68,7 +66,6 @@ $(document).ready(function () {
             '<option value="slider">Slider</option>' +
             '</select></div>' +
             '<div id="options" class="d-none">'+
-            '<input type="hidden" name="field_id[]" value="' + j + '"/>' +
             '<label for="options[]">Options (enter each option separated by a comma)</label>' +
             '<input type="text" name="options[]" class="form-control"/>' +
             '</div></article>').appendTo(fields_div);

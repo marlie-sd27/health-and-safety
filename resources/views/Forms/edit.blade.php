@@ -3,7 +3,8 @@
 @section('content')
     <div class="container">
         <h1>Edit</h1>
-        <form action="{{ route('forms.store') }}" method="post">
+        <form action="{{ route('forms.update', ['form' => $form->id ]) }}" method="post">
+            @method('PUT')
             @csrf
             <article class="container">
                 <div class="form-group">
@@ -29,20 +30,20 @@
                             employee, but will still be available to fill out and submit.</b></small></p>
                 <div class="form-group row">
                     <input class="form-control col-md-2" type="number" name="rec_quantity"
-                           value="{{ $form->recurrence[0] }}">
+                           value="{{ is_array($form->recurrence) ?  $form->recurrence[0] : null }}">
                     <p> time(s) per </p>
 
                     <input class="form-control col-md-2" type="number" name="rec_repeat"
-                           value="{{ $form->recurrence[1] }}">
+                           value="{{ is_array($form->recurrence) ?  $form->recurrence[1] : null }}">
 
                     <select class="form-control col-md-2" name="rec_time_unit">
-                        <option value="week(s)" @if ($form->recurrence[2] == "week(s)") {{ 'selected' }} @endif>
+                        <option value="week(s)" @if (is_array($form->recurrence) && $form->recurrence[2] == "week(s)") {{ 'selected' }} @endif>
                             week(s)
                         </option>
-                        <option value="month(s)" @if ($form->recurrence[2] == "month(s)") {{ 'selected' }} @endif>
+                        <option value="month(s)" @if (is_array($form->recurrence) && $form->recurrence[2] == "month(s)") {{ 'selected' }} @endif>
                             month(s)
                         </option>
-                        <option value="year(s)" @if ($form->recurrence[2] == "year(s)") {{ 'selected' }} @endif>
+                        <option value="year(s)" @if (is_array($form->recurrence) && $form->recurrence[2] == "year(s)") {{ 'selected' }} @endif>
                             year(s)
                         </option>
                     </select>
@@ -96,7 +97,7 @@
                                         <input class="form-control" type="text" name="label[]" value="{{ $field->label }}"/>
                                         </div>
                                     <div class="form-group">
-                                        <input type="checkbox" name="required[]" value="{{ $field->required == true ? "on" : "off" }}"/>
+                                        <input type="checkbox" name="required[]" {{ $field->required == true ? "on" : "off" }}"/>
                                         <label for="required">Required?</label>
                                         </div>
                                     <div class="form-group">

@@ -4,14 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Forms;
 use Illuminate\Http\Request;
+use App\Http\Middleware;
 
 class FormsController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('isadmin', ['except' => ['show']]);
+    }
+
     // list all forms
     public function index()
     {
         $viewData = $this->loadViewData();
-
         $viewData['forms'] = Forms::all();
 
         return view('Forms/index', $viewData);
@@ -22,7 +27,6 @@ class FormsController extends Controller
     public function create()
     {
         $viewData = $this->loadViewData();
-
         return view('Forms/create', $viewData);
     }
 
@@ -30,31 +34,22 @@ class FormsController extends Controller
     // Store the newly created Form in database
     public function store(Request $request)
     {
+        // join the recurrence quantity, repeat and time unit into a string separated by commas
+        $recurrence = null;
 
-//        $validated = $request->validate([
-//            'form_title' => 'required|max:255',
-//            'full_year' => 'required|boolean'
-//        ]);
-
-//        dd($request);
-
-        // Recurrence schedule is blank if null
-        // otherwise, join the recurrence quantity, repeat and time unit into a string separated by commas
-        $recurrence = "";
-
-        if ($request['rec_quantity'] !== null)
+        if ($request->rec_quantity !== null)
         {
-            $recurrence = $request['rec_quantity'] . "," . $request['rec_repeat'] . "," . $request['rec_time_unit'];
+            $recurrence = $request->rec_quantity . "," . $request->rec_repeat . "," . $request->rec_time_unit;
         }
 
 
         // create the form
         $form = Forms::create([
-            'title' => $request['form_title'],
-            'description' => $request['form_description'],
+            'title' => $request->form_title,
+            'description' => $request->form_description,
             'recurrence' => $recurrence,
-            'required_role' => $request['required_role'],
-            'full_year' => isset($request['full_year'])
+            'required_role' => $request->required_role,
+            'full_year' => isset($request->full_year)
         ]);
 
 
@@ -77,8 +72,6 @@ class FormsController extends Controller
     public function show(Forms $form)
     {
         $viewData = $this->loadViewData();
-
-        $form->recurrence = explode(',', $form->recurrence);
         $viewData['form'] = $form->fullForm();
 
         return (view('Forms/show', $viewData));
@@ -89,10 +82,7 @@ class FormsController extends Controller
     public function edit(Forms $form)
     {
         $viewData = $this->loadViewData();
-
         $viewData['form'] = $form->fullForm();
-
-        $form->recurrence = explode(',', $form->recurrence);
 
         return view('Forms/edit', $viewData);
     }
@@ -101,7 +91,19 @@ class FormsController extends Controller
     // update the form in the database with new data
     public function update(Request $request, Forms $form)
     {
-        //
+        $recurrence = $request->rec_quantity !== null ? $recurrence = $request->rec_quantity . "," . $request->rec_repeat . "," . $request->rec_time_unit : null;
+
+        $form->update([
+            'title' => $request->form_title,
+            'description' => $request->form_description,
+            'recurrence' => $recurrence,
+            'required_role' => $request->required_role,
+            'full_year' => isset($request->full_year)
+        ]);
+
+        $form->save();
+
+        return redirect(route('forms.show', ['form' => $form->id]));
     }
 
 

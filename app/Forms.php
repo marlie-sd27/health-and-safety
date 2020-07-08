@@ -15,6 +15,8 @@ class Forms extends Model
     // get the sections and fields for a form
     public function fullForm()
     {
+        $this->recurrence = $this->recurrence !== null ? explode(',', $this->recurrence) : null;
+
         $this['sections'] = $this->sections;
 
         foreach ($this['sections'] as $section)
@@ -56,7 +58,7 @@ class Forms extends Model
         $section_ids = array();
 
         // create each section in the form
-        if (isset($request['section_title']))
+        if (isset($request->section_title))
         {
             foreach ($request->section_title as $key => $value)
             {
@@ -75,22 +77,28 @@ class Forms extends Model
 
 
         // create each field in the form
-        if (isset($request['label']))
+        if (isset($request->label))
         {
             foreach ($request->label as $key => $value)
             {
                 Fields::create([
-                    'sections_id' => $section_ids[$request['section_id'][$key]],
+                    'sections_id' => $section_ids[$request->section_id[$key]],
                     'label' => $value,
                     'name' => $value,
-                    'type' => $request['type'][$key],
-                    'required' => isset($request['required'][$key]),
-                    'options' => $request['options'][$key],
+                    'type' => $request->type[$key],
+                    'required' => isset($request->required[$key]),
+                    'options' => $request->options[$key],
                 ]);
             }
         }
 
         return $errors;
+
+    }
+
+
+    public function updateFullForm(Request $request)
+    {
 
     }
 }

@@ -21,5 +21,8 @@ Route::get('/calendar', 'CalendarController@calendar');
 
     // Profile
     Route:: get('/profile', 'UserController@profile')->name('profile');
+
+    // Admin Access Only View
+    Route::get('unauthorized', 'Controller@unauthorized')->name('unauthorized');
 //});
 

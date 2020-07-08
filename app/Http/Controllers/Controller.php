@@ -8,6 +8,7 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
 
 use App\Forms;
+use App\User;
 
 class Controller extends BaseController
 {
@@ -26,6 +27,9 @@ class Controller extends BaseController
         // Check for logged on user
         if (session('userName'))
         {
+            $user = User::where('email', session('userEmail'))->first();
+
+            $viewData['admin'] = isset($user->admin) && $user->admin;
             $viewData['userName'] = session('userName');
             $viewData['userEmail'] = session('userEmail');
         }
@@ -35,4 +39,12 @@ class Controller extends BaseController
 
         return $viewData;
     }
+
+    // displays Unauthorized view
+    public function unauthorized()
+    {
+        $viewData = $this->loadViewData();
+        return view('unauthorized', $viewData);
+    }
+
 }
