@@ -47,11 +47,11 @@ $(document).ready(function () {
             '<input type="hidden" name="section_id[]" value="' + section_id + '" />' +
             '<p id="removeField"><b>X</b></p>' +
             '<div class="form-group">' +
-            '<label for="type">Label</label>' +
-            '<input class="form-control" type="text" name="label[]" placeholder="Label"/>' +
+            '<label for="label[]">Label</label>' +
+            '<input class="form-control" type="text" name="label[]" placeholder="Label" required/>' +
             '</div>' +
             '<div class="form-group">' +
-            '<input type="checkbox" name="required[]" placeholder="Label"/>' +
+            '<input type="checkbox" name="required[]"/>' +
             '<label for="required">Required?</label>' +
             '</div>' +
             '<div class="form-group">' +

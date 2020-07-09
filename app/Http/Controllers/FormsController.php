@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Forms;
+use App\Http\Requests\StoreForm;
 use Illuminate\Http\Request;
 
 class FormsController extends Controller
@@ -18,7 +19,6 @@ class FormsController extends Controller
     public function index()
     {
         $this->viewData['forms'] = Forms::all();
-
         return view('Forms/index', $this->viewData);
     }
 
@@ -31,45 +31,32 @@ class FormsController extends Controller
 
 
     // Store the newly created Form in database
-    public function store(Request $request)
+    public function store(StoreForm $request)
     {
-        // join the recurrence quantity, repeat and time unit into a string separated by commas
-        $recurrence = null;
-
-        if ($request->rec_quantity !== null)
-        {
-            $recurrence = $request->rec_quantity . "," . $request->rec_repeat . "," . $request->rec_time_unit;
-        }
-
+        $validated = $request->validated();
 
         // create the form
         $form = Forms::create([
-            'title' => $request->form_title,
-            'description' => $request->form_description,
-            'recurrence' => $recurrence,
-            'required_role' => $request->required_role,
-            'full_year' => isset($request->full_year)
+            'title' => $validated['title'],
+            'description' => $validated['description'],
+            'recurrence' => $validated['recurrence'],
+            'required_role' => $validated['required_role'],
+            'full_year' => $validated['full_year'],
         ]);
 
 
         // create sections and fields in database for the form
         $errors = $form->createSectionsandFields($request);
 
-        // if there are errors, reload the form to fix them
-        if (!empty($errors))
-        {
-            return redirect(route('forms.create', $this->viewData))->withErrors($errors)->withInput();
-        }
-
-        // otherwise redirect to the forms index
-        return redirect(route('forms.index'));
+        // if there are errors, reload the form to fix them otherwise redirect to forms.index
+        return !empty($errors) ? redirect(route('forms.create', $this->viewData))->withErrors($errors)->withInput() : redirect(route('forms.index'));
     }
 
 
     // Show a specific form with its sections
     public function show(Forms $form)
     {
-        $viewData['form'] = $form->fullForm();
+        $this->viewData['form'] = $form->fullForm();
         return (view('Forms/show', $this->viewData));
     }
 
@@ -77,8 +64,7 @@ class FormsController extends Controller
     // show view for editing a form
     public function edit(Forms $form)
     {
-        $viewData['form'] = $form->fullForm();
-
+        $this->viewData['form'] = $form->fullForm();
         return view('Forms/edit', $this->viewData);
     }
 
@@ -106,7 +92,6 @@ class FormsController extends Controller
     public function destroy(Forms $form)
     {
         Forms::destroy($form->id);
-
         return redirect(route('forms.index'))->with('message', "Sucessfully deleted $form->title");
     }
 }
