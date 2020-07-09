@@ -20,7 +20,7 @@ class StoreForm extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'required|unique:forms|max:255',
+            'title' => 'sometimes|required|max:255',
             'description' => 'string|nullable',
             'recurrence' => 'string|nullable',
             'required_role' => 'nullable|in:All Staff, Principals and Vice Principals',

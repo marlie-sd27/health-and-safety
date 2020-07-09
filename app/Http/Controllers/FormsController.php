@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Forms;
 use App\Http\Requests\StoreForm;
 use Illuminate\Http\Request;
+use Illuminate\Session\Store;
 
 class FormsController extends Controller
 {
@@ -70,16 +71,16 @@ class FormsController extends Controller
 
 
     // update the form in the database with new data
-    public function update(Request $request, Forms $form)
+    public function update(StoreForm $request, Forms $form)
     {
-        $recurrence = $request->rec_quantity !== null ? $recurrence = $request->rec_quantity . "," . $request->rec_repeat . "," . $request->rec_time_unit : null;
+        $validated = $request->validated();
 
         $form->update([
-            'title' => $request->form_title,
-            'description' => $request->form_description,
-            'recurrence' => $recurrence,
-            'required_role' => $request->required_role,
-            'full_year' => isset($request->full_year)
+            'title' => $validated['title'],
+            'description' => $validated['description'],
+            'recurrence' => $validated['recurrence'],
+            'required_role' => $validated['required_role'],
+            'full_year' => $validated['full_year']
         ]);
 
         $form->save();
@@ -92,6 +93,6 @@ class FormsController extends Controller
     public function destroy(Forms $form)
     {
         Forms::destroy($form->id);
-        return redirect(route('forms.index'))->with('message', "Sucessfully deleted $form->title");
+        return redirect(route('forms.index'))->with('message', "Successfully deleted $form->title");
     }
 }
