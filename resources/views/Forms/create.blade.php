@@ -1,7 +1,6 @@
 @extends('../layout')
 
 @section('content')
-    <div class="container">
         <form action="{{ route('forms.store') }}" method="post">
             @csrf
             <article class="container">
@@ -87,9 +86,11 @@
                 <button class="btn btn-info" type="button" id="addSection">Add a Section</button>
             </section>
 
-            <button class="btn btn-success" type="submit">Submit</button>
-            <button class="btn btn-secondary" type="reset">Reset</button>
+            <hr>
 
+            <div class="container" align="center">
+                <button class="btn btn-block btn-lg btn-success" type="submit">Submit</button>
+                <button class="btn btn-block btn-lg btn-secondary" type="reset">Reset</button>
+            </div>
         </form>
-    </div>
 @endsection

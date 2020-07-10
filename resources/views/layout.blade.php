@@ -14,7 +14,6 @@
 <body>
 <!-- Top nav bar -->
 <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-    <div class="container">
         <a href="/" class="navbar-brand">Health and Safety Dashboard</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
                 aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
@@ -66,7 +65,6 @@
                 @endif
             </ul>
         </div>
-    </div>
 </nav>
 
 <div class="wrapper">
@@ -74,6 +72,7 @@
     @if( isset( $userName))
         <nav id="sidebar">
             <ul class="list-unstyled components">
+                <br/>
                 <p>Links to Forms</p>
                 @foreach($links as $link)
                     <li>

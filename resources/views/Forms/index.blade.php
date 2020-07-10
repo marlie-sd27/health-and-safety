@@ -1,7 +1,7 @@
 @extends('layout')
 
 @section('content')
-<div class="container">
+<div>
     <table>
         <tr>
             <th>ID</th>
@@ -28,7 +28,8 @@
                         @csrf
                         @method('delete')
                         <button type="submit">Delete</button>
-                    </form></td>
+                    </form>
+                </td>
             </tr>
         @endforeach
     </table>

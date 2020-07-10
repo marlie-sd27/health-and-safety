@@ -2,6 +2,7 @@
 
 @section('content')
     <div class="container">
+        <a href="{{route('forms.index')}}">Back to Index</a>
         <h1>Edit</h1>
         <form action="{{ route('forms.update', ['form' => $form->id ]) }}" method="post">
             @method('PUT')
@@ -28,7 +29,7 @@
                             complete by
                             any
                             employee, but will still be available to fill out and submit.</b></small></p>
-                <div class="form-group row">
+                <div class="form-group row container">
                     <input class="form-control col-md-2" type="number" name="rec_quantity"
                            value="{{ is_array($form->recurrence) ?  $form->recurrence[0] : null }}">
                     <p> time(s) per </p>
@@ -90,7 +91,7 @@
                             <div id="fields">
                                 @foreach($section->fields as $field)
                                 <article>
-                                    <input type="hidden" name="section_id[]" value="{{ $section->id }}" />
+                                    <input type="hidden" name="section_id[]" value="{{ $field->sections_id }}" />
                                     <p id="removeField"><b>X</b></p>
                                     <div class="form-group">
                                         <label for="type">Label</label>
@@ -111,7 +112,7 @@
                                             <option value="checkbox" @if ($field->type == "checkbox") {{ 'selected' }} @endif>Checkboxes</option>
                                             <option value="slider" @if ($field->type == "slider") {{ 'selected' }} @endif>Slider</option>
                                             </select></div>
-                                    <div id="options" class="d-none">
+                                    <div id="options" class="{{ !empty($field->options) ? "" : "d-none" }}">
                                         <input type="hidden" name="field_id[]" value="{{ $field->id }}"/>
                                         <label for="options[]">Options (enter each option separated by a comma)</label>
                                         <input type="text" name="options[]" class="form-control" value="{{ join(",", $field->options) }}"/>
@@ -125,9 +126,11 @@
                 <button class="btn btn-info" type="button" id="addSection">Add a Section</button>
             </section>
 
-            <button class="btn btn-success" type="submit">Submit</button>
-            <button class="btn btn-secondary" type="reset">Reset</button>
+            <hr>
 
+            <div class="container" align="center">
+                <button class="btn btn-block btn-lg btn-success" type="submit">Save</button>
+            </div>
         </form>
     </div>
 @endsection

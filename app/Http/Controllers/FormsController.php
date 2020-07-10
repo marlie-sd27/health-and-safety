@@ -83,6 +83,7 @@ class FormsController extends Controller
             'full_year' => $validated['full_year']
         ]);
 
+//        dd($validated);
         $form->save();
 
         return redirect(route('forms.show', ['form' => $form->id]));

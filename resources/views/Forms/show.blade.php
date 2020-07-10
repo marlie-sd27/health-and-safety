@@ -69,7 +69,11 @@
             </article>
         @endforeach
 
-        <button class="btn btn-primary" type="submit">Submit</button>
-        <button class="btn btn-secondary" type="reset">Reset</button>
+        <hr>
+
+        <div class="container" align="center">
+            <button class="btn btn-block btn-lg btn-success" type="submit">Submit</button>
+            <button class="btn btn-block btn-lg btn-secondary" type="reset">Reset</button>
+        </div>
     </form>
 @endsection
