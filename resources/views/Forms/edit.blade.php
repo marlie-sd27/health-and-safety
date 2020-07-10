@@ -38,13 +38,16 @@
                            value="{{ is_array($form->recurrence) ?  $form->recurrence[1] : null }}">
 
                     <select class="form-control col-md-2" name="rec_time_unit">
-                        <option value="week(s)" @if (is_array($form->recurrence) && $form->recurrence[2] == "week(s)") {{ 'selected' }} @endif>
+                        <option
+                            value="week(s)" @if (is_array($form->recurrence) && $form->recurrence[2] == "week(s)") {{ 'selected' }} @endif>
                             week(s)
                         </option>
-                        <option value="month(s)" @if (is_array($form->recurrence) && $form->recurrence[2] == "month(s)") {{ 'selected' }} @endif>
+                        <option
+                            value="month(s)" @if (is_array($form->recurrence) && $form->recurrence[2] == "month(s)") {{ 'selected' }} @endif>
                             month(s)
                         </option>
-                        <option value="year(s)" @if (is_array($form->recurrence) && $form->recurrence[2] == "year(s)") {{ 'selected' }} @endif>
+                        <option
+                            value="year(s)" @if (is_array($form->recurrence) && $form->recurrence[2] == "year(s)") {{ 'selected' }} @endif>
                             year(s)
                         </option>
                     </select>
@@ -76,50 +79,91 @@
 
                 <div id="sections">
                     @foreach($form->sections as $section)
-                        <article class="container">
-                            <input type="hidden" value="{{ $section->id }}" name="s_id[]"/>
-                            <p id="removeSection"><b>X</b></p>
-                            <div class="form-group">
-                                <label for="section_title">Title</label>
-                                <input class="form-control" type="text" name="section_title[]" value="{{ $section->title }}" required>
+                        <article>
+                            <img id="removeSection" src="{{ asset('images/delete.png') }}" height="25em;" alt="remove"/>
+                            <div class="toggle-expand">
                             </div>
-                            <div class="form-group">
-                                <label for="section_description">Description</label>
-                                <textarea class="form-control" name="section_description[]">{{ $section->description }}</textarea>
+                            <div class="container" id="section">
+                                <input type="hidden" value="{{ $section->id }}" name="s_id[]"/>
+
+                                <div class="form-group">
+                                    <label for="section_title">Title</label>
+                                    <input class="form-control" type="text" name="section_title[]"
+                                           value="{{ $section->title }}" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="section_description">Description</label>
+                                    <textarea class="form-control"
+                                              name="section_description[]">{{ $section->description }}</textarea>
+                                </div>
+                                <h3>Add fields to your section</h3>
+                                <div id="fields">
+                                    @foreach($section->fields as $field)
+                                        <article>
+                                            <img id="removeField" src="{{ asset('images/delete.png') }}" height="25em;"
+                                                 alt="remove"/>
+                                            <div class="toggle-expand">
+                                            </div>
+                                            <div class="container">
+                                                <input type="hidden" name="section_id[]"
+                                                       value="{{ $field->sections_id }}"/>
+                                                <div class="form-group">
+                                                    <label for="type">Label</label>
+                                                    <input class="form-control" type="text" name="label[]"
+                                                           value="{{ $field->label }}"/>
+                                                </div>
+                                                <div class="form-group">
+                                                    <input type="checkbox"
+                                                           name="required[]" {{ $field->required == true ? "on" : "off" }}
+                                                    "/>
+                                                    <label for="required">Required?</label>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="type">Type of Input</label><br/>
+                                                    <select class="form-control" name="type[]" id="type">
+                                                        <option
+                                                            value="text" @if ($field->type == "text") {{ 'selected' }} @endif>
+                                                            Single Line Text
+                                                        </option>
+                                                        <option
+                                                            value="textarea" @if ($field->type == "textarea") {{ 'selected' }} @endif>
+                                                            Multi Line Text
+                                                        </option>
+                                                        <option
+                                                            value="select" @if ($field->type == "select") {{ 'selected' }} @endif>
+                                                            Drop Down Menu
+                                                        </option>
+                                                        <option
+                                                            value="number" @if ($field->type == "number") {{ 'selected' }} @endif>
+                                                            Numeric
+                                                        </option>
+                                                        <option
+                                                            value="radio" @if ($field->type == "radio") {{ 'selected' }} @endif>
+                                                            Radio Button
+                                                        </option>
+                                                        <option
+                                                            value="checkbox" @if ($field->type == "checkbox") {{ 'selected' }} @endif>
+                                                            Checkboxes
+                                                        </option>
+                                                        <option
+                                                            value="slider" @if ($field->type == "slider") {{ 'selected' }} @endif>
+                                                            Slider
+                                                        </option>
+                                                    </select></div>
+                                                <div id="options" class="{{ !empty($field->options) ? "" : "d-none" }}">
+                                                    <input type="hidden" name="field_id[]" value="{{ $field->id }}"/>
+                                                    <label for="options[]">Options (enter each option separated by a
+                                                        comma)</label>
+                                                    <input type="text" name="options[]" class="form-control"
+                                                           value="{{ join(",", $field->options) }}"/>
+                                                </div>
+                                            </div>
+                                        </article>
+                                    @endforeach
+                                </div>
+
+                                <button class="btn btn-info" id="addField" type="button">Add Field</button>
                             </div>
-                            <h3>Add fields to your section</h3>
-                            <div id="fields">
-                                @foreach($section->fields as $field)
-                                <article>
-                                    <input type="hidden" name="section_id[]" value="{{ $field->sections_id }}" />
-                                    <p id="removeField"><b>X</b></p>
-                                    <div class="form-group">
-                                        <label for="type">Label</label>
-                                        <input class="form-control" type="text" name="label[]" value="{{ $field->label }}"/>
-                                        </div>
-                                    <div class="form-group">
-                                        <input type="checkbox" name="required[]" {{ $field->required == true ? "on" : "off" }}"/>
-                                        <label for="required">Required?</label>
-                                        </div>
-                                    <div class="form-group">
-                                        <label for="type">Type of Input</label><br/>
-                                        <select class="form-control" name="type[]" id="type">
-                                            <option value="text" @if ($field->type == "text") {{ 'selected' }} @endif>Single Line Text</option>
-                                            <option value="textarea" @if ($field->type == "textarea") {{ 'selected' }} @endif>Multi Line Text</option>
-                                            <option value="select" @if ($field->type == "select") {{ 'selected' }} @endif>Drop Down Menu</option>
-                                            <option value="number" @if ($field->type == "number") {{ 'selected' }} @endif>Numeric</option>
-                                            <option value="radio" @if ($field->type == "radio") {{ 'selected' }} @endif>Radio Button</option>
-                                            <option value="checkbox" @if ($field->type == "checkbox") {{ 'selected' }} @endif>Checkboxes</option>
-                                            <option value="slider" @if ($field->type == "slider") {{ 'selected' }} @endif>Slider</option>
-                                            </select></div>
-                                    <div id="options" class="{{ !empty($field->options) ? "" : "d-none" }}">
-                                        <input type="hidden" name="field_id[]" value="{{ $field->id }}"/>
-                                        <label for="options[]">Options (enter each option separated by a comma)</label>
-                                        <input type="text" name="options[]" class="form-control" value="{{ join(",", $field->options) }}"/>
-                                        </div></article>
-                                @endforeach
-                            </div>
-                            <button class="btn btn-info" id="addField" type="button">Add Field</button>
                         </article>
                     @endforeach
                 </div>

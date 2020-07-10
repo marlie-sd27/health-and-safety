@@ -81,7 +81,7 @@ $(document).ready(function () {
     });
 
 
-    // if type of input is drop down menu, radio buttons, checkbox or slider,
+    // if type of input is drop down menu, radio buttons, checkbox or slider, display
     $('body').on('change', "#type", function () {
 
         let parent = $(this).closest('article')
@@ -96,4 +96,21 @@ $(document).ready(function () {
         }
     })
 
+
+    // toggle collapse/expand section and fields when icon is clicked
+    $('body').on('click', '.toggle-collapse', function() {
+
+        let target = $(this).next();
+        target.toggleClass("d-none");
+        $(this).toggleClass("toggle-collapse");
+        $(this).toggleClass("toggle-expand");
+    });
+
+    $('body').on('click', '.toggle-expand', function() {
+
+        let target = $(this).next();
+        target.toggleClass("d-none");
+        $(this).toggleClass("toggle-collapse");
+        $(this).toggleClass("toggle-expand");
+    });
 });
