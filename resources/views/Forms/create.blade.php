@@ -35,7 +35,7 @@
                             complete by
                             any
                             employee, but will still be available to fill out and submit.</b></small></p>
-                <div class="form-group row">
+                <div class="form-group row container">
                     <input class="form-control col-md-2" type="number" name="rec_quantity" placeholder="Ex. 1"
                            value="{{ old('rec_quantity') }}">
                     <p> time(s) per </p>

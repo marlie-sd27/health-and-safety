@@ -9,9 +9,11 @@ $(document).ready(function () {
 
         let section = $('#sections');
 
-        $('<article class="container">' +
+        $('<article>' +
+            '<img id="removeSection" src="/images/delete.png" height="25em;" alt="remove"/>' +
+            '<div class="toggle-expand"></div>' +
+            '<div class="container">' +
             '<input type="hidden" value="' + i + '" name="s_id[]" />' +
-            '<p id="removeSection"><b>X</b></p>' +
             '<div class="form-group">' +
             '<label for="section_title">Title</label>' +
             '<input class="form-control" type="text" name="section_title[]" placeholder="Title" required>' +
@@ -22,7 +24,7 @@ $(document).ready(function () {
             '</div><h3>Add fields to your section</h3>' +
             '<div id="fields">' +
             '</div><button class="btn btn-info" id="addField" type="button">Add Field</button> ' +
-            '</article>').appendTo(section);
+            '</div></article>').appendTo(section);
 
         i++;
 
@@ -44,8 +46,10 @@ $(document).ready(function () {
         let section_id = $(this).siblings()[0].value;
 
         $('<article>' +
+            '<img id="removeField" src="/images/delete.png" height="25em;" alt="remove"/>' +
+            '<div class="toggle-expand"></div>' +
+            '<div class="container">' +
             '<input type="hidden" name="section_id[]" value="' + section_id + '" />' +
-            '<p id="removeField"><b>X</b></p>' +
             '<div class="form-group">' +
             '<label for="label[]">Label</label>' +
             '<input class="form-control" type="text" name="label[]" placeholder="Label" required/>' +
@@ -68,7 +72,7 @@ $(document).ready(function () {
             '<div id="options" class="d-none">'+
             '<label for="options[]">Options (enter each option separated by a comma)</label>' +
             '<input type="text" name="options[]" class="form-control"/>' +
-            '</div></article>').appendTo(fields_div);
+            '</div></div></article>').appendTo(fields_div);
 
         j++;
 
