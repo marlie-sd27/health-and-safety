@@ -74,7 +74,6 @@ $(document).ready(function () {
             '<input type="text" name="options[]" class="form-control"/>' +
             '</div></div></article>').appendTo(fields_div);
 
-        j++;
 
     });
 
@@ -91,14 +90,15 @@ $(document).ready(function () {
         let parent = $(this).closest('article')
         let selected = $(this).children("option:selected").val();
 
+        // console.log(parent.children("#options")[0]);
+
         if (selected === "select" | selected === "checkbox" | selected === "radio" | selected === "slider") {
-            parent.children("#options").removeClass("d-none");
+            parent.find("#options").removeClass("d-none");
 
         } else {
-            parent.children("#options").addClass("d-none");
-
+            parent.find("#options").addClass("d-none");
         }
-    })
+    });
 
 
     // toggle collapse/expand section and fields when icon is clicked
