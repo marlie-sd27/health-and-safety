@@ -16,7 +16,8 @@ class CreateFieldsTable extends Migration
         Schema::create('fields', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->foreign('sections_id')->references('sections')->on('id')->onDelete('cascade');
+            $table->bigInteger('sections_id');
+            $table->foreign('sections_id')->references('id')->on('sections')->onDelete('cascade');
             $table->string('label');
             $table->string('name');
             $table->string('type');

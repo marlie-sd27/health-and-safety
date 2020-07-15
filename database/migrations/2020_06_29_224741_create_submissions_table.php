@@ -17,6 +17,7 @@ class CreateSubmissionsTable extends Migration
             $table->id();
             $table->timestamps();
             $table->bigInteger('forms_id');
+            $table->foreign('forms_id')->references('id')->on('forms')->onDelete('cascade');
             $table->string('username');
             $table->string('email');
             $table->text('data');
