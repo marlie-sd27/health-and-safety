@@ -35,7 +35,8 @@ class FormsController extends Controller
     // Store the newly created Form in database
     public function store(StoreForm $validated)
     {
-        // create the form
+//        dd($validated);
+
         $form = Forms::create([
             'title' => $validated['title'],
             'description' => $validated['description'],
@@ -72,6 +73,7 @@ class FormsController extends Controller
     // update the form in the database with new data
     public function update(StoreForm $validated, Forms $form)
     {
+//        dd($validated);
         DB::transaction(function () use ($validated, $form) {
             $form->update([
                 'title' => $validated['title'],
@@ -87,8 +89,6 @@ class FormsController extends Controller
 
             $form->save();
         });
-
-
 
         return redirect(route('forms.show', ['form' => $form->id]))->with('message','Successfully updated the form!');
     }

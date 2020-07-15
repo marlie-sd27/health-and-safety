@@ -79,16 +79,16 @@ class Forms extends Model
 
 
         // create each field in the form
-        if (isset($request->label))
+        if (isset($request->field_id))
         {
-            foreach ($request->label as $key => $value)
+            foreach ($request->field_id as $key => $value)
             {
                 Fields::create([
                     'sections_id' => $section_ids[$request->section_id[$key]],
-                    'label' => $value,
-                    'name' => $value,
+                    'label' => $request->label[$key],
+                    'name' => $request->label[$key],
                     'type' => $request->type[$key],
-                    'required' => isset($request->required[$key]),
+                    'required' => isset($request->required[$value]),
                     'options' => $request->options[$key],
                 ]);
             }

@@ -1,8 +1,16 @@
 $(document).ready(function () {
 
     // i keeps track of section numbers
-    let i = $("input[name='s_id[]']").last().val() + 1;
+    let i = parseInt($("input[name='s_id[]']").last().val()) + 1;
+    if ( isNaN(i)) {
+        i = 0;
+    }
 
+    // j keeps track of field numbers
+    let j = parseInt($("input[name='field_id[]']").last().val()) + 1;
+    if ( isNaN(j)) {
+        j = 0;
+    }
 
     // when #addSection is clicked, add a section to the #section div
     $('#addSection').on('click', function () {
@@ -45,6 +53,9 @@ $(document).ready(function () {
         // the first sibling is the input who's value is the section's ID
         let section_id = $(this).siblings()[0].value;
 
+        let field_index = fields_div.children().length;
+        console.log(field_index);
+
         $('<article>' +
             '<img id="removeField" src="/images/delete.png" height="25em;" alt="remove"/>' +
             '<div class="toggle-expand"></div>' +
@@ -55,7 +66,7 @@ $(document).ready(function () {
             '<input class="form-control" type="text" name="label[]" placeholder="Label" required/>' +
             '</div>' +
             '<div class="form-group">' +
-            '<input type="checkbox" name="required[]"/>' +
+            '<input type="checkbox" name="required[' + j + ']"/>' +
             '<label for="required">Required?</label>' +
             '</div>' +
             '<div class="form-group">' +
@@ -70,12 +81,13 @@ $(document).ready(function () {
             '<option value="slider">Slider</option>' +
             '<option value="date">Date</option>' +
             '</select></div>' +
+            '<input type="hidden" name="field_id[]" value="' + j + '"/>' +
             '<div id="options" class="d-none">'+
             '<label for="options[]">Options (enter each option separated by a comma)</label>' +
             '<input type="text" name="options[]" class="form-control"/>' +
             '</div></div></article>').appendTo(fields_div);
 
-
+        j++;
     });
 
 

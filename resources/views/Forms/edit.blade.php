@@ -114,7 +114,7 @@
                                                 </div>
                                                 <div class="form-group">
                                                     <input type="checkbox"
-                                                           name="required[]" {{ $field->required == true ? "on" : "off" }}
+                                                           name="required[{{ $field->id }}]" {{ $field->required == true ? "on" : "off" }}
                                                     "/>
                                                     <label for="required">Required?</label>
                                                 </div>
