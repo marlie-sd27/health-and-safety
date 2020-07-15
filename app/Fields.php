@@ -12,7 +12,7 @@ class Fields extends Model
 
 
     // get associated section
-    public function section()
+    public function sections()
     {
         return $this->belongsTo('App\Sections');
     }

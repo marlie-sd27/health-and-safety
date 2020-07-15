@@ -16,7 +16,8 @@ class SubmissionsController extends Controller
     // show all submissions
     public function index()
     {
-        $this->viewData['submissions'] = Submissions::join('forms','forms.id','=','submissions.forms_id')->get();
+        $this->viewData['submissions'] = Submissions::with('forms')->get();
+        dd($this->viewData);
         return view('Submissions.index', $this->viewData);
     }
 

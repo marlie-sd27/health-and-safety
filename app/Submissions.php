@@ -12,7 +12,7 @@ class Submissions extends Model
 
 
     // get the form associated with this submisson
-    public function form()
+    public function forms()
     {
         return $this->belongsTo('App\Forms');
     }

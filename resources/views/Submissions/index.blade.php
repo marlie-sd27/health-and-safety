@@ -16,7 +16,7 @@
             @foreach($submissions as $submission)
                 <tr>
                     <td>{{ $submission->id }}</td>
-{{--                    <td><a href="{{ route('submissions.show', ['submission' => $submission]) }}">{{ $submission->form->title }}</a></td>--}}
+                    <td><a href="{{ route('submissions.show', ['submission' => $submission]) }}">{{ $submission->forms->title }}</a></td>
                     <td>{{ $submission->username }}</td>
                     <td>{{ $submission->email }}</td>
                     <td>{{ $submission->data }}</td>

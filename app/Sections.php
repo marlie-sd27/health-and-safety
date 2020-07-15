@@ -12,7 +12,7 @@ class Sections extends Model
 
 
     // get associated form
-    public function form()
+    public function forms()
     {
         return $this->belongsTo('App\Forms');
     }
