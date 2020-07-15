@@ -1,7 +1,7 @@
 $(document).ready(function () {
 
     // i keeps track of section numbers
-    let i = 0;
+    let i = $("input[name='s_id[]']").last().val() + 1;
 
 
     // when #addSection is clicked, add a section to the #section div
@@ -16,7 +16,7 @@ $(document).ready(function () {
             '<input type="hidden" value="' + i + '" name="s_id[]" />' +
             '<div class="form-group">' +
             '<label for="section_title">Title</label>' +
-            '<input class="form-control" type="text" name="section_title[]" placeholder="Title" required>' +
+            '<input class="form-control" type="text" name="section_title[]" placeholder="Title">' +
             '</div>' +
             '<div class="form-group">' +
             '<label for="section_description">Description</label>' +
@@ -64,10 +64,11 @@ $(document).ready(function () {
             '<option value="text">Single Line Text</option>' +
             '<option value="textarea">Multi Line Text</option>' +
             '<option value="select">Drop Down Menu</option>' +
-            '<option value="number">Numeric</option>' +
+            '<option value="number">Number</option>' +
             '<option value="radio">Radio Button</option>' +
             '<option value="checkbox">Checkboxes</option>' +
             '<option value="slider">Slider</option>' +
+            '<option value="date">Date</option>' +
             '</select></div>' +
             '<div id="options" class="d-none">'+
             '<label for="options[]">Options (enter each option separated by a comma)</label>' +

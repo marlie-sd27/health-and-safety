@@ -6,6 +6,7 @@ use App\Forms;
 use App\Http\Requests\StoreForm;
 use Illuminate\Http\Request;
 use Illuminate\Session\Store;
+use Illuminate\Support\Facades\DB;
 
 class FormsController extends Controller
 {
@@ -32,10 +33,8 @@ class FormsController extends Controller
 
 
     // Store the newly created Form in database
-    public function store(StoreForm $request)
+    public function store(StoreForm $validated)
     {
-        $validated = $request->validated();
-
         // create the form
         $form = Forms::create([
             'title' => $validated['title'],
@@ -47,7 +46,7 @@ class FormsController extends Controller
 
 
         // create sections and fields in database for the form
-        $errors = $form->createSectionsandFields($request);
+        $errors = $form->createSectionsandFields($validated);
 
         // if there are errors, reload the form to fix them otherwise redirect to forms.index
         return !empty($errors) ? redirect(route('forms.create', $this->viewData))->withErrors($errors)->withInput() : redirect(route('forms.index'));
@@ -71,22 +70,27 @@ class FormsController extends Controller
 
 
     // update the form in the database with new data
-    public function update(StoreForm $request, Forms $form)
+    public function update(StoreForm $validated, Forms $form)
     {
-        $validated = $request->validated();
+        DB::transaction(function () use ($validated, $form) {
+            $form->update([
+                'title' => $validated['title'],
+                'description' => $validated['description'],
+                'recurrence' => $validated['recurrence'],
+                'required_role' => $validated['required_role'],
+                'full_year' => $validated['full_year']
+            ]);
 
-        $form->update([
-            'title' => $validated['title'],
-            'description' => $validated['description'],
-            'recurrence' => $validated['recurrence'],
-            'required_role' => $validated['required_role'],
-            'full_year' => $validated['full_year']
-        ]);
+            $form->deleteAllSectionsandFields();
 
-//        dd($validated);
-        $form->save();
+            $form->createSectionsandFields($validated);
 
-        return redirect(route('forms.show', ['form' => $form->id]));
+            $form->save();
+        });
+
+
+
+        return redirect(route('forms.show', ['form' => $form->id]))->with('message','Successfully updated the form!');
     }
 
 

@@ -89,7 +89,7 @@
                                 <div class="form-group">
                                     <label for="section_title">Title</label>
                                     <input class="form-control" type="text" name="section_title[]"
-                                           value="{{ $section->title }}" required>
+                                           value="{{ $section->title }}">
                                 </div>
                                 <div class="form-group">
                                     <label for="section_description">Description</label>

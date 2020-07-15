@@ -34,7 +34,7 @@ class StoreForm extends FormRequest
             'label' => 'array|nullable',
             'label.*' => 'required|string|distinct',
             'type' => 'array|nullable',
-            'type.*' => 'in:select,text,textarea,number,radio,checkbox,slider',
+            'type.*' => 'in:select,text,textarea,number,radio,checkbox,slider,date',
             'required' => 'array|nullable',
             'options' => 'array|nullable',
             'options.*' => 'string',

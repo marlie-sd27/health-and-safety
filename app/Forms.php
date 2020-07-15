@@ -2,8 +2,10 @@
 
 namespace App;
 
+use App\Http\Requests\StoreForm;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Log;
 
 class Forms extends Model
 {
@@ -49,7 +51,7 @@ class Forms extends Model
 
 
     // Create sections and fields for the form
-    public function createSectionsandFields(Request $request)
+    public function createSectionsandFields(StoreForm $request)
     {
 
         // keep track of any errors that exist while submitting the form
@@ -97,8 +99,14 @@ class Forms extends Model
     }
 
 
-    public function updateFullForm(Request $request)
+    public function deleteAllSectionsandFields()
     {
+        $sections = $this->sections;
 
+        foreach($sections as $section)
+        {
+            Fields::destroy($section->fields->modelKeys());
+            Sections::destroy($section->id);
+        }
     }
 }
