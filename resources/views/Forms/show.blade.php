@@ -45,6 +45,7 @@
                                     <input type="radio" name="{{ $f->name }}" {{ $f->required ? 'required' : '' }}/>{{ $option }}
                                 </div>
                             @endforeach
+                            <hr/>
                             @break
 
                             @case("checkbox")
@@ -53,6 +54,7 @@
                                     <input type="checkbox" name="{{ $f->name }}[]" {{ $f->required ? 'required' : '' }}/>{{ $option }}
                                 </div>
                             @endforeach
+                            <hr/>
                             @break
 
                             @case("slider")

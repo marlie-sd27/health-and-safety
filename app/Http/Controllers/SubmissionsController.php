@@ -7,21 +7,21 @@ use Illuminate\Http\Request;
 
 class SubmissionsController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function __construct()
     {
-        //
+        parent::__construct();
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
+    // show all submissions
+    public function index()
+    {
+        $this->viewData['submissions'] = Submissions::join('forms','forms.id','=','submissions.forms_id')->get();
+        return view('Submissions.index', $this->viewData);
+    }
+
+
+    // show form to create a submission
     public function create()
     {
         //
@@ -31,16 +31,16 @@ class SubmissionsController extends Controller
     // store the newly created submission in the database
     public function store(Request $request)
     {
-        $viewData = $this->loadViewData();
-
-        dd($request);
+//        dd($request);
 
         Submissions::create([
-            'form_id' => $request->form_id,
-            'username' => $viewData->userName,
-            'email' => $viewData->userEmail,
-            'data' => join(',', $request->parameters)
+            'forms_id' => $request->form_id,
+            'username' => $this->viewData['userName'],
+            'email' => $this->viewData['userEmail'],
+            'data' => 'data'
         ]);
+
+        return redirect(route('submissions.index'))->with('message', "Submission successful!");
     }
 
     /**

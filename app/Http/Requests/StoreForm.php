@@ -23,7 +23,7 @@ class StoreForm extends FormRequest
             'title' => 'sometimes|required|max:255',
             'description' => 'string|nullable',
             'recurrence' => 'string|nullable',
-            'required_role' => 'nullable|in:All Staff, Principals and Vice Principals',
+            'required_role' => 'nullable|in:All Staff,Principals and Vice Principals',
             'full_year' => 'boolean',
 
             'section_title' => 'nullable|array',
