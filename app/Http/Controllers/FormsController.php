@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Forms;
 use App\Http\Requests\StoreForm;
-use Illuminate\Http\Request;
-use Illuminate\Session\Store;
 use Illuminate\Support\Facades\DB;
 
 class FormsController extends Controller
@@ -35,8 +33,6 @@ class FormsController extends Controller
     // Store the newly created Form in database
     public function store(StoreForm $validated)
     {
-//        dd($validated);
-
         $form = Forms::create([
             'title' => $validated['title'],
             'description' => $validated['description'],
@@ -73,7 +69,6 @@ class FormsController extends Controller
     // update the form in the database with new data
     public function update(StoreForm $validated, Forms $form)
     {
-//        dd($validated);
         DB::transaction(function () use ($validated, $form) {
             $form->update([
                 'title' => $validated['title'],

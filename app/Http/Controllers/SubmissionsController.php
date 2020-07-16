@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Submissions;
 use Illuminate\Http\Request;
+use Symfony\Component\Console\Input\Input;
 
 class SubmissionsController extends Controller
 {
@@ -14,45 +15,38 @@ class SubmissionsController extends Controller
 
 
     // show all submissions
-    public function index()
+    public function index(Request $request)
     {
+        $user = $request->user ?? null;
+        $form = $request->form ?? null;
+
         $this->viewData['submissions'] = Submissions::with('forms')->get();
-        dd($this->viewData);
         return view('Submissions.index', $this->viewData);
-    }
-
-
-    // show form to create a submission
-    public function create()
-    {
-        //
     }
 
 
     // store the newly created submission in the database
     public function store(Request $request)
     {
-//        dd($request);
-
         Submissions::create([
             'forms_id' => $request->form_id,
             'username' => $this->viewData['userName'],
             'email' => $this->viewData['userEmail'],
-            'data' => 'data'
+            'data' => join(',,,',$request->all()),
         ]);
 
         return redirect(route('submissions.index'))->with('message', "Submission successful!");
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Submissions  $submissions
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Submissions $submissions)
+    // show a submission
+    public function show(Submissions $submission)
     {
-        //
+        $submission['form'] = $submission->forms->fullForm();
+        $this->viewData['submission'] = $submission;
+
+        dd($this->viewData['submission']);
+
+        return view('Submissions/show', $this->viewData);
     }
 
     /**
@@ -78,14 +72,11 @@ class SubmissionsController extends Controller
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Submissions  $submissions
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Submissions $submissions)
+
+    // delete submission
+    public function destroy(Submissions $submission)
     {
-        //
+        Submissions::destroy($submission->id);
+        return redirect(route('submissions.index'))->with('message', 'Successfully deleted submission!');
     }
 }

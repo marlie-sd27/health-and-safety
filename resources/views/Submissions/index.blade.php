@@ -8,7 +8,7 @@
                 <th>Form</th>
                 <th>User Name</th>
                 <th>User Email</th>
-                <th>Data</th>
+                <th>View Submission</th>
                 <th>Edit</th>
                 <th>Delete</th>
             </tr>
@@ -19,8 +19,8 @@
                     <td><a href="{{ route('submissions.show', ['submission' => $submission]) }}">{{ $submission->forms->title }}</a></td>
                     <td>{{ $submission->username }}</td>
                     <td>{{ $submission->email }}</td>
-                    <td>{{ $submission->data }}</td>
-                    <td><a href="{{ route('submissions.edit', ['$submission' => $submission->id]) }}">Edit</a></td>
+                    <td><a href="{{ route('submissions.show', ['submission' => $submission]) }}">View</a></td>
+                    <td><a href="{{ route('submissions.edit', ['submission' => $submission]) }}">Edit</a></td>
                     <td>
                         <form method="post" class="delete_form" action="{{route('submissions.destroy', $submission->id)}}">
                             @csrf
