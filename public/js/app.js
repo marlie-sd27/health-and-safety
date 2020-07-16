@@ -130,4 +130,17 @@ $(document).ready(function () {
         $(this).toggleClass("toggle-collapse");
         $(this).toggleClass("toggle-expand");
     });
+
+
+    // display slider's value
+    $('body').on('click', '#slider', function () {
+
+        let value = $(this)[0].value;
+        let target = $(this).parent().find("#slider_value");
+
+        console.log(value);
+        console.log(target);
+        target.html(value);
+
+    })
 });

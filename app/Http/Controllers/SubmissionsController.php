@@ -28,11 +28,16 @@ class SubmissionsController extends Controller
     // store the newly created submission in the database
     public function store(Request $request)
     {
+        $data = array();
+        foreach($request->data as $key => $value)
+        {
+            $data[$key] = $value;
+        }
         Submissions::create([
             'forms_id' => $request->form_id,
             'username' => $this->viewData['userName'],
             'email' => $this->viewData['userEmail'],
-            'data' => join(',,,',$request->all()),
+            'data' => http_build_query($data),
         ]);
 
         return redirect(route('submissions.index'))->with('message', "Submission successful!");
@@ -41,23 +46,22 @@ class SubmissionsController extends Controller
     // show a submission
     public function show(Submissions $submission)
     {
+        $submission['data'] = explode(',,,', $submission['data']);
         $submission['form'] = $submission->forms->fullForm();
         $this->viewData['submission'] = $submission;
 
-        dd($this->viewData['submission']);
-
+        dd($this->viewData);
         return view('Submissions/show', $this->viewData);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Submissions  $submissions
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Submissions $submissions)
+
+    // show form for editing submission
+    public function edit(Submissions $submission)
     {
-        //
+        $this->viewData['form'] = $submission->forms->fullForm();
+        $this->viewData['submission'] = $submission;
+
+        return view('Submissions/edit', $this->viewData);
     }
 
     /**
@@ -67,7 +71,7 @@ class SubmissionsController extends Controller
      * @param  \App\Submissions  $submissions
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Submissions $submissions)
+    public function update(Request $request, Submissions $submission)
     {
         //
     }

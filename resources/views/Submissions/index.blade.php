@@ -2,12 +2,11 @@
 
 @section('content')
     <div>
-        <table>
+        <table class="table table-bordered">
             <tr>
                 <th>ID</th>
                 <th>Form</th>
-                <th>User Name</th>
-                <th>User Email</th>
+                <th>Submitter Name</th>
                 <th>View Submission</th>
                 <th>Edit</th>
                 <th>Delete</th>
@@ -18,7 +17,6 @@
                     <td>{{ $submission->id }}</td>
                     <td><a href="{{ route('submissions.show', ['submission' => $submission]) }}">{{ $submission->forms->title }}</a></td>
                     <td>{{ $submission->username }}</td>
-                    <td>{{ $submission->email }}</td>
                     <td><a href="{{ route('submissions.show', ['submission' => $submission]) }}">View</a></td>
                     <td><a href="{{ route('submissions.edit', ['submission' => $submission]) }}">Edit</a></td>
                     <td>

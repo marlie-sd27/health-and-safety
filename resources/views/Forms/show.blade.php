@@ -25,7 +25,7 @@
                         @switch($f->type)
                             @case("select")
                             <div class="form-group">
-                                <select name="{{ $f->name }}" class="form-control" {{ $f->required ? 'required' : '' }}>
+                                <select name="data[{{ $f->name }}]" class="form-control" {{ $f->required ? 'required' : '' }}>
                                     @foreach($f->options as $option)
                                         <option>{{ $option }}</option>
                                     @endforeach
@@ -35,14 +35,14 @@
 
                             @case("textarea")
                             <div class="form-group">
-                                <textarea class="form-control" name="{{ $f->name }}" placeholder="{{ $f->name }}" {{ $f->required ? 'required' : '' }}></textarea>
+                                <textarea class="form-control" name="data[{{ $f->name }}]" {{ $f->required ? 'required' : '' }}></textarea>
                             </div>
                             @break
 
                             @case("radio")
                             @foreach($f->options as $option)
                                 <div class="form-group">
-                                    <input type="radio" name="{{ $f->name }}" {{ $f->required ? 'required' : '' }}/>{{ $option }}
+                                    <input type="radio" name="data[{{ $f->name }}]" {{ $f->required ? 'required' : '' }}/>{{ $option }}
                                 </div>
                             @endforeach
                             <hr/>
@@ -51,7 +51,7 @@
                             @case("checkbox")
                             @foreach($f->options as $option)
                                 <div class="form-group">
-                                    <input type="checkbox" name="{{ $f->name }}[]" {{ $f->required ? 'required' : '' }}/>{{ $option }}
+                                    <input type="checkbox" name="data[{{ $f->name }}][]"/>{{ $option }}
                                 </div>
                             @endforeach
                             <hr/>
@@ -59,13 +59,13 @@
 
                             @case("slider")
                             <div class="form-group">
-                                {{ $f->options[0] }}<input type="range" min="{{ $f->options[0] }}" max="{{ $f->options[1] }}" >{{ $f->options[1] }}
-                                <p>value: <span class="slider_value"></span></p>
+                                {{ $f->options[0] }}<input type="range" id="slider" name="data[{{$f->name}}]" min="{{ $f->options[0] }}" max="{{ $f->options[1] }}" >{{ $f->options[1] }}
+                                <p>Value: <span id="slider_value"></span></p>
                             </div>
                             @break
 
                             @default
-                            <input type="{{ $f->type }}" name="{{ $f->name }}" {{ $f->required ? 'required' : '' }} class="form-control"/>
+                            <input type="{{ $f->type }}" name="data[{{ $f->name }}]" {{ $f->required ? 'required' : '' }} class="form-control"/>
                         @endswitch
                 @endforeach
             </article>
