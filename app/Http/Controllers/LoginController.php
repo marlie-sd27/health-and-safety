@@ -2,18 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
+use App\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use League\OAuth2\Client\Provider\GenericProvider;
 use Microsoft\Graph\Graph;
 use Microsoft\Graph\Model;
 use App\TokenStore\TokenCache;
+use Throwable;
 
-class AuthController extends Controller
+class LoginController extends Controller
 {
     public function signin()
     {
         // Initialize the OAuth client
-        $oauthClient = new \League\OAuth2\Client\Provider\GenericProvider([
+        $oauthClient = new GenericProvider([
             'clientId'                => env('OAUTH_APP_ID'),
             'clientSecret'            => env('OAUTH_APP_PASSWORD'),
             'redirectUri'             => env('OAUTH_REDIRECT_URI'),
@@ -55,7 +58,7 @@ class AuthController extends Controller
         $authCode = $request->query('code');
         if (isset($authCode)) {
             // Initialize the OAuth client
-            $oauthClient = new \League\OAuth2\Client\Provider\GenericProvider([
+            $oauthClient = new GenericProvider([
                 'clientId'                => env('OAUTH_APP_ID'),
                 'clientSecret'            => env('OAUTH_APP_PASSWORD'),
                 'redirectUri'             => env('OAUTH_REDIRECT_URI'),
@@ -81,7 +84,27 @@ class AuthController extends Controller
                 $tokenCache = new TokenCache();
                 $tokenCache->storeTokens($accessToken, $user);
 
-                return redirect('/dashboard');
+//
+                // create local user with token from Microsoft OAuth
+                $localUser = User::where('email', $user->getMail())->first();
+
+
+                // if localUser is not found in database, create one
+                if (!$localUser)
+                {
+                    $localUser = User::create([
+                        'name' => $user->getDisplayName(),
+                        'email' => $user->getMail(),
+                    ]);
+                }
+                // attempt to login
+                try {
+                    Auth::login($localUser);
+                } catch(Throwable $exception){
+                    return "Failed to Auth";
+                }
+
+                return redirect()->intended('dashboard');
             }
             catch (League\OAuth2\Client\Provider\Exception\IdentityProviderException $e) {
                 return redirect('/')
@@ -99,6 +122,8 @@ class AuthController extends Controller
     {
         $tokenCache = new TokenCache();
         $tokenCache->clearTokens();
+        Auth::logout();
         return redirect('/');
     }
+
 }

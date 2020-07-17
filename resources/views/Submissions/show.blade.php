@@ -2,8 +2,10 @@
 
 @section('content')
     <a href="{{ route('submissions.index') }}">Back to Index</a>
-    @if ($submission->email === $userEmail)<a class="float-right" href="{{ route('submissions.edit', ['submission' => $submission->id]) }}">Make Changes to My Submission</a> @endif
-    <div class="container" name="submission-meta-info">
+    @can('update',  $submission)
+        <a class="float-right" href="{{ route('submissions.edit', ['submission' => $submission->id]) }}">Make Changes to My Submission</a>
+    @endcan
+    <div class="container">
         <h2>{{ $submission->form->title }}</h2>
         <table class="table table-bordered">
             <tr>
@@ -20,7 +22,7 @@
             </tr>
         </table>
     </div>
-    <div class="container" name="form">
+    <div class="container">
         <table class="table table-bordered">
             @foreach($submission->form->sections as $section)
                 <tr>

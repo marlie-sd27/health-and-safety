@@ -3,15 +3,20 @@
 namespace App;
 
 use App\Helpers\Helper;
-use App\Http\Requests\StoreSubmission;
 use Illuminate\Database\Eloquent\Model;
-use PHPUnit\TextUI\Help;
 
 class Submissions extends Model
 {
     protected $fillable = [
         'forms_id', 'username', 'email', 'data'
     ];
+
+
+    // get the user who submitted
+    public function user()
+    {
+        return $this->belongsTo('App\User', 'email', 'email');
+    }
 
 
     // get the form associated with this submission

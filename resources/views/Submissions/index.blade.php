@@ -8,7 +8,6 @@
                 <th>Form</th>
                 <th>Submitter Name</th>
                 <th>View Submission</th>
-                <th>Edit</th>
                 <th>Delete</th>
             </tr>
 
@@ -18,14 +17,15 @@
                     <td><a href="{{ route('forms.show', ['form' => $submission->forms]) }}">{{ $submission->forms->title }}</a></td>
                     <td>{{ $submission->username }}</td>
                     <td><a href="{{ route('submissions.show', ['submission' => $submission]) }}">View</a></td>
-                    <td><a href="{{ route('submissions.edit', ['submission' => $submission]) }}">Edit</a></td>
-                    <td>
+                    @can('delete', $submission)
+                        <td>
                         <form method="post" class="delete_form" action="{{route('submissions.destroy', $submission->id)}}">
                             @csrf
                             @method('delete')
                             <button type="submit">Delete</button>
                         </form>
                     </td>
+                    @endcan
                 </tr>
             @endforeach
         </table>

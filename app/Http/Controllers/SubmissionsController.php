@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreSubmission;
 use App\Submissions;
 use Illuminate\Http\Request;
-use App\Helpers\Helper;
+use Illuminate\Support\Facades\Auth;
 
 class SubmissionsController extends Controller
 {
@@ -25,8 +25,8 @@ class SubmissionsController extends Controller
     {
         Submissions::create([
             'forms_id' => $validated->form_id,
-            'username' => $this->viewData['userName'],
-            'email' => $this->viewData['userEmail'],
+            'username' => Auth::user()->name,
+            'email' => Auth::user()->email,
             'data' => $validated->data,
         ]);
 
@@ -51,6 +51,8 @@ class SubmissionsController extends Controller
     // update submission in the database
     public function update(StoreSubmission $validated, Submissions $submission)
     {
+        $this->authorize('update', $submission);
+
         $submission->update([
             'data' => $validated->data,
         ]);
@@ -63,6 +65,8 @@ class SubmissionsController extends Controller
     // delete submission
     public function destroy(Submissions $submission)
     {
+        $this->authorize('delete', $submission);
+
         Submissions::destroy($submission->id);
         return redirect(route('submissions.index'))->with('message', 'Successfully deleted submission!');
     }

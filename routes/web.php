@@ -4,9 +4,9 @@ use Illuminate\Support\Facades\Route;
 
 // Authentication
 Route::get('/', 'HomeController@welcome')->name('welcome');
-Route::get('/signin', 'AuthController@signin')->name('signin');
-Route::get('/callback', 'AuthController@callback');
-Route::get('/signout', 'AuthController@signout')->name('signout');
+Route::get('/signin', 'LoginController@signin')->name('signin');
+Route::get('/callback', 'LoginController@callback');
+Route::get('/signout', 'LoginController@signout')->name('signout');
 
 // Calendar Routes
 Route::get('/calendar', 'CalendarController@calendar');
