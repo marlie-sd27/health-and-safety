@@ -15,6 +15,7 @@ class Forms extends Model
     // get the sections and fields for a form
     public function fullForm()
     {
+//        dd($this);
         $this->recurrence = $this->recurrence !== null ? explode(',', $this->recurrence) : null;
 
         $this['sections'] = $this->sections;

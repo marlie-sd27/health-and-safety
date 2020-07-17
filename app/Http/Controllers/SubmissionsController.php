@@ -51,19 +51,13 @@ class SubmissionsController extends Controller
     // show form for editing submission
     public function edit(Submissions $submission)
     {
-        $this->viewData['form'] = $submission->forms->fullForm();
-        $this->viewData['submission'] = $submission;
-
+        $this->viewData['submission'] = $submission->prepareSubmission();
+//        dd($this->viewData);
         return view('Submissions/edit', $this->viewData);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Submissions  $submissions
-     * @return \Illuminate\Http\Response
-     */
+
+    // update submission in the database
     public function update(Request $request, Submissions $submission)
     {
         //

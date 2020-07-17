@@ -15,7 +15,7 @@
             @foreach($submissions as $submission)
                 <tr>
                     <td>{{ $submission->id }}</td>
-                    <td><a href="{{ route('submissions.show', ['submission' => $submission]) }}">{{ $submission->forms->title }}</a></td>
+                    <td><a href="{{ route('forms.show', ['form' => $submission->forms]) }}">{{ $submission->forms->title }}</a></td>
                     <td>{{ $submission->username }}</td>
                     <td><a href="{{ route('submissions.show', ['submission' => $submission]) }}">View</a></td>
                     <td><a href="{{ route('submissions.edit', ['submission' => $submission]) }}">Edit</a></td>

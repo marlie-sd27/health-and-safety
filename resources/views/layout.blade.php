@@ -34,6 +34,14 @@
                             <a href="{{ route('forms.index') }}" class="dropdown-item">Index</a>
                         </div>
                     </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
+                           aria-haspopup="true" aria-expanded="false">Submissions
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a href="{{ route('submissions.index') }}" class="dropdown-item">Index</a>
+                        </div>
+                    </li>
                 @endif
             </ul>
             <ul class="navbar-nav justify-content-end">
