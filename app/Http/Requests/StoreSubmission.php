@@ -16,13 +16,30 @@ class StoreSubmission extends FormRequest
     public function rules()
     {
         return [
-            //
+            'forms_id' => 'exists:forms',
+            'data' => 'string',
         ];
     }
 
 
+    // sanitize the user input
     protected function prepareForValidation()
     {
+        // sanitize each entry in the data array
+        $data = array();
 
+        if (isset($this->data))
+        {
+            foreach ($this->data as $key => $value) {
+                $cleanedKey = filter_var($key, FILTER_SANITIZE_STRING);
+                $cleanedValue = is_array($value) ? $value : filter_var($value, FILTER_SANITIZE_STRING);
+
+                $data[$cleanedKey] = $cleanedValue;
+            }
+        }
+
+        $this->merge([
+            'data' => http_build_query($data)
+        ]);
     }
 }

@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 // Authentication
-Route::get('/', 'HomeController@welcome')->name('dashboard');
+Route::get('/', 'HomeController@welcome')->name('welcome');
 Route::get('/signin', 'AuthController@signin')->name('signin');
 Route::get('/callback', 'AuthController@callback');
 Route::get('/signout', 'AuthController@signout')->name('signout');
@@ -21,6 +21,9 @@ Route::middleware('auth')->group(function() {
 
     // Profile
     Route:: get('/profile', 'UserController@profile')->name('profile');
+
+    // Dashboard
+    Route::get('/dashboard', 'HomeController@dashboard')->name('dashboard');
 });
 
 // Admin Access Only View

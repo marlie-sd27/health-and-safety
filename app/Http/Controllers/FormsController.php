@@ -12,21 +12,19 @@ class FormsController extends Controller
     public function __construct()
     {
         $this->middleware('isadmin', ['except' => ['show']]);
-        parent::__construct();
     }
 
     // list all forms
     public function index()
     {
-        $this->viewData['forms'] = Forms::all();
-        return view('Forms/index', $this->viewData);
+        return view('Forms/index', ['forms' => Forms::all()]);
     }
 
 
     // show view for creating a new form
     public function create()
     {
-        return view('Forms/create', $this->viewData);
+        return view('Forms/create');
     }
 
 
@@ -46,23 +44,21 @@ class FormsController extends Controller
         $errors = $form->createSectionsandFields($validated);
 
         // if there are errors, reload the form to fix them otherwise redirect to forms.index
-        return !empty($errors) ? redirect(route('forms.create', $this->viewData))->withErrors($errors)->withInput() : redirect(route('forms.index'));
+        return !empty($errors) ? redirect(route('forms.create'))->withErrors($errors)->withInput() : redirect(route('forms.index'));
     }
 
 
     // Show a specific form with its sections
     public function show(Forms $form)
     {
-        $this->viewData['form'] = $form->fullForm();
-        return (view('Forms/show', $this->viewData));
+        return (view('Forms/show', ['form' => $form->fullForm()]));
     }
 
 
     // show view for editing a form
     public function edit(Forms $form)
     {
-        $this->viewData['form'] = $form->fullForm();
-        return view('Forms/edit', $this->viewData);
+        return view('Forms/edit', ['form' => $form->fullForm()]);
     }
 
 

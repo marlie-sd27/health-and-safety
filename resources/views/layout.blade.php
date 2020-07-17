@@ -14,7 +14,7 @@
 <body>
 <!-- Top nav bar -->
 <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-        <a href="/" class="navbar-brand">Health and Safety Dashboard</a>
+        <a href="{{ route('dashboard') }}" class="navbar-brand">Health and Safety Dashboard</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
                 aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -22,9 +22,8 @@
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <a href="/" class="nav-link {{$_SERVER['REQUEST_URI'] == '/' ? ' active' : ''}}">Home</a>
+                    <a href="{{ route('dashboard') }}" class="nav-link {{$_SERVER['REQUEST_URI'] == '/' ? ' active' : ''}}">Home</a>
                 </li>
-                @if(isset($userName))
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
                            aria-haspopup="true" aria-expanded="false">Forms
@@ -42,10 +41,8 @@
                             <a href="{{ route('submissions.index') }}" class="dropdown-item">Index</a>
                         </div>
                     </li>
-                @endif
             </ul>
             <ul class="navbar-nav justify-content-end">
-                @if(isset($userName))
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
                            aria-haspopup="true" aria-expanded="false">
@@ -66,18 +63,13 @@
                             <a href="{{ route('signout') }}" class="dropdown-item">Sign Out</a>
                         </div>
                     </li>
-                @else
-                    <li class="nav-item">
-                        <a href="{{ route('signin') }}" class="nav-link">Sign In</a>
-                    </li>
-                @endif
+
             </ul>
         </div>
 </nav>
 
 <div class="wrapper">
     <!-- Sidebar -->
-    @if( isset( $userName))
         <nav id="sidebar">
             <ul class="list-unstyled components">
                 <br/>
@@ -89,7 +81,6 @@
                 @endforeach
             </ul>
         </nav>
-@endif
 <!-- Page Content -->
     <main role="main" class="container">
         @if(session('error'))

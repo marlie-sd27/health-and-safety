@@ -9,11 +9,6 @@ use App\Helpers\Helper;
 
 class SubmissionsController extends Controller
 {
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
 
     // show all submissions
     public function index(Request $request)
@@ -21,8 +16,7 @@ class SubmissionsController extends Controller
         $user = $request->user ?? null;
         $form = $request->form ?? null;
 
-        $this->viewData['submissions'] = Submissions::with('forms')->get();
-        return view('Submissions.index', $this->viewData);
+        return view('Submissions.index', ['submissions' => Submissions::with('forms')->get()]);
     }
 
 
@@ -33,7 +27,7 @@ class SubmissionsController extends Controller
             'forms_id' => $validated->form_id,
             'username' => $this->viewData['userName'],
             'email' => $this->viewData['userEmail'],
-            'data' => http_build_query($validated->data),
+            'data' => $validated->data,
         ]);
 
         return redirect(route('submissions.index'))->with('message', "Submission successful!");
@@ -43,27 +37,23 @@ class SubmissionsController extends Controller
     // show a submission
     public function show(Submissions $submission)
     {
-        $this->viewData['submission'] = $submission->prepareSubmission();
-        return view('Submissions/show', $this->viewData);
+        return view('Submissions/show', ['submission' => $submission->prepareSubmission()]);
     }
 
 
     // show form for editing submission
     public function edit(Submissions $submission)
     {
-        $this->viewData['submission'] = $submission->prepareSubmission();
-        return view('Submissions/edit', $this->viewData);
+        return view('Submissions/edit', ['submission' => $submission->prepareSubmission()]);
     }
 
 
     // update submission in the database
     public function update(StoreSubmission $validated, Submissions $submission)
     {
-//        dd($validated);
         $submission->update([
-            'data' => http_build_query($validated->data),
+            'data' => $validated->data,
         ]);
-
         $submission->save();
 
         return redirect(route('submissions.show', ['submission' => $submission]))->with('message', 'Successfully updated submission');

@@ -9,9 +9,8 @@ use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
-    public function welcome()
+    public function dashboard()
     {
-        $viewData = $this->loadViewData();
 
         $viewData['overdues'] = [
             'Asbestos' => 'September 6, 2019',
@@ -30,7 +29,14 @@ class HomeController extends Controller
             'Elementary School Inspection' => 'September 30, 2020'
         ];
 
-        return view('welcome', $viewData);
+        return view('dashboard', $viewData);
 
     }
+
+    public function welcome()
+    {
+        return view('welcome');
+    }
+
+
 }

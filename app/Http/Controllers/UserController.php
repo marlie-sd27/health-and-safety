@@ -12,11 +12,10 @@ class UserController extends Controller
 {
     public function profile()
     {
-        $viewData = $this->loadViewData();
 
-        if(isset($viewData['userName']))
-            return view('profile', $viewData);
-        else return view('signingredirect', $viewData);
+        if(session('userName'))
+            return view('profile');
+        else return view('signingredirect');
 
     }
 
