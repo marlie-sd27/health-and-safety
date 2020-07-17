@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Http\Requests\StoreSubmission;
 use Illuminate\Database\Eloquent\Model;
 
 class Submissions extends Model
@@ -11,9 +12,16 @@ class Submissions extends Model
     ];
 
 
-    // get the form associated with this submisson
+    // get the form associated with this submission
     public function forms()
     {
         return $this->belongsTo('App\Forms');
+    }
+
+
+    // convert data to a string
+    public function dataToString(StoreSubmission $validated)
+    {
+        return http_build_query($validated->data);
     }
 }

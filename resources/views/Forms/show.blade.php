@@ -42,7 +42,7 @@
                             @case("radio")
                             @foreach($f->options as $option)
                                 <div class="form-group">
-                                    <input type="radio" name="data[{{ $f->name }}]" {{ $f->required ? 'required' : '' }}/>{{ $option }}
+                                    <input type="radio" value="{{ $option }}" name="data[{{ $f->name }}]" {{ $f->required ? 'required' : '' }}/>{{ $option }}
                                 </div>
                             @endforeach
                             <hr/>

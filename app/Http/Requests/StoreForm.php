@@ -6,11 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class StoreForm extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
+    // determine if user is authorized to make request
     public function authorize()
     {
         return true;

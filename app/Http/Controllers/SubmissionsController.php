@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreSubmission;
 use App\Submissions;
 use Illuminate\Http\Request;
-use Symfony\Component\Console\Input\Input;
 
 class SubmissionsController extends Controller
 {
@@ -26,18 +26,14 @@ class SubmissionsController extends Controller
 
 
     // store the newly created submission in the database
-    public function store(Request $request)
+    public function store(StoreSubmission $validated)
     {
-        $data = array();
-        foreach($request->data as $key => $value)
-        {
-            $data[$key] = $value;
-        }
+//        dd($validated);
         Submissions::create([
-            'forms_id' => $request->form_id,
+            'forms_id' => $validated->form_id,
             'username' => $this->viewData['userName'],
             'email' => $this->viewData['userEmail'],
-            'data' => http_build_query($data),
+            'data' => http_build_query($validated->data),
         ]);
 
         return redirect(route('submissions.index'))->with('message', "Submission successful!");
@@ -46,11 +42,12 @@ class SubmissionsController extends Controller
     // show a submission
     public function show(Submissions $submission)
     {
-        $submission['data'] = explode(',,,', $submission['data']);
+        parse_str($submission['data'], $data);
+        $submission['data'] = $data;
         $submission['form'] = $submission->forms->fullForm();
         $this->viewData['submission'] = $submission;
 
-        dd($this->viewData);
+//        dd($this->viewData);
         return view('Submissions/show', $this->viewData);
     }
 
