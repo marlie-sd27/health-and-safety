@@ -75,7 +75,7 @@ class StoreForm extends FormRequest
             'rec_quantity' => filter_var($this->rec_quantity, FILTER_VALIDATE_INT),
             'rec_repeat' => filter_var($this->rec_repeat, FILTER_VALIDATE_INT),
             'rec_time_unit' => filter_var($this->rec_time_unit, FILTER_SANITIZE_STRING),
-            'recurrence' => $this->rec_quantity !== null ? $this->rec_quantity . "," . $this->rec_repeat . "," . $this->rec_time_unit : null,
+            'recurrence' => ($this->rec_quantity !== null & $this->rec_repeat !== null & $this->rec_time_unit !== null)? $this->rec_quantity . "," . $this->rec_repeat . "," . $this->rec_time_unit : null,
             'required_role' => filter_var($this->required_role, FILTER_SANITIZE_STRING),
             'full_year' => isset($this->full_year),
 

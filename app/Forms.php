@@ -3,9 +3,7 @@
 namespace App;
 
 use App\Http\Requests\StoreForm;
-use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Log;
 
 class Forms extends Model
 {
@@ -28,7 +26,7 @@ class Forms extends Model
             // convert string into array on comma delimiter
             foreach ($section['fields'] as $field)
             {
-                $field->options = explode(',', $field->options);
+                $field->options = $field->options !== "" ? explode(',', $field->options) : "";
             }
         }
 

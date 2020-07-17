@@ -114,7 +114,7 @@
                                                 </div>
                                                 <div class="form-group">
                                                     <input type="checkbox"
-                                                           name="required[{{ $field->id }}]" {{ $field->required == true ? "on" : "off" }}
+                                                           name="required[{{ $field->id }}]" {{ $field->required == true ? "checked" : "" }}
                                                     "/>
                                                     <label for="required">Required?</label>
                                                 </div>
@@ -149,13 +149,17 @@
                                                             value="slider" @if ($field->type == "slider") {{ 'selected' }} @endif>
                                                             Slider
                                                         </option>
+                                                        <option
+                                                            value="date" @if ($field->type == "date") {{ 'selected' }} @endif>
+                                                            Date
+                                                        </option>
                                                     </select></div>
-                                                <div id="options" class="{{ !empty($field->options) ? "" : "d-none" }}">
+                                                <div id="options" class="{{ $field->options !== "" ? "" : "d-none" }}">
                                                     <input type="hidden" name="field_id[]" value="{{ $field->id }}"/>
                                                     <label for="options[]">Options (enter each option separated by a
                                                         comma)</label>
                                                     <input type="text" name="options[]" class="form-control"
-                                                           value="{{ join(",", $field->options) }}"/>
+                                                           value="{{ $field->options !== "" ? join(",", $field->options) : "" }}"/>
                                                 </div>
                                             </div>
                                         </article>
@@ -172,7 +176,7 @@
 
             <hr>
 
-            <div class="container" align="center">
+            <div class="container align-content-center">
                 <button class="btn btn-block btn-lg btn-success" type="submit">Save</button>
             </div>
         </form>

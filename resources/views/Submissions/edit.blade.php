@@ -73,7 +73,7 @@
 
         <hr>
 
-        <div class="container" align="center">
+        <div class="container" class="align-content-center">
             <button class="btn btn-block btn-lg btn-success" type="submit">Submit</button>
             <button class="btn btn-block btn-lg btn-secondary" type="reset">Reset</button>
         </div>

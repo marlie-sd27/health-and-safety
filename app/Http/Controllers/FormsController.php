@@ -62,6 +62,7 @@ class FormsController extends Controller
     public function edit(Forms $form)
     {
         $this->viewData['form'] = $form->fullForm();
+//        dd($this);
         return view('Forms/edit', $this->viewData);
     }
 

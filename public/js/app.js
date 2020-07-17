@@ -97,13 +97,11 @@ $(document).ready(function () {
     });
 
 
-    // if type of input is drop down menu, radio buttons, checkbox or slider, display
+    // if type of input is drop down menu, radio buttons, checkbox or slider, display, show the options input
     $('body').on('change', "#type", function () {
 
         let parent = $(this).closest('article')
         let selected = $(this).children("option:selected").val();
-
-        // console.log(parent.children("#options")[0]);
 
         if (selected === "select" | selected === "checkbox" | selected === "radio" | selected === "slider") {
             parent.find("#options").removeClass("d-none");
@@ -133,14 +131,11 @@ $(document).ready(function () {
 
 
     // display slider's value
-    $('body').on('click', '#slider', function () {
+    $('body').on('change', '#slider', function () {
 
         let value = $(this)[0].value;
         let target = $(this).parent().find("#slider_value");
 
-        console.log(value);
-        console.log(target);
         target.html(value);
-
     })
 });
