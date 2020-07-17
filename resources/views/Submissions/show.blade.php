@@ -2,7 +2,7 @@
 
 @section('content')
     <a href="{{ route('submissions.index') }}">Back to Index</a>
-    <a class="float-right" href="{{ route('submissions.edit', ['submission' => $submission->id]) }}">Edit</a>
+    @if ($submission->email === $userEmail)<a class="float-right" href="{{ route('submissions.edit', ['submission' => $submission->id]) }}">Make Changes to My Submission</a> @endif
     <div class="container" name="submission-meta-info">
         <h2>{{ $submission->form->title }}</h2>
         <table class="table table-bordered">
@@ -15,8 +15,8 @@
             <tr>
                 <td>{{ $submission->username }}</td>
                 <td>{{ $submission->email }}</td>
-                <td>{{ date('M d, Y @ H:i a', strtotime($submission->created_at)) }}</td>
-                <td>{{ date('M d, Y @ H:i a', strtotime($submission->updated_at)) }}</td>
+                <td>{{ $submission->created_at_readable }}</td>
+                <td>{{ $submission->updated_at_readable }}</td>
             </tr>
         </table>
     </div>
@@ -26,9 +26,13 @@
                 <tr>
                     <th colspan="2">{{ $section->title }}</th>
                 </tr>
+                <tr>
+                    <th>Field</th>
+                    <th>Value</th>
+                </tr>
                 @foreach($section->fields as $field)
                     <tr>
-                        <td><b>{{ $field->label }}</b></td>
+                        <td>{{ $field->label }}</td>
                         <td>{{ $submission->data[$field->label] }}</td>
                     </tr>
                 @endforeach

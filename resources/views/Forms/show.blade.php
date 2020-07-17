@@ -51,7 +51,7 @@
                             @case("checkbox")
                             @foreach($f->options as $option)
                                 <div class="form-group">
-                                    <input type="checkbox" name="data[{{ $f->name }}][]"/>{{ $option }}
+                                    <input type="checkbox" name="data[{{ $f->name }}][{{ $option }}]"/>{{ $option }}
                                 </div>
                             @endforeach
                             <hr/>

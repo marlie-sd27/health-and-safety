@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreSubmission;
 use App\Submissions;
 use Illuminate\Http\Request;
+use App\Helpers\Helper;
 
 class SubmissionsController extends Controller
 {
@@ -28,7 +29,6 @@ class SubmissionsController extends Controller
     // store the newly created submission in the database
     public function store(StoreSubmission $validated)
     {
-//        dd($validated);
         Submissions::create([
             'forms_id' => $validated->form_id,
             'username' => $this->viewData['userName'],
@@ -39,15 +39,11 @@ class SubmissionsController extends Controller
         return redirect(route('submissions.index'))->with('message', "Submission successful!");
     }
 
+
     // show a submission
     public function show(Submissions $submission)
     {
-        parse_str($submission['data'], $data);
-        $submission['data'] = $data;
-        $submission['form'] = $submission->forms->fullForm();
-        $this->viewData['submission'] = $submission;
-
-//        dd($this->viewData);
+        $this->viewData['submission'] = $submission->prepareSubmission();
         return view('Submissions/show', $this->viewData);
     }
 
