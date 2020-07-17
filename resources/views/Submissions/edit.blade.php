@@ -42,7 +42,7 @@
                         @case("radio")
                         @foreach($f->options as $option)
                             <div class="form-group">
-                                <input type="radio" name="data[{{ $f->name }}]" {{ $submission->data[$f->label] === $option ? "checked" : ""}} {{ $f->required ? 'required' : '' }}/>{{ $option }}
+                                <input type="radio" name="data[{{ $f->name }}]" value="{{ $option }}" {{ $submission->data[$f->label] === $option ? "checked" : ""}} {{ $f->required ? 'required' : '' }}/>{{ $option }}
                             </div>
                         @endforeach
                         <hr/>
@@ -60,7 +60,7 @@
                         @case("slider")
                         <div class="form-group">
                             {{ $f->options[0] }}<input id="slider" name="data[{{$f->name}}]" value="{{ $submission->data[$f->label] }}" type="range" min="{{ $f->options[0] }}" max="{{ $f->options[1] }}" >{{ $f->options[1] }}
-                            <p>value: <span id="slider_value"></span></p>
+                            <p>Value: <span id="slider_value">{{ $submission->data[$f->label] }}</span></p>
                         </div>
                         @break
 
@@ -75,7 +75,7 @@
 
         <div class="container" class="align-content-center">
             <button class="btn btn-block btn-lg btn-success" type="submit">Submit</button>
-            <button class="btn btn-block btn-lg btn-secondary" type="reset">Reset</button>
+            <button class="btn btn-block btn-lg btn-secondary" type="reset">Reset to Original Values</button>
         </div>
     </form>
 @endsection

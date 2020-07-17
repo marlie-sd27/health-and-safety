@@ -52,15 +52,21 @@ class SubmissionsController extends Controller
     public function edit(Submissions $submission)
     {
         $this->viewData['submission'] = $submission->prepareSubmission();
-//        dd($this->viewData);
         return view('Submissions/edit', $this->viewData);
     }
 
 
     // update submission in the database
-    public function update(Request $request, Submissions $submission)
+    public function update(StoreSubmission $validated, Submissions $submission)
     {
-        //
+//        dd($validated);
+        $submission->update([
+            'data' => http_build_query($validated->data),
+        ]);
+
+        $submission->save();
+
+        return redirect(route('submissions.show', ['submission' => $submission]))->with('message', 'Successfully updated submission');
     }
 
 

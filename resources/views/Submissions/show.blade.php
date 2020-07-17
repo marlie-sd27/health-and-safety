@@ -24,7 +24,7 @@
         <table class="table table-bordered">
             @foreach($submission->form->sections as $section)
                 <tr>
-                    <th colspan="2">{{ $section->title }}</th>
+                    <th colspan="2" class="text-center">{{ $section->title }}</th>
                 </tr>
                 <tr>
                     <th>Field</th>
