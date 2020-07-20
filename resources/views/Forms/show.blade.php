@@ -9,10 +9,10 @@
     <div class="container">
         <h1>{{ $form->title }}</h1>
         <p>{{ $form->description }}</p>
-        @if ($form->recurrence != null)
-            <p>To be completed {{ $form->recurrence[0] }} time(s) every {{ $form->recurrence[1] }} {{ $form->recurrence[2] }}</p>
+        @if ($form->interval != null)
+            <p>To be completed every {{ $form->interval }}</p>
         @endif
-        <p>To be completed by <b>{{ $form->required_role }}</b></p>
+        <p>To be completed by <b>{{ $form->required_for }}</b></p>
         <p>{{ $form->full_year }}</p>
     </div>
     <form method="post" action="{{ route('submissions.store') }}">

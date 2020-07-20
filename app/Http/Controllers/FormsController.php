@@ -30,7 +30,7 @@ class FormsController extends Controller
             'title' => $validated['title'],
             'description' => $validated['description'],
             'interval' => $validated['recurrence'],
-            'required_role' => $validated['required_role'],
+            'required_for' => $validated['required_role'],
             'full_year' => $validated['full_year'],
         ]);
 

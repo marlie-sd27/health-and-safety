@@ -1,0 +1,17 @@
+this function does the same as insert_events_1, but it also takes the actual interval
+as a parameter in which to insert the events
+
+
+CREATE OR REPLACE FUNCTION insert_events_3( in start DATE, in forms_id INTEGER, in intvl INTERVAL)
+	RETURNS VOID AS $$
+	
+	DECLARE
+		finish DATE := start + INTERVAL '5 years' ;
+	BEGIN
+	LOOP
+		EXIT WHEN start = finish;
+		INSERT INTO events (forms_id, date) VALUES (forms_id, start);
+		start := start + intvl;
+	END LOOP;
+END; 
+$$ LANGUAGE plpgsql;

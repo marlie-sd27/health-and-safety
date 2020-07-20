@@ -18,8 +18,8 @@
                 <td>{{ $form->id }}</td>
                 <td><a href="{{ route('forms.show', ['form' => $form]) }}">{{ $form->title }}</a></td>
                 <td>{{ $form->description }}</td>
-                <td>{{ $form->recurrence }}</td>
-                <td>{{ $form->required_role }}</td>
+                <td>{{ $form->interval }}</td>
+                <td>{{ $form->required_for }}</td>
 {{--                <td>{{ $form->full_year }}</td>--}}
                 <td><a href="{{ route('forms.edit', ['form' => $form->id]) }}">Edit</a></td>
                 <td>
