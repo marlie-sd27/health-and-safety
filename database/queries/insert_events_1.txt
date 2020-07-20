@@ -1,0 +1,22 @@
+this function takes 2 integers as an input:
+one is the counter boundary for the loop
+one is the forms_id
+
+loop through the counter and insert a new event into the database
+the event's date will be at increments of 1 year
+
+
+
+CREATE OR REPLACE FUNCTION insert_events( n INTEGER, forms_id INTEGER )
+	RETURNS VOID AS $$
+	
+	DECLARE
+		counter INTEGER := 0 ;
+	BEGIN
+	LOOP
+		EXIT WHEN counter = n;
+		INSERT INTO events (forms_id, date) VALUES (forms_id, now() + counter * INTERVAL '1 year');
+		counter := counter + 1;
+	END LOOP;
+END; 
+$$ LANGUAGE plpgsql;

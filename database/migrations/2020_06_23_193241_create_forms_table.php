@@ -18,7 +18,8 @@ class CreateFormsTable extends Migration
             $table->timestamps();
             $table->string('title');
             $table->text('description')->nullable();
-            $table->string('recurrence')->nullable();
+            $table->string('interval')->nullable();
+            $table->date('first_occurence_at')->nullable();
             $table->string('required_role')->nullable()->default('all');
             $table->boolean('full_year')->default(false);
         });

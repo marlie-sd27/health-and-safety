@@ -1,0 +1,17 @@
+this function does the same as insert_events_1, but it also takes the actual interval
+as a parameter in which to insert the events
+
+
+CREATE OR REPLACE FUNCTION insert_events_2( in n INTEGER, in forms_id INTEGER, in intvl INTERVAL)
+	RETURNS VOID AS $$
+	
+	DECLARE
+		counter INTEGER := 0 ;
+	BEGIN
+	LOOP
+		EXIT WHEN counter = n;
+		INSERT INTO events (forms_id, date) VALUES (forms_id, now() + counter * intvl);
+		counter := counter + 1;
+	END LOOP;
+END; 
+$$ LANGUAGE plpgsql;
