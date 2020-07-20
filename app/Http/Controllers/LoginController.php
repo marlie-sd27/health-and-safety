@@ -84,7 +84,7 @@ class LoginController extends Controller
                 $tokenCache = new TokenCache();
                 $tokenCache->storeTokens($accessToken, $user);
 
-//
+
                 // create local user with token from Microsoft OAuth
                 $localUser = User::where('email', $user->getMail())->first();
 
@@ -125,5 +125,7 @@ class LoginController extends Controller
         Auth::logout();
         return redirect('/');
     }
+
+
 
 }

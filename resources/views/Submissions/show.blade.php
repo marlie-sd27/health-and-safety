@@ -1,7 +1,13 @@
 @extends('layout')
 
 @section('content')
-    <a href="{{ route('submissions.index') }}">Back to Index</a>
+
+    @if(Auth::user()->isAdmin())
+        <a href="{{ route('admin.submissions.index') }}">Back</a>
+    @else
+        <a href="{{ route('submissions.index') }}">Back</a>
+    @endif
+
     @can('update',  $submission)
         <a class="float-right" href="{{ route('submissions.edit', ['submission' => $submission->id]) }}">Make Changes to My Submission</a>
     @endcan

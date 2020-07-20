@@ -1,7 +1,8 @@
 @extends('layout')
 
 @section('content')
-    <a href="{{ route('submissions.index') }}">Back to Index</a>
+
+    <a href="{{ route('submissions.show', ['submission' => $submission]) }}">Back</a>
     <div class="container">
         <h1>{{ $submission->form->title }}</h1>
         <p>{{ $submission->form->description }}</p>

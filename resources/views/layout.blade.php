@@ -22,8 +22,9 @@
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <a href="{{ route('dashboard') }}" class="nav-link {{$_SERVER['REQUEST_URI'] == '/' ? ' active' : ''}}">Home</a>
+                    <a href="{{ route('dashboard') }}" class="nav-link {{$_SERVER['REQUEST_URI'] == '/' ? ' active' : ''}}">Dashboard</a>
                 </li>
+                @if(Auth::user()->isAdmin())
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
                            aria-haspopup="true" aria-expanded="false">Forms
@@ -33,14 +34,16 @@
                             <a href="{{ route('forms.index') }}" class="dropdown-item">Index</a>
                         </div>
                     </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
-                           aria-haspopup="true" aria-expanded="false">Submissions
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right">
-                            <a href="{{ route('submissions.index') }}" class="dropdown-item">Index</a>
-                        </div>
+
+                    <li class="nav-item">
+                        <a href="{{ route('admin.submissions.index') }}" class="nav-link {{$_SERVER['REQUEST_URI'] == '/' ? ' active' : ''}}">Submissions</a>
                     </li>
+
+                @else
+                    <li class="nav-item">
+                        <a href="{{ route('submissions.index') }}" class="nav-link {{$_SERVER['REQUEST_URI'] == '/' ? ' active' : ''}}">My Submissions</a>
+                    </li>
+                @endif
             </ul>
             <ul class="navbar-nav justify-content-end">
                     <li class="nav-item dropdown">

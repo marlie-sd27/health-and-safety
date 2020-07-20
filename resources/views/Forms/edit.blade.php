@@ -1,8 +1,9 @@
 @extends('../layout')
 
 @section('content')
+
+    <a href="{{ route('forms.show', ['form' => $form->id]) }}">Back</a>
     <div class="container">
-        <a href="{{route('forms.index')}}">Back to Index</a>
         <h1>Edit</h1>
         <form action="{{ route('forms.update', ['form' => $form->id ]) }}" method="post">
             @method('PUT')

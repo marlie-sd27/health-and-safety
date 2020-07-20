@@ -8,16 +8,26 @@ Route::get('/signin', 'LoginController@signin')->name('signin');
 Route::get('/callback', 'LoginController@callback');
 Route::get('/signout', 'LoginController@signout')->name('signout');
 
-// Calendar Routes
-Route::get('/calendar', 'CalendarController@calendar');
 
 
-// make sure authenticated
-Route::middleware('auth')->group(function() {
 
-    //Resources
-    Route::resource('forms', 'FormsController');
+// Admin routes (prefix=admin and name prefix=admin)
+Route::middleware(['auth','isadmin'])->group(function ()
+{
+
+    Route::resource('forms', 'FormsController')->except('show');
+
+    Route::prefix('admin')->name('admin.')->group(function () {
+        Route::get('submissions', 'AdminSubmissionController@index')->name('submissions.index');
+    });
+});
+
+
+// authenticate (ensure user is logged in)
+Route::middleware('auth')->group(function () {
+
     Route::resource('submissions', 'SubmissionsController');
+    Route::get('forms/{form}', 'FormsController@show')->name('forms.show');
 
     // Profile
     Route:: get('/profile', 'UserController@profile')->name('profile');
@@ -25,6 +35,3 @@ Route::middleware('auth')->group(function() {
     // Dashboard
     Route::get('/dashboard', 'HomeController@dashboard')->name('dashboard');
 });
-
-// Admin Access Only View
-Route::get('unauthorized', 'Controller@unauthorized')->name('unauthorized');

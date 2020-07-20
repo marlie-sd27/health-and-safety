@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Forms;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Session;
@@ -38,11 +39,11 @@ class AppServiceProvider extends ServiceProvider
                 $view->with('errorDetail', session('errorDetail'));
             }
 
-            if(session('userName'))
+            if(Auth::check())
             {
-                $view->with('admin', session('admin'));
-                $view->with('userName', session('userName') );
-                $view->with('userEmail', session('userEmail'));
+                View::share('admin', Auth::user()->isAdmin());
+                View::share('userName', Auth::user()->name );
+                View::share('userEmail', Auth::user()->email);
             }
         });
     }

@@ -1,8 +1,11 @@
 @extends('layout')
 
 @section('content')
-    <a href="{{ route('forms.index') }}">Back to Index</a>
-    <a class="float-right" href="{{ route('forms.edit', ['form' => $form->id]) }}">Edit</a>
+
+    @if(Auth::user()->isAdmin())
+        <a href="{{ route('forms.index') }}">Back</a>
+        <a class="float-right" href="{{ route('forms.edit', ['form' => $form->id]) }}">Edit</a>
+    @endif
     <div class="container">
         <h1>{{ $form->title }}</h1>
         <p>{{ $form->description }}</p>

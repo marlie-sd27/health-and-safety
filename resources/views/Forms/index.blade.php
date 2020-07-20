@@ -9,7 +9,6 @@
             <th>Description</th>
             <th>Recurrence Schedule</th>
             <th>Required For</th>
-{{--            <th>Full Year?</th>--}}
             <th>Edit</th>
             <th>Delete</th>
         </tr>

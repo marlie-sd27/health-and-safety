@@ -9,11 +9,6 @@ use Illuminate\Support\Facades\DB;
 class FormsController extends Controller
 {
 
-    public function __construct()
-    {
-        $this->middleware('isadmin', ['except' => ['show']]);
-    }
-
     // list all forms
     public function index()
     {

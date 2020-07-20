@@ -21,36 +21,22 @@ class SubmissionPolicy
         //
     }
 
-    /**
-     * Determine whether the user can view the model.
-     *
-     * @param  \App\User  $user
-     * @param  \App\Submissions  $submissions
-     * @return mixed
-     */
-    public function view(User $user, Submissions $submissions)
+    // user must own the submission or be admin to view
+    public function view(User $user, Submissions $submission)
     {
-        //
+        return $submission->email === $user->email | $user->isAdmin();
     }
 
-    /**
-     * Determine whether the user can create models.
-     *
-     * @param  \App\User  $user
-     * @return mixed
-     */
-    public function create(User $user)
-    {
-        //
-    }
 
-    // determine whether the current user can update the submission
+
+    // user must own the submission to update
     public function update(User $user, Submissions $submission)
     {
         return $submission->email === $user->email;
     }
 
 
+    // user must own the submission or be admin to delete
     public function delete(User $user, Submissions $submission)
     {
         return $submission->email === $user->email | $user->isAdmin();

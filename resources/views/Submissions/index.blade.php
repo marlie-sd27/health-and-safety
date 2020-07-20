@@ -7,6 +7,7 @@
                 <th>ID</th>
                 <th>Form</th>
                 <th>Submitter Name</th>
+                <th>Date Submitted</th>
                 <th>View Submission</th>
                 <th>Delete</th>
             </tr>
@@ -14,8 +15,9 @@
             @foreach($submissions as $submission)
                 <tr>
                     <td>{{ $submission->id }}</td>
-                    <td><a href="{{ route('forms.show', ['form' => $submission->forms]) }}">{{ $submission->forms->title }}</a></td>
+                    <td>{{ $submission->forms->title }}</td>
                     <td>{{ $submission->username }}</td>
+                    <td>{{ date('M d, Y @ H:i a', strtotime($submission->created_at)) }}</td>
                     <td><a href="{{ route('submissions.show', ['submission' => $submission]) }}">View</a></td>
                     @can('delete', $submission)
                         <td>

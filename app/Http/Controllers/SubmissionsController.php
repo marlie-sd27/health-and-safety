@@ -10,13 +10,14 @@ use Illuminate\Support\Facades\Auth;
 class SubmissionsController extends Controller
 {
 
-    // show all submissions
+    // show all submissions for logged in user
     public function index(Request $request)
     {
-        $user = $request->user ?? null;
-        $form = $request->form ?? null;
-
-        return view('Submissions.index', ['submissions' => Submissions::with('forms')->get()]);
+        return view('Submissions.index', [
+            'submissions' => Submissions::with('forms')
+                ->where('email', '=',Auth::user()->email)
+                ->get()
+        ]);
     }
 
 
@@ -30,13 +31,15 @@ class SubmissionsController extends Controller
             'data' => $validated->data,
         ]);
 
-        return redirect(route('submissions.index'))->with('message', "Submission successful!");
+        return redirect(route('submissions.index'))
+            ->with('message', "Submission successful!");
     }
 
 
     // show a submission
     public function show(Submissions $submission)
     {
+        $this->authorize('view', $submission);
         return view('Submissions/show', ['submission' => $submission->prepareSubmission()]);
     }
 
@@ -44,6 +47,8 @@ class SubmissionsController extends Controller
     // show form for editing submission
     public function edit(Submissions $submission)
     {
+        $this->authorize('update', $submission);
+
         return view('Submissions/edit', ['submission' => $submission->prepareSubmission()]);
     }
 
@@ -58,7 +63,8 @@ class SubmissionsController extends Controller
         ]);
         $submission->save();
 
-        return redirect(route('submissions.show', ['submission' => $submission]))->with('message', 'Successfully updated submission');
+        return redirect(route('submissions.show', ['submission' => $submission]))
+            ->with('message', 'Successfully updated submission');
     }
 
 
@@ -68,6 +74,7 @@ class SubmissionsController extends Controller
         $this->authorize('delete', $submission);
 
         Submissions::destroy($submission->id);
-        return redirect(route('submissions.index'))->with('message', 'Successfully deleted submission!');
+        return redirect(route('submissions.index'))
+            ->with('message', 'Successfully deleted submission!');
     }
 }

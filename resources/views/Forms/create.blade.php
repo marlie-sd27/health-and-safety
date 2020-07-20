@@ -1,6 +1,8 @@
 @extends('../layout')
 
 @section('content')
+
+    <a href="{{ url()->previous() }}">Back</a>
         <form action="{{ route('forms.store') }}" method="post">
             @csrf
             <article class="container">
