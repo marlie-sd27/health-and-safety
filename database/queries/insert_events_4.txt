@@ -1,0 +1,23 @@
+this function creates events for a form scheduled in regular intervals for the next 5 years
+and is triggered when a form is inserted into the database
+
+finish DATE -- 5 years from the date the form is created. Events will stop being created then
+next_occurence DATE -- the next occuring date of the event to be created. This changes every loop iteration
+new -- instance of the new form being inserted
+
+
+CREATE OR REPLACE FUNCTION insert_events_4()
+	RETURNS TRIGGER AS $example_table$
+
+	DECLARE
+		finish DATE := new.first_occurence_at + INTERVAL '5 years' ;
+		next_occurence DATE := new.first_occurence_at::DATE ;
+	BEGIN
+	LOOP
+		EXIT WHEN next_occurence > finish;
+		INSERT INTO events (forms_id, date) VALUES (new.id, next_occurence);
+		next_occurence := next_occurence + new.interval::INTERVAL;
+	END LOOP;
+	RETURN NULL;
+END;
+$example_table$ LANGUAGE plpgsql;

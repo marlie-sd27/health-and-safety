@@ -1,0 +1,6 @@
+this trigger is executed every time a form is inserted into the database
+calls the function insert_events_4()
+
+CREATE TRIGGER create_events_on_insert_form
+AFTER INSERT ON forms
+FOR EACH ROW EXECUTE PROCEDURE insert_events_4();
