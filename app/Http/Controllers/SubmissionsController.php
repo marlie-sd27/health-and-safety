@@ -11,7 +11,7 @@ class SubmissionsController extends Controller
 {
 
     // show all submissions for logged in user
-    public function index(Request $request)
+    public function index()
     {
         return view('Submissions.index', [
             'submissions' => Submissions::with('forms')
@@ -48,7 +48,7 @@ class SubmissionsController extends Controller
     public function edit(Submissions $submission)
     {
         $this->authorize('update', $submission);
-
+//        dd($submission->prepareSubmission());
         return view('Submissions/edit', ['submission' => $submission->prepareSubmission()]);
     }
 

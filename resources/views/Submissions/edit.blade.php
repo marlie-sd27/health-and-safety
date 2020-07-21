@@ -43,7 +43,7 @@
                         @case("radio")
                         @foreach($f->options as $option)
                             <div class="form-group">
-                                <input type="radio" name="data[{{ $f->name }}]" value="{{ $option }}" {{ $submission->data[$f->label] === $option ? "checked" : ""}} {{ $f->required ? 'required' : '' }}/>{{ $option }}
+                                <input type="radio" name="data[{{ $f->name }}]" value="{{ $option }}" {{ trim($submission->data[$f->label]) === trim($option) ? "checked" : ""}} {{ $f->required ? 'required' : '' }}/>{{ $option }}
                             </div>
                         @endforeach
                         <hr/>
@@ -74,7 +74,7 @@
 
         <hr>
 
-        <div class="container" class="align-content-center">
+        <div class="container align-content-center">
             <button class="btn btn-block btn-lg btn-success" type="submit">Submit</button>
             <button class="btn btn-block btn-lg btn-secondary" type="reset">Reset to Original Values</button>
         </div>
