@@ -8,16 +8,17 @@ use Illuminate\Database\Eloquent\Model;
 class Forms extends Model
 {
     protected $fillable = [
-        'title', 'description', 'recurrence', 'required_role', 'full_year'
+        'title', 'description', 'first_occurence_at', 'interval', 'required_for', 'full_year'
+    ];
+
+    protected $casts = [
+        'first_occurence_at' => 'array'
     ];
 
 
     // get the sections and fields for a form
     public function fullForm()
     {
-//        dd($this);
-        $this->recurrence = $this->recurrence !== null ? explode(',', $this->recurrence) : null;
-
         $this['sections'] = $this->sections;
 
         foreach ($this['sections'] as $section)

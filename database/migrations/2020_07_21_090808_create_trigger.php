@@ -15,7 +15,7 @@ class CreateTrigger extends Migration
         DB::unprepared(
             'CREATE TRIGGER create_events_on_insert_form ' .
             'AFTER INSERT ON forms ' .
-            'FOR EACH ROW EXECUTE PROCEDURE insert_events_4();'
+            'FOR EACH ROW EXECUTE PROCEDURE insert_events();'
         );
     }
 

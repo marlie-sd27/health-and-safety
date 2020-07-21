@@ -18,8 +18,9 @@ class StoreForm extends FormRequest
         return [
             'title' => 'sometimes|required|max:255',
             'description' => 'string|nullable',
-            'recurrence' => 'string|nullable',
-            'required_role' => 'nullable|in:All Staff,Principals and Vice Principals',
+            'first_occurence_at' => 'string|nullable',
+            'interval' => 'string|nullable',
+            'required_for' => 'nullable|in:All Staff,Principals and Vice Principals',
             'full_year' => 'boolean',
 
             'section_title' => 'nullable|array',
@@ -68,11 +69,9 @@ class StoreForm extends FormRequest
         $this->merge([
             'title' => filter_var($this->form_title, FILTER_SANITIZE_STRING),
             'description' => filter_var($this->form_description, FILTER_SANITIZE_STRING),
-            'rec_quantity' => filter_var($this->rec_quantity, FILTER_VALIDATE_INT),
-            'rec_repeat' => filter_var($this->rec_repeat, FILTER_VALIDATE_INT),
-            'rec_time_unit' => filter_var($this->rec_time_unit, FILTER_SANITIZE_STRING),
-            'recurrence' => ($this->rec_quantity !== null & $this->rec_repeat !== null & $this->rec_time_unit !== null)? $this->rec_quantity . "," . $this->rec_repeat . "," . $this->rec_time_unit : null,
-            'required_role' => filter_var($this->required_role, FILTER_SANITIZE_STRING),
+            'interval' => filter_var($this->interval, FILTER_VALIDATE_INT),
+            'first_occurence_at' => filter_var($this->first_occurence_at, FILTER_SANITIZE_STRING),
+            'required_for' => '[' . filter_var($this->required_for, FILTER_SANITIZE_STRING) . ']',
             'full_year' => isset($this->full_year),
 
             'section_title' => $section_titles,

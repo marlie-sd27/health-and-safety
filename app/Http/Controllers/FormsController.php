@@ -29,6 +29,7 @@ class FormsController extends Controller
         $form = Forms::create([
             'title' => $validated['title'],
             'description' => $validated['description'],
+            'first_occurence_at' => $validated['first_occurence_at'],
             'interval' => $validated['recurrence'],
             'required_for' => $validated['required_role'],
             'full_year' => $validated['full_year'],

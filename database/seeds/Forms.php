@@ -21,8 +21,8 @@ class Forms extends Seeder
             "total evacuation fire drills shall be held at least 3 times in each of the fall and spring school terms." .
             "\n\nSchools/facilities are required to forward a copy of this report to: sd27maintenance@sd27.bc.ca",
 
-            'interval' => '45 days',
-            'first_occurence_at' => '2020-09-30',
+            'interval' => '1 year',
+            'first_occurence_at' => '2020-10-15,2020-11-15,2021-01-15,2021-02-15,2021-04-15,2021-06-01',
             'required_for' => 'All Staff',
             'full_year' => false,
             'created_at' => Carbon::now()->format('Y-m-d H:i:s'),

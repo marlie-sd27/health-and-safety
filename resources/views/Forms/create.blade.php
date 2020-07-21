@@ -54,13 +54,13 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="required_role">Who is required to submit this form?</label>
-                    <select class="form-control" name="required_role">
-                        <option value="All Staff" @if (old('required_role') == "All Staff") {{ 'selected' }} @endif>
+                    <label for="required_for">Who is required to submit this form?</label>
+                    <select class="form-control" name="required_for">
+                        <option value="All Staff" @if (old('required_for') == "All Staff") {{ 'selected' }} @endif>
                             All staff
                         </option>
                         <option
-                            value="Principals and Vice Principals" @if (old('required_role') == "Principals and Vice Principals") {{ 'selected' }} @endif>
+                            value="Principals and Vice Principals" @if (old('required_for') == "Principals and Vice Principals") {{ 'selected' }} @endif>
                             Principals and Vice Principals
                         </option>
                     </select>
