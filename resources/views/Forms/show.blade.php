@@ -21,52 +21,72 @@
                 <h2>{{ $s->title }}</h2>
                 <p>{{ $s->description }}</p>
                 @foreach($s->fields as $f)
-                        <label for="{{ $f->name }}">{{ $f->label }}</label>
-                        @switch($f->type)
-                            @case("select")
-                            <div class="form-group">
-                                <select name="data[{{ $f->name }}]" class="form-control" {{ $f->required ? 'required' : '' }}>
+                    @switch($f->type)
+                        @case("select")
+                        <div class="form-group">
+                            <label>{{ $f->label }}
+                                <select name="data[{{ $f->name }}]"
+                                        class="form-control" {{ $f->required ? 'required' : '' }}>
                                     @foreach($f->options as $option)
                                         <option>{{ $option }}</option>
                                     @endforeach
                                 </select>
-                            </div>
-                            @break
+                            </label>
+                        </div>
+                        @break
 
-                            @case("textarea")
-                            <div class="form-group">
+                        @case("textarea")
+                        <div class="form-group">
+                            <label>{{ $f->label }}</label>
                                 <textarea class="form-control" name="data[{{ $f->name }}]" {{ $f->required ? 'required' : '' }}></textarea>
+                        </div>
+                        @break
+
+                        @case("radio")
+                        {{ $f->label }}
+                        @foreach($f->options as $option)
+                            <div>
+                                <label>
+                                    <input type="radio" value="{{ $option }}"
+                                           name="data[{{ $f->name }}]" {{ $f->required ? 'required' : '' }}/>
+                                    {{ $option }}
+                                </label>
                             </div>
-                            @break
+                        @endforeach
+                        <hr/>
+                        @break
 
-                            @case("radio")
-                            @foreach($f->options as $option)
-                                <div class="form-group">
-                                    <input type="radio" value="{{ $option }}" name="data[{{ $f->name }}]" {{ $f->required ? 'required' : '' }}/>{{ $option }}
-                                </div>
-                            @endforeach
-                            <hr/>
-                            @break
-
-                            @case("checkbox")
-                            @foreach($f->options as $option)
-                                <div class="form-group">
-                                    <input type="checkbox" name="data[{{ $f->name }}][{{ $option }}]"/>{{ $option }}
-                                </div>
-                            @endforeach
-                            <hr/>
-                            @break
-
-                            @case("slider")
-                            <div class="form-group">
-                                {{ $f->options[0] }}<input type="range" id="slider" name="data[{{$f->name}}]" min="{{ $f->options[0] }}" max="{{ $f->options[1] }}" >{{ $f->options[1] }}
-                                <p>Value: <span id="slider_value"></span></p>
+                        @case("checkbox")
+                        {{ $f->label }}
+                        @foreach($f->options as $option)
+                            <div>
+                                <label>
+                                    <input type="checkbox" name="data[{{ $f->name }}][{{ $option }}]"/>
+                                    {{ $option }}
+                                </label>
                             </div>
-                            @break
+                        @endforeach
+                        <hr/>
+                        @break
 
-                            @default
-                            <input type="{{ $f->type }}" name="data[{{ $f->name }}]" {{ $f->required ? 'required' : '' }} class="form-control"/>
-                        @endswitch
+                        @case("slider")
+                        <div class="form-group">
+                            <label for="slider">{{ $f->label }}</label>
+                            {{ $f->options[0] }}<input type="range" id="slider" name="data[{{$f->name}}]"
+                                                       min="{{ $f->options[0] }}"
+                                                       max="{{ $f->options[1] }}">{{ $f->options[1] }}
+                            <p>Value: <span id="slider_value"></span></p>
+                        </div>
+                        @break
+
+                        @default
+                        <div class="form-group">
+                            <label>{{ $f->label }}</label>
+                                <input type="{{ $f->type }}" name="data[{{ $f->name }}]"
+                                       {{ $f->required ? 'required' : '' }} class="form-control"/>
+
+                        </div>
+                    @endswitch
                 @endforeach
             </article>
         @endforeach

@@ -26,12 +26,13 @@ class FormsController extends Controller
     // Store the newly created Form in database
     public function store(StoreForm $validated)
     {
+//        dd($validated);
         $form = Forms::create([
             'title' => $validated['title'],
             'description' => $validated['description'],
             'first_occurence_at' => $validated['first_occurence_at'],
-            'interval' => $validated['recurrence'],
-            'required_for' => $validated['required_role'],
+            'interval' => $validated['interval'],
+            'required_for' => $validated['required_for'],
             'full_year' => $validated['full_year'],
         ]);
 

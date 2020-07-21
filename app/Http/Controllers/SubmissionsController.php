@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreSubmission;
 use App\Submissions;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class SubmissionsController extends Controller
@@ -40,6 +39,7 @@ class SubmissionsController extends Controller
     public function show(Submissions $submission)
     {
         $this->authorize('view', $submission);
+//        dd($submission->prepareSubmission());
         return view('Submissions/show', ['submission' => $submission->prepareSubmission()]);
     }
 

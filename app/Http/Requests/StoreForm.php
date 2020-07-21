@@ -15,6 +15,7 @@ class StoreForm extends FormRequest
     // validate the user input
     public function rules()
     {
+//        dd($this);
         return [
             'title' => 'sometimes|required|max:255',
             'description' => 'string|nullable',
@@ -69,9 +70,9 @@ class StoreForm extends FormRequest
         $this->merge([
             'title' => filter_var($this->form_title, FILTER_SANITIZE_STRING),
             'description' => filter_var($this->form_description, FILTER_SANITIZE_STRING),
-            'interval' => filter_var($this->interval, FILTER_VALIDATE_INT),
+            'interval' => filter_var($this->interval, FILTER_SANITIZE_STRING),
             'first_occurence_at' => filter_var($this->first_occurence_at, FILTER_SANITIZE_STRING),
-            'required_for' => '[' . filter_var($this->required_for, FILTER_SANITIZE_STRING) . ']',
+            'required_for' => filter_var($this->required_for, FILTER_SANITIZE_STRING),
             'full_year' => isset($this->full_year),
 
             'section_title' => $section_titles,

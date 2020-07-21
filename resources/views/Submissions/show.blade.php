@@ -41,7 +41,7 @@
                 @foreach($section->fields as $field)
                     <tr>
                         <td>{{ $field->label }}</td>
-                        <td>{{ $submission->data[$field->label] }}</td>
+                        <td>{{ $submission->data[$field->label] ?? "" }}</td>
                     </tr>
                 @endforeach
             @endforeach
