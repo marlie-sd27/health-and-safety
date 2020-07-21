@@ -1,10 +1,13 @@
-this function does the same as insert_events_1, but it also takes the actual interval
-as a parameter in which to insert the events
+@param start DATE -- the first date of the recurring event
+@param forms_id INTEGER -- the form which these events correspond to
+@param intvl INTERVAL -- the interval for which to repeat these events (ex 3 months)
+
+this function creates events for a form scheduled in regular intervals for the next 5 years
 
 
 CREATE OR REPLACE FUNCTION insert_events_3( in start DATE, in forms_id INTEGER, in intvl INTERVAL)
 	RETURNS VOID AS $$
-	
+
 	DECLARE
 		finish DATE := start + INTERVAL '5 years' ;
 	BEGIN
@@ -13,5 +16,5 @@ CREATE OR REPLACE FUNCTION insert_events_3( in start DATE, in forms_id INTEGER, 
 		INSERT INTO events (forms_id, date) VALUES (forms_id, start);
 		start := start + intvl;
 	END LOOP;
-END; 
+END;
 $$ LANGUAGE plpgsql;

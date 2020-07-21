@@ -8,16 +8,13 @@
     @endif
     <div class="container">
         <h1>{{ $form->title }}</h1>
-        <p>{{ $form->description }}</p>
         @if ($form->interval != null)
-            <p>To be completed every {{ $form->interval }}</p>
+            <p><small>To be completed every {{ $form->interval }} by <b>{{ $form->required_for }}</b></small></p>
         @endif
-        <p>To be completed by <b>{{ $form->required_for }}</b></p>
-        <p>{{ $form->full_year }}</p>
+        <p style="white-space: pre-wrap;">{{ $form->description }}</p>
     </div>
     <form method="post" action="{{ route('submissions.store') }}">
         @csrf
-
         <input type="hidden" value="{{ $form->id }}" name="form_id"/>
         @foreach($form->sections as $s)
             <article>
@@ -76,7 +73,7 @@
 
         <hr>
 
-        <div class="container" align="center">
+        <div class="container align-content-center">
             <button class="btn btn-block btn-lg btn-success" type="submit">Submit</button>
             <button class="btn btn-block btn-lg btn-secondary" type="reset">Reset</button>
         </div>
