@@ -45,6 +45,16 @@ class Forms extends Seeder
                 'full_year' => false,
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
                 'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
+            ],
+            [
+                'title' => 'Elementary School Inspection',
+                'description' => "",
+                'interval' => '2 months',
+                'first_occurence_at' => '2020-09-30',
+                'required_for' => 'Principals and Vice Principals',
+                'full_year' => false,
+                'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+                'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
             ]
         ]);
     }
