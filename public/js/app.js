@@ -139,4 +139,10 @@ $(document).ready(function () {
 
         target.html(value);
     })
+
+
+    $('.date').datepicker({
+        multidate: true,
+        format: 'dd-mm-yyyy'
+    });
 });

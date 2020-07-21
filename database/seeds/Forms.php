@@ -24,7 +24,7 @@ class Forms extends Seeder
             'interval' => '45 days',
             'first_occurence_at' => '2020-09-30',
             'required_for' => 'All Staff',
-            'full_year' => true,
+            'full_year' => false,
             'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
             'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
         ]);

@@ -6,7 +6,6 @@ use App\Forms;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
-use Illuminate\Support\Facades\Session;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -27,13 +26,13 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        // get all the forms to create links
-        View::share('links', Forms::select('id', 'title')->get());
-
-
         // load user info with each view
         View::composer('*', function ($view)
         {
+            // get all the forms to create links
+            View::share('links', Forms::select('id', 'title')->get());
+
+
             if (session('error')) {
                 $view->with('error', session('error'));
                 $view->with('errorDetail', session('errorDetail'));
