@@ -24,7 +24,7 @@ class SubmissionPolicy
     // user must own the submission or be admin to view
     public function view(User $user, Submissions $submission)
     {
-        return $submission->email === $user->email | $user->isAdmin();
+        return strcasecmp($submission->email, $user->email) == 0 | $user->isAdmin();
     }
 
 
@@ -32,14 +32,14 @@ class SubmissionPolicy
     // user must own the submission to update
     public function update(User $user, Submissions $submission)
     {
-        return $submission->email === $user->email;
+        return strcasecmp($submission->email, $user->email) == 0;
     }
 
 
     // user must own the submission or be admin to delete
     public function delete(User $user, Submissions $submission)
     {
-        return $submission->email === $user->email | $user->isAdmin();
+        return strcasecmp($submission->email, $user->email) == 0 | $user->isAdmin();
     }
 
     /**

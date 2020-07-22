@@ -16,7 +16,9 @@ class CreateSubmissionsTable extends Migration
         Schema::create('submissions', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->bigInteger('forms_id');
+            $table->bigInteger('events_id')->nullable();
+            $table->foreign('events_id')->references('id')->on('events')->onDelete('cascade');
+            $table->bigInteger('forms_id')->nullable();
             $table->foreign('forms_id')->references('id')->on('forms')->onDelete('cascade');
             $table->string('username');
             $table->string('email');

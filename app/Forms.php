@@ -16,6 +16,28 @@ class Forms extends Model
     ];
 
 
+
+    // Get the sections for a form
+    public function sections()
+    {
+        return $this->hasMany('App\Sections');
+    }
+
+
+    // Get the submissions for a form
+    public function submissions()
+    {
+        return $this->hasMany('App\Submissions');
+    }
+
+
+    // get the events for a form
+    public function events()
+    {
+        return $this->hasMany('App\Events');
+    }
+
+
     // get the sections and fields for a form
     public function fullForm()
     {
@@ -33,20 +55,6 @@ class Forms extends Model
         }
 
         return $this;
-    }
-
-
-    // Get the sections for a form
-    public function sections()
-    {
-        return $this->hasMany('App\Sections');
-    }
-
-
-    // Get the submissions for a form
-    public function submissions()
-    {
-        return $this->hasMany('App\Submissions');
     }
 
 

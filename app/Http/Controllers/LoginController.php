@@ -86,7 +86,7 @@ class LoginController extends Controller
 
 
                 // create local user with token from Microsoft OAuth
-                $localUser = User::where('email', $user->getMail())->first();
+                $localUser = User::where('email', strtolower($user->getMail()))->first();
 
 
                 // if localUser is not found in database, create one
@@ -94,7 +94,7 @@ class LoginController extends Controller
                 {
                     $localUser = User::create([
                         'name' => $user->getDisplayName(),
-                        'email' => $user->getMail(),
+                        'email' => strtolower($user->getMail()),
                     ]);
                 }
                 // attempt to login

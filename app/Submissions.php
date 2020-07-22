@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Submissions extends Model
 {
     protected $fillable = [
-        'forms_id', 'username', 'email', 'data'
+        'events_id', 'forms_id', 'username', 'email', 'data'
     ];
 
 
@@ -16,6 +16,13 @@ class Submissions extends Model
     public function user()
     {
         return $this->belongsTo('App\User', 'email', 'email');
+    }
+
+
+    // get the events associated with this submission
+    public function event()
+    {
+        return $this->belongsTo('App\Events');
     }
 
 
