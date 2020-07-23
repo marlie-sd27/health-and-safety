@@ -3,7 +3,7 @@
 @section('content')
 
     @if(Auth::user()->isAdmin())
-        <a href="{{ route('forms.index') }}">Back</a>
+        <a href="{{ url()->previous() }}">Back</a>
         <a class="float-right" href="{{ route('forms.edit', ['form' => $form->id]) }}">Edit</a>
     @endif
     <div class="container">

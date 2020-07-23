@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use League\OAuth2\Client\Provider\GenericProvider;
 use Microsoft\Graph\Graph;
 use Microsoft\Graph\Model;
@@ -95,6 +96,7 @@ class LoginController extends Controller
                     $localUser = User::create([
                         'name' => $user->getDisplayName(),
                         'email' => strtolower($user->getMail()),
+                        'api_token' => Str::random(60),
                     ]);
                 }
                 // attempt to login

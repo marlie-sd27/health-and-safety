@@ -33,4 +33,8 @@ Route::middleware('auth')->group(function () {
 
     // Dashboard
     Route::get('/dashboard', 'HomeController@dashboard')->name('dashboard');
+
+    Route::get('/events', 'EventsController@index');
 });
+
+

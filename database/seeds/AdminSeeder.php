@@ -3,6 +3,7 @@
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class AdminSeeder extends Seeder
 {
@@ -17,6 +18,7 @@ class AdminSeeder extends Seeder
             'name' => 'Marlie Dueck',
             'email' => 'marlie.dueck@sd27.bc.ca',
             'admin' => true,
+            'api_token' =>Str::random(60),
             'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
             'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
         ]);
