@@ -12,8 +12,6 @@ class CalendarController extends Controller
 {
     public function calendar()
     {
-        $viewData = $this->loadViewData();
-
         // Get the access token from the cache
         $tokenCache = new TokenCache();
         $accessToken = $tokenCache->getAccessToken();
@@ -34,7 +32,8 @@ class CalendarController extends Controller
             ->setReturnType(Model\Event::class)
             ->execute();
 
-        $viewData['events'] = $events;
-        return view('calendar', $viewData);
+//        dd($events);
+
+        return view('calendar', ['events' => $events]);
     }
 }

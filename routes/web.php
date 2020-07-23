@@ -7,8 +7,7 @@ Route::get('/', 'HomeController@welcome')->name('welcome');
 Route::get('/signin', 'LoginController@signin')->name('signin');
 Route::get('/callback', 'LoginController@callback');
 Route::get('/signout', 'LoginController@signout')->name('signout');
-
-
+Route::get('/calendar', 'CalendarController@calendar')->name('calendar');
 
 
 // Admin routes (prefix=admin and name prefix=admin)
