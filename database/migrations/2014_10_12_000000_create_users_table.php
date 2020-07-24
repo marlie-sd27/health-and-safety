@@ -18,8 +18,9 @@ class CreateUsersTable extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->boolean('admin')->nullable();
+            $table->boolean('principal')->nullable();
+            $table->text('member_of')->nullable();
             $table->rememberToken();
-            $table->string('api_token', 80);
             $table->timestamps();
         });
     }

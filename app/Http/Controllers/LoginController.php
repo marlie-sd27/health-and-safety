@@ -82,6 +82,16 @@ class LoginController extends Controller
                     ->setReturnType(Model\User::class)
                     ->execute();
 
+//                dd($user);
+                $groups = $graph->createRequest('GET', '/me/memberOf?$select=displayName')
+                    ->execute();
+
+                dd($groups[1]);
+                foreach($groups as $group)
+                {
+//                    if ($group->displayName == "IT ")
+                }
+
                 $tokenCache = new TokenCache();
                 $tokenCache->storeTokens($accessToken, $user);
 
@@ -90,13 +100,15 @@ class LoginController extends Controller
                 $localUser = User::where('email', strtolower($user->getMail()))->first();
 
 
+                dd($user->getMemberOf());
                 // if localUser is not found in database, create one
                 if (!$localUser)
                 {
                     $localUser = User::create([
                         'name' => $user->getDisplayName(),
                         'email' => strtolower($user->getMail()),
-                        'api_token' => Str::random(60),
+                        'admin' => false,
+                        'member_of' => $user->getMemberOf(),
                     ]);
                 }
                 // attempt to login

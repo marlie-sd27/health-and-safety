@@ -25,6 +25,7 @@ class EventsController extends Controller
             $event['url'] = route('forms.show', ['form' => $event->forms_id]);
         }
 
+        
         return response()->json($events);
     }
 

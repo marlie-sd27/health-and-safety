@@ -16,7 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'admin',
+        'name', 'email', 'admin', 'principal'
     ];
 
     /**
@@ -39,5 +39,9 @@ class User extends Authenticatable
 
     public function isAdmin() {
         return $this->admin;
+    }
+
+    public function isPrincipal() {
+        return $this->principal;
     }
 }

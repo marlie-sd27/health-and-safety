@@ -36503,8 +36503,6 @@ $(document).ready(function () {
     // the first sibling is the input who's value is the section's ID
 
     var section_id = $(this).siblings()[0].value;
-    var field_index = fields_div.children().length;
-    console.log(field_index);
     $('<article>' + '<img id="removeField" src="/images/delete.png" height="25em;" alt="remove"/>' + '<div class="toggle-expand"></div>' + '<div class="container">' + '<input type="hidden" name="section_id[]" value="' + section_id + '" />' + '<div class="form-group">' + '<label for="label[]">Label</label>' + '<input class="form-control" type="text" name="label[]" placeholder="Label" required/>' + '</div>' + '<div class="form-group">' + '<input type="checkbox" name="required[' + j + ']"/>' + '<label for="required">Required?</label>' + '</div>' + '<div class="form-group">' + '<label for="type">Type of Input</label><br/>' + '<select class="form-control" name="type[]" id="type">' + '<option value="text">Single Line Text</option>' + '<option value="textarea">Multi Line Text</option>' + '<option value="select">Drop Down Menu</option>' + '<option value="number">Number</option>' + '<option value="radio">Radio Button</option>' + '<option value="checkbox">Checkboxes</option>' + '<option value="slider">Slider</option>' + '<option value="date">Date</option>' + '\'<option value="time">Time</option>' + '</select></div>' + '<input type="hidden" name="field_id[]" value="' + j + '"/>' + '<div id="options" class="d-none">' + '<label for="options[]">Options (enter each option separated by a comma)</label>' + '<input type="text" name="options[]" class="form-control"/>' + '</div></div></article>').appendTo(fields_div);
     j++;
   }); // when #removeField is clicked, remove the whole article containing the field

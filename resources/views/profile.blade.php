@@ -2,7 +2,22 @@
 
 @section('content')
     <h1>My Profile</h1>
-    <p>{{ $userName }}</p>
-    <p>{{ $userEmail }}</p>
-
+    <table>
+        <tr>
+            <th>Name</th>
+            <td>{{ $userName }}</td>
+        </tr>
+        <tr>
+            <th>Email</th>
+            <td>{{ $userEmail }}</td>
+        </tr>
+        <tr>
+            <th>Site Admin</th>
+            <td>{{ $admin ? 'true' : 'false' }}</td>
+        </tr>
+        <tr>
+            <th>(Vice) Principal</th>
+            <td>{{ $principal ? 'true' : 'false' }}</td>
+        </tr>
+    </table>
 @endsection

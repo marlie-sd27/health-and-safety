@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Events;
 use Microsoft\Graph\Graph;
+use Microsoft\Graph\Model;
 use App\TokenStore\TokenCache;
 
 class CalendarController extends Controller
@@ -24,13 +25,12 @@ class CalendarController extends Controller
         );
 
         // Append query parameters to the '/me/events' url
-//        $getEventsUrl = '/me/events?'.http_build_query($queryParams);
+        $getEventsUrl = '/me/events?'.http_build_query($queryParams);
 
-//        $events = $graph->createRequest('GET', $getEventsUrl)
-//            ->setReturnType(Model\Event::class)
-//            ->execute();
+        $events = $graph->createRequest('GET', $getEventsUrl)
+            ->setReturnType(Model\Event::class)
+            ->execute();
 
-        $events = Events::all();
-        return view('calendar', compact('events'));
+        return view('calendar');
     }
 }

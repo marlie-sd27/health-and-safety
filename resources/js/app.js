@@ -55,9 +55,6 @@ $(document).ready(function () {
         // the first sibling is the input who's value is the section's ID
         let section_id = $(this).siblings()[0].value;
 
-        let field_index = fields_div.children().length;
-        console.log(field_index);
-
         $('<article>' +
             '<img id="removeField" src="/images/delete.png" height="25em;" alt="remove"/>' +
             '<div class="toggle-expand"></div>' +
