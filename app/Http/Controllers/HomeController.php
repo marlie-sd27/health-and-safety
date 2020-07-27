@@ -5,34 +5,66 @@
 namespace App\Http\Controllers;
 
 use App\Events;
+use App\Helpers\Helper;
+use App\Submissions;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
     public function dashboard()
     {
 
-        $viewData['upcomings'] = Events::with('forms')
-            ->where('date', '>', Carbon::now())
-            ->where('date', '<', Carbon::now()->addMonths(3))
-            ->limit(5)
-            ->get();
+        if(Auth::user()->isAdmin())
+        {
+            $viewData['upcomings'] = Events::with('forms')
+                ->where('date', '>', Carbon::now())
+                ->where('date', '<', Carbon::now()->addMonths(3))
+                ->orderBy('date', 'asc')
+                ->limit(5)
+                ->get();
 
-//        dd($viewData['upcomings'][0]);
+            $viewData['upcomings'] = Helper::filterEvents($viewData['upcomings']);
 
-        $viewData['overdues'] = [
-            'Asbestos' => 'September 6, 2019',
-            'Health & Safety checklist' => 'September 30, 2019'
-        ];
+            $viewData['overdues'] = [
+                'Asbestos' => 'September 6, 2019',
+                'Health & Safety checklist' => 'September 30, 2019'
+            ];
 
-        $viewData['completed'] = [
-            'Joint Health & Safety Minutes' => 'July 6, 2020',
-            'Secondary School Inspection' => 'September 30, 2020',
-            'Fire Drill' => 'July 6, 2020',
-            'Elementary School Inspection' => 'September 30, 2020'
-        ];
+            $viewData['recents'] = Submissions::with('forms')
+                ->where('created_at', '<', Carbon::now())
+                ->orderBy('created_at', 'desc')
+                ->limit(5)
+                ->get();
 
-        return view('dashboard', $viewData);
+//            dd($viewData['recents']);
+            return view('Admin/dashboard', $viewData);
+
+        } else {
+            $viewData['upcomings'] = Events::with('forms')
+                ->where('date', '>', Carbon::now())
+                ->where('date', '<', Carbon::now()->addMonths(3))
+                ->orderBy('date', 'asc')
+                ->limit(5)
+                ->get();
+
+            $viewData['upcomings'] = Helper::filterEvents($viewData['upcomings']);
+
+            $viewData['overdues'] = [
+                'Asbestos' => 'September 6, 2019',
+                'Health & Safety checklist' => 'September 30, 2019'
+            ];
+
+            $viewData['completeds'] = Submissions::with('forms')
+                ->where('created_at', '<', Carbon::now())
+                ->where('email', Auth::user()->email)
+                ->orderBy('created_at', 'desc')
+                ->limit(5)
+                ->get();
+
+            return view('dashboard', $viewData);
+        }
+
 
     }
 

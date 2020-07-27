@@ -13,7 +13,7 @@
                 </ul>
             </div>
             <div class="col-md card">
-                <h2>Upcoming</h2>
+                <h2>Upcoming Deadlines</h2>
                 <ul>
                     @foreach( $upcomings as $upcoming)
                         <li><a href="{{ route('forms.show', ['form' => $upcoming->forms->id]) }}">{{ $upcoming->forms->title }}</a> is due <b>{{ \App\Helpers\Helper::makeDateReadable($upcoming->date) }}</b></li>
@@ -23,10 +23,10 @@
         </div>
         <div class="row">
             <div class="col-lg card">
-                <h2>Recently Completed</h2>
+                <h2>Recent Submissions</h2>
                 <ul>
-                    @foreach( $completeds as $completed)
-                        <li><a href="{{ route('submissions.show', ['submission' => $completed->id]) }}">{{ $completed->forms->title }}</a> was submitted <b>{{ \App\Helpers\Helper::makeDateReadable($completed->created_at) }}</b></li>
+                    @foreach( $recents as $recent)
+                        <li>{{ $recent->username }} submitted <a href="{{ route('submissions.show', ['submission' => $recent->id]) }}">{{ $recent->forms->title }}</a> on <b>{{ \App\Helpers\Helper::makeDateReadable($recent->created_at) }}</b></li>
                     @endforeach
                 </ul>
             </div>

@@ -15,6 +15,7 @@ class SubmissionsController extends Controller
         return view('Submissions.index', [
             'submissions' => Submissions::with('forms')
                 ->where('email', '=',Auth::user()->email)
+                ->orderBy('created_at', 'desc')
                 ->get()
         ]);
     }

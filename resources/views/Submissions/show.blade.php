@@ -2,14 +2,11 @@
 
 @section('content')
 
-    @if(Auth::user()->isAdmin())
-        <a href="{{ route('admin.submissions.index') }}">Back</a>
-    @else
-        <a href="{{ route('submissions.index') }}">Back</a>
-    @endif
 
+    <a href="{{ url()->previous() }}">Back</a>
     @can('update',  $submission)
-        <a class="float-right" href="{{ route('submissions.edit', ['submission' => $submission->id]) }}">Make Changes to My Submission</a>
+        <a class="float-right" href="{{ route('submissions.edit', ['submission' => $submission->id]) }}">Make Changes to
+            My Submission</a>
     @endcan
     <div class="container">
         <h2>{{ $submission->form->title }}</h2>
