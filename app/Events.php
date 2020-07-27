@@ -7,13 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 class Events extends Model
 {
     protected $fillable = [
-        'forms_id', 'start'
+        'forms_id', 'date'
     ];
 
 
     public function forms()
     {
-        return $this->belongsTo('App\Forms');
+        return $this->belongsTo('App\Forms', 'forms_id', 'id');
     }
 
     public function submissions()

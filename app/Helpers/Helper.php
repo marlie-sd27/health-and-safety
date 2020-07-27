@@ -4,6 +4,8 @@
 namespace App\Helpers;
 
 
+use Illuminate\Support\Facades\Auth;
+
 class Helper
 {
     public static function makeTimeStampReadable($timestamp)
@@ -12,8 +14,15 @@ class Helper
     }
 
 
-    public function makeDateReadable($date)
+    public static function makeDateReadable($date)
     {
         return date('M d, Y', strtotime($date));
+    }
+
+    public static function filterEvents($events)
+    {
+        if (!Auth::user()->isPrincipal()) {
+            return $events->where('forms.required_for', 'All Staff');
+        } else return $events;
     }
 }

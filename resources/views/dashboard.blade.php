@@ -15,8 +15,8 @@
             <div class="col-md card">
                 <h2>Upcoming</h2>
                 <ul>
-                    @foreach( $upcomings as $key => $value)
-                        <li>{{ $key }} is due {{ $value }}</li>
+                    @foreach( $upcomings as $upcoming)
+                        <li><a href="{{ route('forms.show', ['form' => $upcoming->forms->id]) }}">{{ $upcoming->forms->title }}</a> is due <b>{{ \App\Helpers\Helper::makeDateReadable($upcoming->date) }}</b></li>
                     @endforeach
                 </ul>
             </div>

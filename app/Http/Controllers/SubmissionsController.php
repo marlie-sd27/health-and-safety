@@ -39,7 +39,6 @@ class SubmissionsController extends Controller
     public function show(Submissions $submission)
     {
         $this->authorize('view', $submission);
-//        dd($submission->prepareSubmission());
         return view('Submissions/show', ['submission' => $submission->prepareSubmission()]);
     }
 
@@ -48,7 +47,6 @@ class SubmissionsController extends Controller
     public function edit(Submissions $submission)
     {
         $this->authorize('update', $submission);
-//        dd($submission->prepareSubmission());
         return view('Submissions/edit', ['submission' => $submission->prepareSubmission()]);
     }
 
