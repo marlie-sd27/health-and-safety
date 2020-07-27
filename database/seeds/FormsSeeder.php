@@ -55,7 +55,23 @@ class FormsSeeder extends Seeder
                 'full_year' => false,
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
                 'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
-            ]
+            ],
+            [
+                'title' => 'Maintenance Asbestos Awareness Training Template',
+
+                'description' => "Many sites within our school district may have a variety of types of Asbestos in the building.  " .
+                    "The objective of the Asbestos Awareness Training is to inform employees to the location and hazards.  " .
+                    "Within the \"Yellow\" Asbestos Management Plan Binder will be the full description of any materials in the building as well as an Exposure Control Plan.  " .
+                    "Please view the PowerPoint and answer the following questions. " .
+                    "\n\nPlease view the powerpoint https://www.sd27.bc.ca/wp-content/uploads/2019/10/2019-10-25-Asbestos-Awareness-Training.pptx and respond to the following questions:",
+
+                'interval' => null,
+                'first_occurence_at' => null,
+                'required_for' => 'All Staff',
+                'full_year' => null,
+                'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+                'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
+            ],
         ]);
     }
 }

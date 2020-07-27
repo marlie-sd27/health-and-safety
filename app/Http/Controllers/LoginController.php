@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -75,6 +76,10 @@ class LoginController extends Controller
                     'code' => $authCode
                 ]);
 
+                // save tokens in cache
+                $tokenCache = new TokenCache();
+                $tokenCache->storeTokens($accessToken);
+
                 $graph = new Graph();
                 $graph->setAccessToken($accessToken->getToken());
 
@@ -82,25 +87,29 @@ class LoginController extends Controller
                     ->setReturnType(Model\User::class)
                     ->execute();
 
-//                dd($user);
-                $groups = $graph->createRequest('GET', '/me/memberOf?$select=displayName')
+
+                // build query to get membership groups
+                $principal = false;
+                $queryParams = array(
+                    '$select' => 'displayName',
+                );
+                $getEventsUrl = '/me/memberOf?'.http_build_query($queryParams);
+
+                $groups = $graph->createRequest('GET', $getEventsUrl)
+                    ->setReturnType(Model\Group::class)
                     ->execute();
 
-                dd($groups[1]);
                 foreach($groups as $group)
                 {
-//                    if ($group->displayName == "IT ")
+                    if ($group->getdisplayName() == "All Principals and Vice Principals")
+                    {
+                        $principal = true;
+                    }
                 }
 
-                $tokenCache = new TokenCache();
-                $tokenCache->storeTokens($accessToken, $user);
-
-
-                // create local user with token from Microsoft OAuth
+                // search to see if user already exists
                 $localUser = User::where('email', strtolower($user->getMail()))->first();
 
-
-                dd($user->getMemberOf());
                 // if localUser is not found in database, create one
                 if (!$localUser)
                 {
@@ -108,9 +117,20 @@ class LoginController extends Controller
                         'name' => $user->getDisplayName(),
                         'email' => strtolower($user->getMail()),
                         'admin' => false,
-                        'member_of' => $user->getMemberOf(),
+                        'principal' => $principal,
+                        'last_login' => Carbon::now()->format('Y-m-d H:i:s'),
                     ]);
+
+                    // otherwise update the principal status and last login timestamp
+                } else {
+                    $localUser->update([
+//                        'principal' => $principal,
+                        'last_login' => Carbon::now()->format('Y-m-d H:i:s'),
+                    ]);
+                    $localUser->save();
                 }
+
+
                 // attempt to login
                 try {
                     Auth::login($localUser);

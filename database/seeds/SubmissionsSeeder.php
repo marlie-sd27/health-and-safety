@@ -37,6 +37,14 @@ class SubmissionsSeeder extends Seeder
                 'data' => 'Date=2020-07-22&Name+of+School=Columneetza&Name+of+Principal=Mike+Grace&Total+Enrollment=700&Date+of+Fire+Drill=2020-07-20&Precise+time+of+Fire+Drill=09%3A15&Time+taken+to+Evacuate=8+minutes&Comments=&Signed=Marlie+Dueck&Title=IT',
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
                 'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
+            ],
+            [
+                'forms_id' => 4,
+                'username' => 'Marlie Teacher',
+                'email' => 'marlie.teacher@sd27.bc.ca',
+                'data' => 'Asbestos+fibres+can+cause=Asbestosis&Who+is+notified+in+case+of+an+asbestoss+spill%3F=Manager+of+Facilities+%26+Transportation&What+colour+is+the+Asbestos+Management+Plan+binder%3F=Black&Where+is+the+Asbestos+Management+Plan+located+at+your+site%3F=School+Office&What+is+the+Facilities+Manager+Responsibilities%3F=choose+the+OH%26S+team',
+                'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+                'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
             ]
 
         ]);

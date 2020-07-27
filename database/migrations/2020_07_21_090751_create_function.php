@@ -13,51 +13,57 @@ class CreateFunction extends Migration
     public function up()
     {
         DB::unprepared('CREATE OR REPLACE FUNCTION insert_events()
-                RETURNS TRIGGER AS $example_table$
+    RETURNS TRIGGER AS $example_table$
 
-                DECLARE
-                    schedule_dates DATE[];
-                    date DATE;
-                    finish DATE;
-                    next_occurence DATE;
-                    month INTEGER ;
+    DECLARE
+        schedule_dates DATE[];
+        date DATE;
+        finish DATE;
+        next_occurence DATE;
+        month INTEGER ;
 
-                BEGIN
+    BEGIN
 
-                    SELECT string_to_array(new.first_occurence_at, \',\') INTO schedule_dates;
+        SELECT string_to_array(new.first_occurence_at, \',\') INTO schedule_dates;
 
-                    FOREACH date IN ARRAY schedule_dates LOOP
-                        finish := date + INTERVAL \'5 years\';
-                        next_occurence := date::DATE;
+        IF new.interval IS NOT NULL THEN
 
-                        LOOP
-                            EXIT WHEN next_occurence > finish;
+            FOREACH date IN ARRAY schedule_dates LOOP
+                finish := date + INTERVAL \'5 years\';
+                next_occurence := date::DATE;
 
-                            IF new.full_year = \'f\'::BOOLEAN THEN
-                                SELECT EXTRACT(MONTH FROM next_occurence) INTO month;
+                LOOP
+                    EXIT WHEN next_occurence > finish;
 
-                                IF month = 7 THEN
-                                    RAISE NOTICE \'Not scheduling for July\';
-                                ELSEIF month = 8 THEN
-                                    RAISE NOTICE \'Not scheduling for August\';
-                                ELSE
-                                    INSERT INTO events (forms_id, date, created_at, updated_at)
-                                    VALUES (new.id, next_occurence, now(), now());
-                                END IF;
+                    IF new.full_year = \'f\'::BOOLEAN THEN
+                        SELECT EXTRACT(MONTH FROM next_occurence) INTO month;
 
-                                next_occurence := next_occurence + new.interval::INTERVAL;
+                        IF month = 7 THEN
+                            RAISE NOTICE \'Not scheduling for July\';
+                        ELSEIF month = 8 THEN
+                            RAISE NOTICE \'Not scheduling for August\';
+                        ELSE
+                            INSERT INTO events (forms_id, date, created_at, updated_at)
+                            VALUES (new.id, next_occurence, now(), now());
+                        END IF;
 
-                            ELSE
-                                INSERT INTO events (forms_id, date) VALUES (new.id, next_occurence);
-                                next_occurence := next_occurence + new.interval::INTERVAL;
-                            END IF;
+                        next_occurence := next_occurence + new.interval::INTERVAL;
 
-                        END LOOP;
+                    ELSE
+                        INSERT INTO events (forms_id, date) VALUES (new.id, next_occurence);
+                        next_occurence := next_occurence + new.interval::INTERVAL;
+                    END IF;
 
-                    END LOOP;
-                RETURN NULL;
-                END;
-            $example_table$ LANGUAGE plpgsql;
+                END LOOP;
+
+            END LOOP;
+
+        ELSEIF new.first_occurence_at IS NOT NULL THEN
+            INSERT INTO events (forms_id, date) VALUES (new.id, new.first_occurence_at);
+        END IF;
+    RETURN NULL;
+    END;
+$example_table$ LANGUAGE plpgsql;
         ');
     }
 

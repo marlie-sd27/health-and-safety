@@ -5,7 +5,7 @@ namespace App\TokenStore;
 use App\User;
 
 class TokenCache {
-    public function storeTokens($accessToken, $user) {
+    public function storeTokens($accessToken) {
         session([
             'accessToken' => $accessToken->getToken(),
             'refreshToken' => $accessToken->getRefreshToken(),
