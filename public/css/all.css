@@ -1,0 +1,138 @@
+:root {
+    --dark-font: #555b6e;
+    --light-font: #BEE3DB;
+    --accent: #FFD6BA;
+    --background: #FAF9F9;
+    --main: #89b0ae;
+}
+
+body {
+    padding-top: 4.5rem;
+    background-color: var(--background);
+    color: var(--dark-font);
+}
+
+h1 {
+    font-size: 2em;
+}
+
+h2 {
+    font-size: 1.5em;
+}
+
+h3 {
+    font-size: 1.17em;
+}
+
+h4 {
+    font-size: 1.12em;
+}
+
+a[data-toggle="collapse"] {
+    position: absolute;
+}
+
+article {
+    padding: 1em;
+    margin: 1em;
+    border: solid 1pt var(--light-font);
+    background-color: whitesmoke;
+    border-radius: 3pt;
+    min-height: 50px;
+}
+
+article article {
+    background-color: var(--light-font);
+    border: solid 1pt var(--main);
+}
+
+tr, td, th {
+    padding: 0.4em;
+    border: solid 1pt var(--dark-font);
+}
+
+@media (max-width: 768px) {
+    #sidebar {
+        margin-left: -250px;
+    }
+    #sidebar.active {
+        margin-left: 0;
+    }
+}
+.btn {
+    color: white;
+}
+
+.card{
+    padding: 0.4em;
+    margin: 1em;
+    border-radius: 3pt;
+}
+
+.container {
+    padding-top: 1.3em;
+    padding-bottom: 1.3em;
+}
+
+.navbar {
+    padding: 1em 3em;
+}
+
+.toggle-collapse, .toggle-expand {
+    background-repeat: no-repeat;
+    background-size: contain;
+    float: left;
+}
+
+.toggle-collapse {
+    background-image: url('/images/expand.png');
+    height: 15px;
+    width: 15px;
+    margin-left: 3px;
+}
+
+.toggle-expand {
+    background-image: url('/images/collapse.png');
+    height: 22px;
+    width: 22px;
+    margin: 0;
+}
+
+.wrapper {
+    display: flex;
+    align-items: stretch;
+}
+
+#removeSection, #removeField {
+    float: right;
+
+}
+
+#removeField:hover, #removeSection:hover {
+    color: #000;
+    cursor: pointer;
+}
+
+#sidebar {
+    min-width: 250px;
+    max-width: 250px;
+    min-height: 100vh;
+    padding: 0 1em;
+    background-color: var(--light-font);
+}
+
+#sidebar a {
+    padding: 1em 0.4em;
+    color: var(--dark-font);
+}
+#sidebar p {
+    font-size: medium;
+    font-weight: bolder;
+    color: var(--dark-font);
+}
+#sidebar li {
+    border-bottom: solid 1pt var(--background);
+    padding: 0.4em;
+}
+
+
