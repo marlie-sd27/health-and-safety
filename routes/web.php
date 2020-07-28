@@ -16,9 +16,9 @@ Route::middleware(['auth','isadmin'])->group(function ()
 
     Route::resource('forms', 'FormsController')->except('show');
 
-    Route::prefix('admin')->name('admin.')->group(function () {
-        Route::get('submissions', 'AdminSubmissionController@index')->name('submissions.index');
-    });
+    Route::get('report/users', 'ReportsController@userReport')->name('report.users');
+    Route::get('report/forms', 'ReportsController@formReport')->name('report.forms');
+
 });
 
 

@@ -8,9 +8,8 @@ use Illuminate\Support\Facades\Auth;
 
 class AdminSubmissionController extends Controller
 {
-    // show all submissions for logged in user
-    public function index(Request $request)
+    public function index()
     {
-        return view('Submissions.index', ['submissions' => Submissions::with('forms')->get()]);
+
     }
 }

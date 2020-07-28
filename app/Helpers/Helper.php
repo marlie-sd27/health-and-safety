@@ -21,7 +21,8 @@ class Helper
 
     public static function filterEvents($events)
     {
-        if (!Auth::user()->isPrincipal() || !Auth::user()->isAdmin()) {
+        if (!Auth::user()->isPrincipal() & !Auth::user()->isAdmin()) {
+
             return $events->where('forms.required_for', 'All Staff');
         } else return $events;
     }
