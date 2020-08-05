@@ -20,7 +20,7 @@ class CreateSubmissionsTable extends Migration
             $table->foreign('events_id')->references('id')->on('events')->onDelete('cascade');
             $table->bigInteger('forms_id')->nullable();
             $table->foreign('forms_id')->references('id')->on('forms')->onDelete('cascade');
-            $table->string('username');
+            $table->string('site')->nullable();
             $table->string('email');
             $table->text('data');
         });

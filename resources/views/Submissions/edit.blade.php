@@ -15,6 +15,39 @@
         @method('PUT')
 
         <input type="hidden" value="{{ $submission->form->id }}" name="form_id"/>
+        <article>
+            <label>School/Site</label>
+            <select name="site" class="form-control">
+                <option>100 Mile Elementary</option>
+                <option>100 Mile Maintenance</option>
+                <option>150 Mile Elementary</option>
+                <option>Alexis Creek</option>
+                <option>Anahim</option>
+                <option>Big Lake</option>
+                <option>Board Office</option>
+                <option>Cataline</option>
+                <option>Chilcotin Road</option>
+                <option>Dog Creek</option>
+                <option>Forest Grove</option>
+                <option>Horse Lake</option>
+                <option>Horsefly</option>
+                <option>GROW WL</option>
+                <option>LCS-Williams Lake</option>
+                <option>LCS-Columneetza</option>
+                <option>Likely</option>
+                <option>Marie Sharpe</option>
+                <option>Mile 108 Elementary</option>
+                <option>Mountview</option>
+                <option>Maintenance Yard</option>
+                <option>Naughtaneqed</option>
+                <option>Nenqayni</option>
+                <option>Nesika</option>
+                <option>PSO</option>
+                <option>Support Services</option>
+                <option>Tatla Lake</option>
+            </select>
+        </article>
+
         @foreach($submission->form->sections as $s)
             <article>
                 <h2>{{ $s->title }}</h2>
@@ -59,7 +92,7 @@
                         @foreach($f->options as $option)
                             <div>
                                 <label>
-                                    <input type="checkbox" name="data[{{ $f->name }}][{{ $option }}]" {{ in_array($option, explode(", ", $submission->data[$f->label])) ? "checked" : "" }} {{ $f->required ? 'required' : '' }} />
+                                    <input type="checkbox" name="data[{{ $f->name }}][{{ $option }}]" {{ isset($submission->data[$f->label]) && in_array($option, explode(", ", $submission->data[$f->label])) ? "checked" : "" }} {{ $f->required ? 'required' : '' }} />
                                     {{ $option }}
                                 </label>
                             </div>

@@ -5,6 +5,13 @@
     <a href="{{ route('forms.show', ['form' => $form->id]) }}">Back</a>
     <div class="container">
         <h1>Edit</h1>
+        <div class="alert alert-danger">
+            <p>
+                WARNING: Edit form fields with caution! <b>Any changes may cause gaps in data of previous
+                    submissions</b>.
+                It is recommended to only edit the form title, description and "Defining Recurrences" section.
+            </p>
+        </div>
         <form action="{{ route('forms.update', ['form' => $form->id ]) }}" method="post">
             @method('PUT')
             @csrf
@@ -30,7 +37,7 @@
                             employee, but will still be available to fill out and submit.</b></small></p>
                 <div class="form-group">
                     <label for="first_occurence_at">Select one or more due dates</label>
-                    <input class="form-control date" type="text" name="first_occurence_at" placeholder="Pick a date"
+                    <input class="form-control" type="text" name="first_occurence_at" placeholder="Pick a date"
                            value="{{ $form->first_occurence_at }}">
                 </div>
                 <div class="form-group">
@@ -40,7 +47,7 @@
                            value="{{ $form->interval }}">
                 </div>
                 <div class="form-group">
-                    <input type="checkbox" name="full_year" @if (is_array($form->full_year)) checked @endif>
+                    <input type="checkbox" name="full_year" @if (isset($form->full_year)) checked @endif>
                     <label for="full_year">Include July and August for scheduling?</label>
                     <p><small><b>Note that due dates will not be scheduled in July or August unless otherwise specified</b>
                         </small></p>

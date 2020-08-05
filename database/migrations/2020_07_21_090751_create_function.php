@@ -24,9 +24,9 @@ class CreateFunction extends Migration
 
     BEGIN
 
-        SELECT string_to_array(new.first_occurence_at, \',\') INTO schedule_dates;
-
         IF new.interval IS NOT NULL THEN
+
+            SELECT string_to_array(new.first_occurence_at, \',\') INTO schedule_dates;
 
             FOREACH date IN ARRAY schedule_dates LOOP
                 finish := date + INTERVAL \'5 years\';
@@ -59,7 +59,7 @@ class CreateFunction extends Migration
             END LOOP;
 
         ELSEIF new.first_occurence_at IS NOT NULL THEN
-            INSERT INTO events (forms_id, date) VALUES (new.id, new.first_occurence_at);
+            INSERT INTO events (forms_id, date) VALUES (new.id, new.first_occurence_at::DATE);
         END IF;
     RETURN NULL;
     END;

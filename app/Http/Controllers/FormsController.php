@@ -26,7 +26,6 @@ class FormsController extends Controller
     // Store the newly created Form in database
     public function store(StoreForm $validated)
     {
-//        dd($validated);
         $form = Forms::create([
             'title' => $validated['title'],
             'description' => $validated['description'],
@@ -55,6 +54,7 @@ class FormsController extends Controller
     // show view for editing a form
     public function edit(Forms $form)
     {
+//        dd($form->fullForm());
         return view('Forms/edit', ['form' => $form->fullForm()]);
     }
 

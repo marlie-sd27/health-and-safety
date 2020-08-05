@@ -26,7 +26,7 @@ class SubmissionsController extends Controller
     {
         Submissions::create([
             'forms_id' => $validated->form_id,
-            'username' => Auth::user()->name,
+            'site' => $validated->site,
             'email' => Auth::user()->email,
             'data' => $validated->data,
         ]);

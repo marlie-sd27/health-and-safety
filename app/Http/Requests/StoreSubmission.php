@@ -18,6 +18,7 @@ class StoreSubmission extends FormRequest
         return [
             'forms_id' => 'exists:forms',
             'data' => 'string',
+            'site' => 'string',
         ];
     }
 
@@ -39,7 +40,8 @@ class StoreSubmission extends FormRequest
         }
 
         $this->merge([
-            'data' => http_build_query($data)
+            'data' => http_build_query($data),
+            'site' => filter_var($this->site, FILTER_SANITIZE_STRING)
         ]);
     }
 }

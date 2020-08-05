@@ -12,13 +12,15 @@
         <h2>{{ $submission->form->title }}</h2>
         <table class="table table-bordered">
             <tr>
+                <th>School/Site</th>
                 <th>Submitted By</th>
                 <th>Submitter's email</th>
                 <th>Date Submitted</th>
                 <th>Last Updated</th>
             </tr>
             <tr>
-                <td>{{ $submission->username }}</td>
+                <td>{{ $submission->site }}</td>
+                <td>{{ $submission->user->name }}</td>
                 <td>{{ $submission->email }}</td>
                 <td>{{ $submission->created_at_readable }}</td>
                 <td>{{ $submission->updated_at_readable }}</td>

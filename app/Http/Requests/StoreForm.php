@@ -70,8 +70,8 @@ class StoreForm extends FormRequest
         $this->merge([
             'title' => filter_var($this->form_title, FILTER_SANITIZE_STRING),
             'description' => filter_var($this->form_description, FILTER_SANITIZE_STRING),
-            'interval' => filter_var($this->interval, FILTER_SANITIZE_STRING),
-            'first_occurence_at' => filter_var($this->first_occurence_at, FILTER_SANITIZE_STRING),
+            'interval' => $this->interval == "" ? null : filter_var($this->interval, FILTER_SANITIZE_STRING),
+            'first_occurence_at' => $this->first_occurence_at == "" ? null : filter_var($this->first_occurence_at, FILTER_SANITIZE_STRING),
             'required_for' => filter_var($this->required_for, FILTER_SANITIZE_STRING),
             'full_year' => isset($this->full_year),
 

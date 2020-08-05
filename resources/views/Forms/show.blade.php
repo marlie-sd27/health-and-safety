@@ -15,7 +15,39 @@
     </div>
     <form method="post" action="{{ route('submissions.store') }}">
         @csrf
-        <input type="hidden" value="{{ $form->id }}" name="form_id"/>
+        <article>
+            <input type="hidden" value="{{ $form->id }}" name="form_id"/>
+            <label>School/Site</label>
+            <select name="site" class="form-control">
+                <option>100 Mile Elementary</option>
+                <option>100 Mile Maintenance</option>
+                <option>150 Mile Elementary</option>
+                <option>Alexis Creek</option>
+                <option>Anahim</option>
+                <option>Big Lake</option>
+                <option>Board Office</option>
+                <option>Cataline</option>
+                <option>Chilcotin Road</option>
+                <option>Dog Creek</option>
+                <option>Forest Grove</option>
+                <option>Horse Lake</option>
+                <option>Horsefly</option>
+                <option>GROW WL</option>
+                <option>LCS-Williams Lake</option>
+                <option>LCS-Columneetza</option>
+                <option>Likely</option>
+                <option>Marie Sharpe</option>
+                <option>Mile 108 Elementary</option>
+                <option>Mountview</option>
+                <option>Maintenance Yard</option>
+                <option>Naughtaneqed</option>
+                <option>Nenqayni</option>
+                <option>Nesika</option>
+                <option>PSO</option>
+                <option>Support Services</option>
+                <option>Tatla Lake</option>
+            </select>
+        </article>
         @foreach($form->sections as $s)
             <article>
                 <h2>{{ $s->title }}</h2>
@@ -24,21 +56,21 @@
                     @switch($f->type)
                         @case("select")
                         <div class="form-group">
-                            <label>{{ $f->label }}
+                            <label>{{ $f->label }}</label>
                                 <select name="data[{{ $f->name }}]"
                                         class="form-control" {{ $f->required ? 'required' : '' }}>
                                     @foreach($f->options as $option)
                                         <option>{{ $option }}</option>
                                     @endforeach
                                 </select>
-                            </label>
                         </div>
                         @break
 
                         @case("textarea")
                         <div class="form-group">
                             <label>{{ $f->label }}</label>
-                                <textarea class="form-control" name="data[{{ $f->name }}]" {{ $f->required ? 'required' : '' }}></textarea>
+                            <textarea class="form-control"
+                                      name="data[{{ $f->name }}]" {{ $f->required ? 'required' : '' }}></textarea>
                         </div>
                         @break
 
@@ -82,8 +114,8 @@
                         @default
                         <div class="form-group">
                             <label>{{ $f->label }}</label>
-                                <input type="{{ $f->type }}" name="data[{{ $f->name }}]"
-                                       {{ $f->required ? 'required' : '' }} class="form-control"/>
+                            <input type="{{ $f->type }}" name="data[{{ $f->name }}]"
+                                   {{ $f->required ? 'required' : '' }} class="form-control"/>
 
                         </div>
                     @endswitch
@@ -93,9 +125,11 @@
 
         <hr>
 
-        <div class="container align-content-center">
-            <button class="btn btn-block btn-lg btn-success" type="submit">Submit</button>
-            <button class="btn btn-block btn-lg btn-secondary" type="reset">Reset</button>
-        </div>
+        @if(!Auth::user()->isAdmin())
+            <div class="container align-content-center">
+                <button class="btn btn-block btn-lg btn-success" type="submit">Submit</button>
+                <button class="btn btn-block btn-lg btn-secondary" type="reset">Reset</button>
+            </div>
+        @endif
     </form>
 @endsection

@@ -11,7 +11,7 @@ class ReportsController extends Controller
 {
     public function userReport()
     {
-        return view('Admin/usersReport', ['submissions' => Submissions::with('forms')->get()]);
+        return view('Admin/usersReport', ['submissions' => Submissions::with('forms')->orderBy('created_at', 'desc')->get()]);
     }
 
 
