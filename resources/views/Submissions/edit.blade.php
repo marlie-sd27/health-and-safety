@@ -18,33 +18,34 @@
         <article>
             <label>School/Site</label>
             <select name="site" class="form-control">
-                <option>100 Mile Elementary</option>
-                <option>100 Mile Maintenance</option>
-                <option>150 Mile Elementary</option>
-                <option>Alexis Creek</option>
-                <option>Anahim</option>
-                <option>Big Lake</option>
-                <option>Board Office</option>
-                <option>Cataline</option>
-                <option>Chilcotin Road</option>
-                <option>Dog Creek</option>
-                <option>Forest Grove</option>
-                <option>Horse Lake</option>
-                <option>Horsefly</option>
-                <option>GROW WL</option>
-                <option>LCS-Williams Lake</option>
-                <option>LCS-Columneetza</option>
-                <option>Likely</option>
-                <option>Marie Sharpe</option>
-                <option>Mile 108 Elementary</option>
-                <option>Mountview</option>
-                <option>Maintenance Yard</option>
-                <option>Naughtaneqed</option>
-                <option>Nenqayni</option>
-                <option>Nesika</option>
-                <option>PSO</option>
-                <option>Support Services</option>
-                <option>Tatla Lake</option>
+                <option @if ($submission->site == "") {{ 'selected' }} @endif>--</option>
+                <option @if ($submission->site == "100 Mile Elementary") {{ 'selected' }} @endif>100 Mile Elementary</option>
+                <option @if ($submission->site == "100 Mile Maintenance") {{ 'selected' }} @endif>100 Mile Maintenance</option>
+                <option @if ($submission->site == "150 Mile Elementary") {{ 'selected' }} @endif>150 Mile Elementary</option>
+                <option @if ($submission->site == "Alexis Creek") {{ 'selected' }} @endif>Alexis Creek</option>
+                <option @if ($submission->site == "Anahim") {{ 'selected' }} @endif>Anahim</option>
+                <option @if ($submission->site == "Big Lake") {{ 'selected' }} @endif>Big Lake</option>
+                <option @if ($submission->site == "Board Office") {{ 'selected' }} @endif>Board Office</option>
+                <option @if ($submission->site == "Cataline") {{ 'selected' }} @endif>Cataline</option>
+                <option @if ($submission->site == "Chilcotin Road") {{ 'selected' }} @endif>Chilcotin Road</option>
+                <option @if ($submission->site == "Dog Creek") {{ 'selected' }} @endif>Dog Creek</option>
+                <option @if ($submission->site == "Forest Grove") {{ 'selected' }} @endif>Forest Grove</option>
+                <option @if ($submission->site == "Horse Lake") {{ 'selected' }} @endif>Horse Lake</option>
+                <option @if ($submission->site == "Horsefly") {{ 'selected' }} @endif>Horsefly</option>
+                <option @if ($submission->site == "GROW WL") {{ 'selected' }} @endif>GROW WL</option>
+                <option @if ($submission->site == "LCS-Williams Lake") {{ 'selected' }} @endif>LCS-Williams Lake</option>
+                <option @if ($submission->site == "LCS-Columneetza") {{ 'selected' }} @endif>LCS-Columneetza</option>
+                <option @if ($submission->site == "Likely") {{ 'selected' }} @endif>Likely</option>
+                <option @if ($submission->site == "Marie Sharpe") {{ 'selected' }} @endif>Marie Sharpe</option>
+                <option @if ($submission->site == "Mile 108 Elementary") {{ 'selected' }} @endif>Mile 108 Elementary</option>
+                <option @if ($submission->site == "Mountview") {{ 'selected' }} @endif>Mountview</option>
+                <option @if ($submission->site == "Maintenance Yard") {{ 'selected' }} @endif>Maintenance Yard</option>
+                <option @if ($submission->site == "Naughtaneqed") {{ 'selected' }} @endif>Naughtaneqed</option>
+                <option @if ($submission->site == "Nenqayni") {{ 'selected' }} @endif>Nenqayni</option>
+                <option @if ($submission->site == "Nesika") {{ 'selected' }} @endif>Nesika</option>
+                <option @if ($submission->site == "PSO") {{ 'selected' }} @endif>PSO</option>
+                <option @if ($submission->site == "Support Services") {{ 'selected' }} @endif>Support Services</option>
+                <option @if ($submission->site == "Tatla Lake") {{ 'selected' }} @endif>Tatla Lake</option>
             </select>
         </article>
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Forms;
 use App\Http\Requests\StoreForm;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class FormsController extends Controller
@@ -45,16 +46,16 @@ class FormsController extends Controller
 
 
     // Show a specific form with its sections
-    public function show(Forms $form)
+    public function show(Forms $form, Request $request)
     {
-        return (view('Forms/show', ['form' => $form->fullForm()]));
+        $event = $request->filled('event') ? $request->query('event') : null;
+        return (view('Forms/show', ['form' => $form->fullForm(), 'event' => $event ]));
     }
 
 
     // show view for editing a form
     public function edit(Forms $form)
     {
-//        dd($form->fullForm());
         return view('Forms/edit', ['form' => $form->fullForm()]);
     }
 

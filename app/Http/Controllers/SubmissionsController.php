@@ -26,6 +26,7 @@ class SubmissionsController extends Controller
     {
         Submissions::create([
             'forms_id' => $validated->form_id,
+            'events_id' => $validated->event_id,
             'site' => $validated->site,
             'email' => Auth::user()->email,
             'data' => $validated->data,
@@ -58,6 +59,7 @@ class SubmissionsController extends Controller
         $this->authorize('update', $submission);
 
         $submission->update([
+            'site' => $validated->site,
             'data' => $validated->data,
         ]);
         $submission->save();

@@ -15,7 +15,6 @@ class StoreForm extends FormRequest
     // validate the user input
     public function rules()
     {
-//        dd($this);
         return [
             'title' => 'sometimes|required|max:255',
             'description' => 'string|nullable',

@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Submissions extends Model
 {
     protected $fillable = [
-        'events_id', 'forms_id', 'username', 'email', 'data'
+        'events_id', 'forms_id', 'site', 'email', 'data'
     ];
 
 

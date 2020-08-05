@@ -23,7 +23,7 @@ class EventsController extends Controller
 
         // add attribute url for links and title for displaying in calendar
         foreach ($events as $event) {
-            $event['url'] = route('forms.show', ['form' => $event->forms_id]);
+            $event['url'] = route('forms.show', ['form' => $event->forms_id, 'event' => $event->id]);
             $event['title'] = $event->forms->title;
         }
 

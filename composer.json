@@ -16,7 +16,8 @@
         "laravel/tinker": "^2.0",
         "league/oauth2-client": "^2.4",
         "microsoft/microsoft-graph": "^1.13",
-        "qlick/laravel-full-calendar": "^1.1"
+        "qlick/laravel-full-calendar": "^1.1",
+      "ext-http": "*"
     },
     "require-dev": {
         "facade/ignition": "^2.0",

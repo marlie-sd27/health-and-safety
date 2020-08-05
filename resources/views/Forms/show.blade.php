@@ -17,8 +17,10 @@
         @csrf
         <article>
             <input type="hidden" value="{{ $form->id }}" name="form_id"/>
+            <input type="hidden" value="{{ $event }}" name="event_id"/>
             <label>School/Site</label>
             <select name="site" class="form-control">
+                <option>--</option>
                 <option>100 Mile Elementary</option>
                 <option>100 Mile Maintenance</option>
                 <option>150 Mile Elementary</option>
