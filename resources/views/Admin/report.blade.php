@@ -33,7 +33,7 @@
                 <button class="btn btn-dark" type="button" id="clear">Clear Search Fields</button>
             </form>
         </article>
-        <table id="users" class="table table-bordered">
+        <table id="users" class="table table-bordered table-hover">
             <tr>
                 <th>ID</th>
                 <th>Form</th>

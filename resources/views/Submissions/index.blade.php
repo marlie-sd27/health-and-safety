@@ -2,7 +2,7 @@
 
 @section('content')
     <div>
-        <table class="table table-bordered">
+        <table class="table table-bordered table-hover">
             <tr>
                 <th>Form</th>
                 <th>School/Site</th>

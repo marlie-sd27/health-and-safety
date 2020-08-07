@@ -15,6 +15,7 @@ class HomeController extends Controller
     public function dashboard()
     {
 
+        // if user is admin
         if(Auth::user()->isAdmin())
         {
             $viewData['upcomings'] = Events::with('forms')
@@ -39,10 +40,17 @@ class HomeController extends Controller
 
             return view('Admin/dashboard', $viewData);
 
+            // otherwise
         } else {
             $viewData['upcomings'] = Events::with('forms')
                 ->where('date', '>', Carbon::now())
-                ->where('date', '<', Carbon::now()->addMonths(3))
+                ->where('date', '<', Carbon::now()->addMonths(4))
+                ->whereNotIn('events.id', function($query) {
+                    $query->select('events_id')
+                        ->from('submissions')
+                        ->where('email', Auth::user()->email)
+                        ->get();
+                })
                 ->orderBy('date', 'asc')
                 ->limit(5)
                 ->get();
@@ -55,7 +63,6 @@ class HomeController extends Controller
             ];
 
             $viewData['completeds'] = Submissions::with('forms')
-                ->where('created_at', '<', Carbon::now())
                 ->where('email', Auth::user()->email)
                 ->orderBy('created_at', 'desc')
                 ->limit(5)

@@ -61,7 +61,7 @@ class SubmissionsSeeder extends Seeder
             ],
             [
                 'forms_id' => 1,
-                'events_id' => 1,
+                'events_id' => 7,
                 'site' => 'Cataline',
                 'email' => 'marlie.teacher@sd27.bc.ca',
                 'data' => 'Date=2020-07-22&Name+of+Principal=Mike+Grace&Total+Enrollment=700&Date+of+Fire+Drill=2020-07-20&Precise+time+of+Fire+Drill=09%3A15&Time+taken+to+Evacuate=8+minutes&Comments=&Signed=Marlie+Dueck&Title=IT',
@@ -79,7 +79,7 @@ class SubmissionsSeeder extends Seeder
             ],
             [
                 'forms_id' => 1,
-                'events_id' => 1,
+                'events_id' => 7,
                 'site' => 'Nesika',
                 'email' => 'morgan.freeman@sd27.bc.ca',
                 'data' => 'Date=2020-07-22&Name+of+Principal=Mike+Grace&Total+Enrollment=700&Date+of+Fire+Drill=2020-07-20&Precise+time+of+Fire+Drill=09%3A15&Time+taken+to+Evacuate=8+minutes&Comments=&Signed=Marlie+Dueck&Title=IT',

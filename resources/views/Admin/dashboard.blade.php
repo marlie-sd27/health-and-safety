@@ -6,31 +6,40 @@
         <div class="row">
             <div class="col-md card">
                 <h2>Overdue</h2>
-                <ul>
+                <table class="table table-bordered table-hover">
                     @foreach( $overdues as $key => $value)
-                        <li>{{ $key }} was due {{ $value }}</li>
+                        <tr>
+                            <td>{{ $key }}</td>
+                            <td>{{ $value }}</td>
+                        </tr>
                     @endforeach
-                </ul>
+                </table>
             </div>
             <div class="col-md card">
                 <h2>Upcoming Deadlines</h2>
-                <ul>
+                <table class="table table-bordered table-hover">
                     @foreach( $upcomings as $upcoming)
-                        <li><a href="{{ route('forms.show', ['form' => $upcoming->forms->id]) }}">{{ $upcoming->forms->title }}</a> is due <b>{{ \App\Helpers\Helper::makeDateReadable($upcoming->date) }}</b></li>
+                        <tr>
+                            <td><a href="{{ route('forms.show', ['form' => $upcoming->forms->id]) }}">{{ $upcoming->forms->title }}</a></td>
+                            <td>{{ \App\Helpers\Helper::makeDateReadable($upcoming->date) }}</td>
+                        </tr>
                     @endforeach
-                </ul>
+                </table>
             </div>
         </div>
         <div class="row">
             <div class="col-lg card">
                 <h2>Recent Submissions</h2>
-                <ul>
+                <table class="table table-bordered table-hover">
                     @foreach( $recents as $recent)
-                        <li>{{ $recent->users->name }} submitted {{ $recent->forms->title }} on <b>{{ \App\Helpers\Helper::makeDateReadable($recent->created_at) }}</b>
-                            <a href="{{ route('submissions.show', ['submission' => $recent->id]) }}">View Submission</a>
-                        </li>
+                        <tr>
+                            <td>{{ $recent->users->name }}</td>
+                            <td>{{ $recent->forms->title }}</td>
+                            <td>{{ \App\Helpers\Helper::makeDateReadable($recent->created_at) }}</td>
+                            <td><a href="{{ route('submissions.show', ['submission' => $recent->id]) }}">View Submission</a></td>
+                        </tr>
                     @endforeach
-                </ul>
+                </table>
             </div>
         </div>
     </div>

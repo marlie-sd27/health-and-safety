@@ -20,7 +20,7 @@ class Submissions extends Model
 
 
     // get the events associated with this submission
-    public function event()
+    public function events()
     {
         return $this->belongsTo('App\Events');
     }

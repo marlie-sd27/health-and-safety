@@ -10,7 +10,10 @@
     @endcan
     <div class="container">
         <h2>{{ $submission->form->title }}</h2>
-        <table class="table table-bordered">
+        @if(isset($submission->events->date))
+            <h3>Due: {{ App\Helpers\Helper::makeDateReadable($submission->events->date) }}</h3>
+        @endif
+        <table class="table table-bordered table-hover">
             <tr>
                 <th>School/Site</th>
                 <th>Submitted By</th>
@@ -28,7 +31,7 @@
         </table>
     </div>
     <div class="container">
-        <table class="table table-bordered">
+        <table class="table table-bordered table-hover">
             @foreach($submission->form->sections as $section)
                 <tr>
                     <th colspan="2" class="text-center">{{ $section->title }}</th>

@@ -6,29 +6,47 @@
         <div class="row">
             <div class="col-md card">
                 <h2>Overdue</h2>
-                <ul>
+                <table class="table table-bordered table-hover">
                     @foreach( $overdues as $key => $value)
-                        <li>{{ $key }} was due {{ $value }}</li>
+                        <tr>
+                            <td>{{ $key }}</td>
+                            <td>{{ $value }}</td>
+                        </tr>
                     @endforeach
-                </ul>
+                </table>
             </div>
             <div class="col-md card">
-                <h2>Upcoming</h2>
-                <ul>
+                <h2>Upcomings</h2>
+                <table class="table table-bordered table-hover">
                     @foreach( $upcomings as $upcoming)
-                        <li><a href="{{ route('forms.show', ['form' => $upcoming->forms->id]) }}">{{ $upcoming->forms->title }}</a> is due <b>{{ \App\Helpers\Helper::makeDateReadable($upcoming->date) }}</b></li>
+                        <tr>
+                            <td><a href="{{ route('forms.show', ['form' => $upcoming->forms->id]) }}">{{ $upcoming->forms->title }}</a></td>
+                            <td>{{ \App\Helpers\Helper::makeDateReadable($upcoming->date) }}</td>
+                        </tr>
                     @endforeach
-                </ul>
+                </table>
             </div>
         </div>
         <div class="row">
             <div class="col-lg card">
                 <h2>Recently Completed</h2>
-                <ul>
+                <table class="table table-bordered table-hover">
+                    <tr>
+                        <th>Form</th>
+                        <th>Due</th>
+                        <th>Submitted</th>
+                        <th>View</th>
+                    </tr>
                     @foreach( $completeds as $completed)
-                        <li><a href="{{ route('submissions.show', ['submission' => $completed->id]) }}">{{ $completed->forms->title }}</a> was submitted <b>{{ \App\Helpers\Helper::makeDateReadable($completed->created_at) }}</b></li>
+
+                        <tr>
+                            <td>{{ $completed->forms->title }}</td>
+                            <td>{{ \App\Helpers\Helper::makeDateReadable($completed->events->date) }}</td>
+                            <td>{{ \App\Helpers\Helper::makeDateReadable($completed->created_at) }}</td>
+                            <td><a href="{{ route('submissions.show', ['submission' => $completed->id]) }}">View Submission</a></td>
+                        </tr>
                     @endforeach
-                </ul>
+                </table>
             </div>
         </div>
     </div>
