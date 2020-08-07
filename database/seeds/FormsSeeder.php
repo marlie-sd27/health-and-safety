@@ -51,7 +51,7 @@ class FormsSeeder extends Seeder
                 'description' => "",
                 'interval' => '2 months',
                 'first_occurence_at' => '2020-09-30',
-                'required_for' => 'Principals and Vice Principals',
+                'required_for' => 'Elementary Principals Only',
                 'full_year' => false,
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
                 'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),

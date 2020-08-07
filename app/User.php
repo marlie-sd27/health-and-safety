@@ -16,7 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'admin', 'principal', 'last_login'
+        'name', 'email', 'admin', 'principal', 'elementary_principal', 'last_login'
     ];
 
     /**
@@ -43,6 +43,14 @@ class User extends Authenticatable
 
     public function isPrincipal() {
         return $this->principal;
+    }
+
+    public function isElementaryPrincipal() {
+        return $this->elementary_principal;
+    }
+
+    public function isSecondaryPrincipal() {
+        return !$this->elementary_principal && $this->principal;
     }
 
     public function submissions()

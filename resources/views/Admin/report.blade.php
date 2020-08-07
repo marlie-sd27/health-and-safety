@@ -6,9 +6,9 @@
 
 
             <form method="get" action="{{ route('report') }}">
-                <label>Search by user:
-                    <input class="form-control" type="text" placeholder="Search" name='user'
-                           value="{{ $user ?? ""}}"
+                <label>Search by form:
+                    <input class="form-control text-reset" type="text" placeholder="Search" name='form'
+                           value="{{ $form ?? "" }}"
                            aria-label="Search"/>
                 </label>
                 <label>Search by site:
@@ -16,9 +16,9 @@
                            value="{{ $site ?? "" }}"
                            aria-label="Search"/>
                 </label>
-                <label>Search by form:
-                    <input class="form-control text-reset" type="text" placeholder="Search" name='form'
-                           value="{{ $form ?? "" }}"
+                <label>Search by user:
+                    <input class="form-control" type="text" placeholder="Search" name='user'
+                           value="{{ $user ?? ""}}"
                            aria-label="Search"/>
                 </label>
                 <label>Search by date submitted:

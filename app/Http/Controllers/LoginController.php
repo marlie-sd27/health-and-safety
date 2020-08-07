@@ -105,6 +105,10 @@ class LoginController extends Controller
                     {
                         $principal = true;
                     }
+                    if ($group->getdisplayName() == "All Elementary Principals")
+                    {
+                        $elementary = true;
+                    }
                 }
 
                 // search to see if user already exists
@@ -118,6 +122,7 @@ class LoginController extends Controller
                         'email' => strtolower($user->getMail()),
                         'admin' => false,
                         'principal' => $principal,
+                        'elementary_principal' => $elementary,
                         'last_login' => Carbon::now()->format('Y-m-d H:i:s'),
                     ]);
 
@@ -125,6 +130,7 @@ class LoginController extends Controller
                 } else {
                     $localUser->update([
 //                        'principal' => $principal,
+//                        'elementary_principal' => $elementary,
                         'last_login' => Carbon::now()->format('Y-m-d H:i:s'),
                     ]);
                     $localUser->save();

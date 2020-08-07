@@ -19,6 +19,7 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique();
             $table->boolean('admin')->nullable();
             $table->boolean('principal')->nullable();
+            $table->boolean('elementary_principal')->nullable();
             $table->timestamp('last_login');
             $table->timestamps();
         });

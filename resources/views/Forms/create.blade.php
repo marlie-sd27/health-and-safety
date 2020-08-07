@@ -63,6 +63,14 @@
                             value="Principals and Vice Principals" @if (old('required_for') == "Principals and Vice Principals") {{ 'selected' }} @endif>
                             Principals and Vice Principals
                         </option>
+                        <option
+                            value="Secondary Principals Only" @if (old('required_for') == "Secondary Principals Only") {{ 'selected' }} @endif>
+                            Secondary Principals Only
+                        </option>
+                        <option
+                            value="Elementary Principals Only" @if (old('required_for') == "Secondary Principals Only") {{ 'selected' }} @endif>
+                            Elementary Principals Only
+                        </option>
                     </select>
                 </div>
             </article>

@@ -62,6 +62,14 @@
                             value="Principals and Vice Principals" @if ($form->required_for == "Principals and Vice Principals") {{ 'selected' }} @endif>
                             Principals and Vice Principals
                         </option>
+                        <option
+                            value="Secondary Principals Only" @if ($form->required_for == "Secondary Principals Only") {{ 'selected' }} @endif>
+                            Secondary Principals Only
+                        </option>
+                        <option
+                            value="Elementary Principals Only" @if ($form->required_for == "Elementary Principals Only") {{ 'selected' }} @endif>
+                            Elementary Principals Only
+                        </option>
                     </select>
                 </div>
             </article>

@@ -20,7 +20,7 @@ class StoreForm extends FormRequest
             'description' => 'string|nullable',
             'first_occurence_at' => 'string|nullable',
             'interval' => 'string|nullable',
-            'required_for' => 'nullable|in:All Staff,Principals and Vice Principals',
+            'required_for' => 'nullable|in:All Staff,Principals and Vice Principals,Elementary Principals Only,Secondary Principals Only',
             'full_year' => 'boolean',
 
             'section_title' => 'nullable|array',

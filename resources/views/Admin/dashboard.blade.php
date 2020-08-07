@@ -26,7 +26,9 @@
                 <h2>Recent Submissions</h2>
                 <ul>
                     @foreach( $recents as $recent)
-                        <li>{{ $recent->username }} submitted <a href="{{ route('submissions.show', ['submission' => $recent->id]) }}">{{ $recent->forms->title }}</a> on <b>{{ \App\Helpers\Helper::makeDateReadable($recent->created_at) }}</b></li>
+                        <li>{{ $recent->users->name }} submitted {{ $recent->forms->title }} on <b>{{ \App\Helpers\Helper::makeDateReadable($recent->created_at) }}</b>
+                            <a href="{{ route('submissions.show', ['submission' => $recent->id]) }}">View Submission</a>
+                        </li>
                     @endforeach
                 </ul>
             </div>
