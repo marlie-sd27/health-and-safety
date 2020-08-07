@@ -2,8 +2,11 @@
 
 namespace App;
 
+use App\Helpers\Helper;
 use App\Http\Requests\StoreForm;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Forms extends Model
 {
@@ -116,5 +119,56 @@ class Forms extends Model
             Fields::destroy($section->fields->modelKeys());
             Sections::destroy($section->id);
         }
+    }
+
+    public function closestDueDate()
+    {
+        // get all the relevant overdue dates for this event for this user
+        $overdues = Events::join('forms', 'forms_id', '=', 'forms.id')
+            ->where('date', '<', Carbon::now())
+            ->where('events.forms_id', '=', $this->id)
+            ->whereNotIn('events.id', function($query) {
+                $query->select('events_id')
+                    ->from('submissions')
+                    ->where('email', Auth::user()->email)
+                    ->get();
+            })
+            ->select('events.*')
+            ->orderBy('date', 'desc')
+            ->get();
+
+        $overdues = Helper::filterEvents($overdues);
+
+
+
+        // get the next closest due date for this event for this user
+        $next_due_date = Events::join('forms', 'forms_id', '=', 'forms.id')
+            ->where('date', '>=', Carbon::now())
+            ->where('events.forms_id', '=', $this->id)
+            ->whereNotIn('events.id', function($query) {
+                $query->select('events_id')
+                    ->from('submissions')
+                    ->where('email', Auth::user()->email)
+                    ->get();
+            })
+            ->select('events.*')
+            ->orderBy('date', 'asc')
+            ->get();
+
+        $next_due_date = Helper::filterEvents($next_due_date);
+
+
+        // if there's an overdue event for this form, return it's id
+        if (sizeof($overdues) > 0)
+        {
+            return $overdues->first()->id;
+        }
+        // otherwise, if there's an upcoming due date for it, return the upcoming id
+        else if (sizeof($next_due_date) > 0)
+        {
+            return $next_due_date->first()->id;
+        }
+        // otherwise return null
+        else return null;
     }
 }

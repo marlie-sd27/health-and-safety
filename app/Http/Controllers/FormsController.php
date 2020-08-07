@@ -49,7 +49,8 @@ class FormsController extends Controller
     // Show a specific form with its sections
     public function show(Forms $form, Request $request)
     {
-        $event_id = $request->filled('event') ? $request->event : null;
+
+        $event_id = $request->filled('event') ? $request->event : $form->closestDueDate();
 
         return (view('Forms/show', ['form' => $form->fullForm(), 'event' => Events::find($event_id) ]));
     }

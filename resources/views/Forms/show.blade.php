@@ -20,7 +20,9 @@
         @csrf
         <article>
             <input type="hidden" value="{{ $form->id }}" name="form_id"/>
-            <input type="hidden" value="{{ $event->id }}" name="event_id"/>
+            @if(isset($event))
+                <input type="hidden" value="{{ $event->id }}" name="event_id"/>
+            @endif
             <label>School/Site</label>
             <select name="site" class="form-control">
                 <option>--</option>

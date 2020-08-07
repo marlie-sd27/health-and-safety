@@ -7,10 +7,18 @@
             <div class="col-md card">
                 <h2>Overdue</h2>
                 <table class="table table-bordered table-hover">
-                    @foreach( $overdues as $key => $value)
+                    <tr>
+                        <th>Form</th>
+                        <th>User</th>
+                        <th>Due</th>
+                    </tr>
+                    @foreach( $overdues as $overdue)
                         <tr>
-                            <td>{{ $key }}</td>
-                            <td>{{ $value }}</td>
+                            <td>
+                                <a href="{{ route('forms.show', ['form' => $overdue->forms->id, 'event' => $overdue->id]) }}">{{ $overdue->forms->title }}</a>
+                            </td>
+                            <td>{{ Auth::user()->name }}</td>
+                            <td>{{ \App\Helpers\Helper::makeDateReadable($overdue->date) }}</td>
                         </tr>
                     @endforeach
                 </table>
@@ -41,7 +49,10 @@
                         <tr>
                             <td>{{ $recent->users->name }}</td>
                             <td>{{ $recent->forms->title }}</td>
-                            <td>{{ \App\Helpers\Helper::makeDateReadable($recent->created_at) }}</td>
+                            @if(isset($recent->created_at))
+                                <td>{{ \App\Helpers\Helper::makeDateReadable($recent->created_at) }}</td>
+                                @else <td>N/A</td>
+                            @endif
                             <td><a href="{{ route('submissions.show', ['submission' => $recent->id]) }}">View Submission</a></td>
                         </tr>
                     @endforeach

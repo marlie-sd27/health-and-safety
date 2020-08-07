@@ -18,6 +18,7 @@ class HomeController extends Controller
         // if user is admin
         if(Auth::user()->isAdmin())
         {
+            // get all upcoming events
             $viewData['upcomings'] = Events::with('forms')
                 ->where('date', '>', Carbon::now())
                 ->where('date', '<', Carbon::now()->addMonths(3))
@@ -25,13 +26,23 @@ class HomeController extends Controller
                 ->limit(5)
                 ->get();
 
-            $viewData['upcomings'] = Helper::filterEvents($viewData['upcomings']);
 
-            $viewData['overdues'] = [
-                'Asbestos' => 'September 6, 2019',
-                'Health & Safety checklist' => 'September 30, 2019'
-            ];
+            // get all overdue events for the user
+            $viewData['overdues'] = Events::with('forms')
+                ->where('date', '<', Carbon::now())
+                ->whereNotIn('events.id', function($query) {
+                    $query->select('events_id')
+                        ->from('submissions')
+                        ->where('email', Auth::user()->email)
+                        ->get();
+                })
+                ->orderBy('date', 'asc')
+                ->get();
 
+            $viewData['overdues'] = Helper::filterEvents($viewData['overdues']);
+
+
+            // get all recent submissions
             $viewData['recents'] = Submissions::with('forms')
                 ->where('created_at', '<', Carbon::now())
                 ->orderBy('created_at', 'desc')
@@ -62,7 +73,6 @@ class HomeController extends Controller
             // get all overdue events for the user
             $viewData['overdues'] = Events::with('forms')
                 ->where('date', '<', Carbon::now())
-                ->where('date', '>', Carbon::now()->addMonths(-6))
                 ->whereNotIn('events.id', function($query) {
                     $query->select('events_id')
                         ->from('submissions')
@@ -72,7 +82,7 @@ class HomeController extends Controller
                 ->orderBy('date', 'asc')
                 ->get();
 
-            $viewData['upcomings'] = Helper::filterEvents($viewData['upcomings']);
+            $viewData['overdues'] = Helper::filterEvents($viewData['overdues']);
 
 
             // get all completed submissions for the user

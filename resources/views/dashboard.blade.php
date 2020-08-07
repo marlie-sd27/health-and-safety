@@ -9,7 +9,9 @@
                 <table class="table table-bordered table-hover">
                     @foreach( $overdues as $overdue)
                         <tr>
-                            <td><a href="{{ route('forms.show', ['form' => $overdue->forms->id, 'event' => $overdue->id]) }}">{{ $overdue->forms->title }}</a></td>
+                            <td>
+                                <a href="{{ route('forms.show', ['form' => $overdue->forms->id, 'event' => $overdue->id]) }}">{{ $overdue->forms->title }}</a>
+                            </td>
                             <td>{{ \App\Helpers\Helper::makeDateReadable($overdue->date) }}</td>
                         </tr>
                     @endforeach
@@ -20,7 +22,9 @@
                 <table class="table table-bordered table-hover">
                     @foreach( $upcomings as $upcoming)
                         <tr>
-                            <td><a href="{{ route('forms.show', ['form' => $upcoming->forms->id, 'event' => $upcoming->id]) }}">{{ $upcoming->forms->title }}</a></td>
+                            <td>
+                                <a href="{{ route('forms.show', ['form' => $upcoming->forms->id, 'event' => $upcoming->id]) }}">{{ $upcoming->forms->title }}</a>
+                            </td>
                             <td>{{ \App\Helpers\Helper::makeDateReadable($upcoming->date) }}</td>
                         </tr>
                     @endforeach
@@ -41,9 +45,14 @@
 
                         <tr>
                             <td>{{ $completed->forms->title }}</td>
-                            <td>{{ \App\Helpers\Helper::makeDateReadable($completed->events->date) }}</td>
+                            @if(isset($completed->events->date))
+                                <td>{{ \App\Helpers\Helper::makeDateReadable($completed->events->date) }}</td>
+                            @else
+                                <td>N/A</td>
+                            @endif
                             <td>{{ \App\Helpers\Helper::makeDateReadable($completed->created_at) }}</td>
-                            <td><a href="{{ route('submissions.show', ['submission' => $completed->id]) }}">View Submission</a></td>
+                            <td><a href="{{ route('submissions.show', ['submission' => $completed->id]) }}">View
+                                    Submission</a></td>
                         </tr>
                     @endforeach
                 </table>
