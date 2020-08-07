@@ -44,4 +44,9 @@ class User extends Authenticatable
     public function isPrincipal() {
         return $this->principal;
     }
+
+    public function submissions()
+    {
+        return $this->hasMany('App\Submissions');
+    }
 }

@@ -16,7 +16,7 @@ Route::middleware(['auth','isadmin'])->group(function ()
 
     Route::resource('forms', 'FormsController')->except('show');
 
-    Route::get('report/users', 'ReportsController@userReport')->name('report.users');
+    Route::get('report', 'ReportsController@report')->name('report');
     Route::get('report/forms', 'ReportsController@formReport')->name('report.forms');
 
 });

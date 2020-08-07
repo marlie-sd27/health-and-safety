@@ -3,16 +3,33 @@
 @section('content')
     <div>
         <article class="container">
-            <p>Search for Submissions by user: </p>
 
-            <input id="searchUser" class="form-control" type="text" placeholder="Search"
-                   aria-label="Search"/>
+
+            <form method="get" action="{{ route('report') }}">
+                <label>Search by user:
+                    <input class="form-control" type="text" placeholder="Search" name='user'
+                           value="{{ $user ?? ""}}"
+                           aria-label="Search"/>
+                </label>
+                <label>Search by site:
+                    <input class="form-control text-reset" type="text" placeholder="Search" name='site'
+                           value="{{ $site ?? "" }}"
+                           aria-label="Search"/>
+                </label>
+                <label>Search by form:
+                    <input class="form-control text-reset" type="text" placeholder="Search" name='form'
+                           value="{{ $form ?? "" }}"
+                           aria-label="Search"/>
+                </label>
+                <button class="btn btn-primary" type="submit">Search</button>
+                <button class="btn btn-dark" type="button" id="clear">Clear Search Fields</button>
+            </form>
         </article>
         <table id="users" class="table table-bordered">
             <tr>
                 <th>Form</th>
                 <th>School/Site</th>
-                <th>Submitter Name</th>
+                <th>User</th>
                 <th>Date Submitted</th>
                 <th>View Submission</th>
                 <th>Delete</th>
@@ -22,7 +39,7 @@
                 <tr class="row-data">
                     <td>{{ $submission->forms->title }}</td>
                     <td>{{ $submission->site }}</td>
-                    <td>{{ $submission->user->name }}</td>
+                    <td>{{ $submission->users->name }}</td>
                     <td>{{ date('M d, Y @ H:i a', strtotime($submission->created_at)) }}</td>
                     <td><a href="{{ route('submissions.show', ['submission' => $submission]) }}">View</a></td>
                     @can('delete', $submission)

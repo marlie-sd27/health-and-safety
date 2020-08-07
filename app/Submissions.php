@@ -13,7 +13,7 @@ class Submissions extends Model
 
 
     // get the user who submitted
-    public function user()
+    public function users()
     {
         return $this->belongsTo('App\User', 'email', 'email');
     }

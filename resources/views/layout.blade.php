@@ -46,7 +46,7 @@
                     </li>
 
                     <li class="nav-item">
-                        <a href="{{ route('report.users') }}" class="nav-link {{$_SERVER['REQUEST_URI'] == '/' ? ' active' : ''}}">Submissions</a>
+                        <a href="{{ route('report') }}" class="nav-link {{$_SERVER['REQUEST_URI'] == '/' ? ' active' : ''}}">Submissions</a>
                     </li>
 
                 @else

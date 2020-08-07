@@ -140,30 +140,11 @@ $(document).ready(function () {
     })
 
 
-    $('body').on('keyup', '#searchUser', function() {
-        // Declare variables
-        let input, filter, tr, td, i, txtValue;
+    $('body').on('click', '#clear', function() {
 
-        input = $('#searchUser');
-        filter = input[0].value.toUpperCase();
-        tr = $('.row-data');
+        $('input').each(function( ) {
+            $(this)[0].value = "";
+        });
 
-        // Loop through all list items, and hide those who don't match the search query
-        for (i = 0; i < tr.length; i++) {
-
-            td = tr.eq(i);
-            console.log(td[0]);
-            txtValue = td[0].get(2).innerHTML;
-            if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                tr.eq(1).removeClass("d-none");
-            } else {
-                tr.eq(1).addClass("d-none");
-            }
-        }
-    });
-
-    // $('.date').datepicker({
-    //     multidate: true,
-    //     format: 'dd-mm-yyyy'
-    // });
+    })
 });

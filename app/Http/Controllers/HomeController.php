@@ -37,7 +37,6 @@ class HomeController extends Controller
                 ->limit(5)
                 ->get();
 
-//            dd($viewData['recents']);
             return view('Admin/dashboard', $viewData);
 
         } else {

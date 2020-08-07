@@ -49,6 +49,7 @@ class FormsController extends Controller
     public function show(Forms $form, Request $request)
     {
         $event = $request->filled('event') ? $request->query('event') : null;
+
         return (view('Forms/show', ['form' => $form->fullForm(), 'event' => $event ]));
     }
 
