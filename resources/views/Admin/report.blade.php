@@ -21,12 +21,21 @@
                            value="{{ $form ?? "" }}"
                            aria-label="Search"/>
                 </label>
+                <label>Search by date submitted:
+                    <input class="form-control text-reset" type="date" placeholder="Search" name='date_from'
+                           value="{{ $date_from ?? "" }}"
+                           aria-label="Search"/>
+                    <input class="form-control text-reset" type="date" placeholder="Search" name='date_to'
+                           value="{{ $date_to ?? "" }}"
+                           aria-label="Search"/>
+                </label>
                 <button class="btn btn-primary" type="submit">Search</button>
                 <button class="btn btn-dark" type="button" id="clear">Clear Search Fields</button>
             </form>
         </article>
         <table id="users" class="table table-bordered">
             <tr>
+                <th>ID</th>
                 <th>Form</th>
                 <th>School/Site</th>
                 <th>User</th>
@@ -37,6 +46,7 @@
 
             @foreach($submissions as $submission)
                 <tr class="row-data">
+                    <td>{{ $submission->id }}</td>
                     <td>{{ $submission->forms->title }}</td>
                     <td>{{ $submission->site }}</td>
                     <td>{{ $submission->users->name }}</td>
