@@ -20,7 +20,7 @@
                 <table class="table table-bordered table-hover">
                     @foreach( $upcomings as $upcoming)
                         <tr>
-                            <td><a href="{{ route('forms.show', ['form' => $upcoming->forms->id]) }}">{{ $upcoming->forms->title }}</a></td>
+                            <td><a href="{{ route('forms.show', ['form' => $upcoming->forms->id, 'event' => $upcoming->id]) }}">{{ $upcoming->forms->title }}</a></td>
                             <td>{{ \App\Helpers\Helper::makeDateReadable($upcoming->date) }}</td>
                         </tr>
                     @endforeach

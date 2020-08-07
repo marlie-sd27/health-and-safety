@@ -8,6 +8,9 @@
     @endif
     <div class="container">
         <h1>{{ $form->title }}</h1>
+        @if(isset($event))
+            <h3>Due: {{ App\Helpers\Helper::makeDateReadable($event->date) }}</h3>
+        @endif
         @if ($form->interval != null)
             <p><small>To be completed every {{ $form->interval }} by <b>{{ $form->required_for }}</b></small></p>
         @endif
@@ -17,7 +20,7 @@
         @csrf
         <article>
             <input type="hidden" value="{{ $form->id }}" name="form_id"/>
-            <input type="hidden" value="{{ $event }}" name="event_id"/>
+            <input type="hidden" value="{{ $event->id }}" name="event_id"/>
             <label>School/Site</label>
             <select name="site" class="form-control">
                 <option>--</option>

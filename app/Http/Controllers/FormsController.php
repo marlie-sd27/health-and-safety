@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events;
 use App\Forms;
 use App\Http\Requests\StoreForm;
 use Illuminate\Http\Request;
@@ -48,9 +49,9 @@ class FormsController extends Controller
     // Show a specific form with its sections
     public function show(Forms $form, Request $request)
     {
-        $event = $request->filled('event') ? $request->query('event') : null;
+        $event_id = $request->filled('event') ? $request->event : null;
 
-        return (view('Forms/show', ['form' => $form->fullForm(), 'event' => $event ]));
+        return (view('Forms/show', ['form' => $form->fullForm(), 'event' => Events::find($event_id) ]));
     }
 
 
