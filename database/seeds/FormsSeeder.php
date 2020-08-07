@@ -23,7 +23,7 @@ class FormsSeeder extends Seeder
                     "\n\nSchools/facilities are required to forward a copy of this report to: sd27maintenance@sd27.bc.ca",
 
                 'interval' => '1 year',
-                'first_occurence_at' => '2020-10-15,2020-11-15,2021-01-15,2021-02-15,2021-04-15,2021-06-01',
+                'first_occurence_at' => '2019-10-15,2019-11-15,2020-01-15,2020-02-15,2020-04-15,2020-06-01',
                 'required_for' => 'Principals and Vice Principals',
                 'full_year' => false,
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
@@ -40,7 +40,7 @@ class FormsSeeder extends Seeder
                     "\nPlease complete this checklist by September 30th.",
 
                 'interval' => '1 year',
-                'first_occurence_at' => '2020-09-30',
+                'first_occurence_at' => '2019-09-30',
                 'required_for' => 'Principals and Vice Principals',
                 'full_year' => false,
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
@@ -50,7 +50,7 @@ class FormsSeeder extends Seeder
                 'title' => 'Elementary School Inspection',
                 'description' => "",
                 'interval' => '2 months',
-                'first_occurence_at' => '2020-09-30',
+                'first_occurence_at' => '2019-09-30',
                 'required_for' => 'Elementary Principals Only',
                 'full_year' => false,
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s'),

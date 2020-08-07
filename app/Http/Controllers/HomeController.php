@@ -42,8 +42,9 @@ class HomeController extends Controller
 
             // otherwise
         } else {
+            // get all relevant upcoming events for the user that they haven't made a submission for
             $viewData['upcomings'] = Events::with('forms')
-                ->where('date', '>', Carbon::now())
+                ->where('date', '>=', Carbon::now())
                 ->where('date', '<', Carbon::now()->addMonths(4))
                 ->whereNotIn('events.id', function($query) {
                     $query->select('events_id')
@@ -57,11 +58,24 @@ class HomeController extends Controller
 
             $viewData['upcomings'] = Helper::filterEvents($viewData['upcomings']);
 
-            $viewData['overdues'] = [
-                'Asbestos' => 'September 6, 2019',
-                'Health & Safety checklist' => 'September 30, 2019'
-            ];
 
+            // get all overdue events for the user
+            $viewData['overdues'] = Events::with('forms')
+                ->where('date', '<', Carbon::now())
+                ->where('date', '>', Carbon::now()->addMonths(-6))
+                ->whereNotIn('events.id', function($query) {
+                    $query->select('events_id')
+                        ->from('submissions')
+                        ->where('email', Auth::user()->email)
+                        ->get();
+                })
+                ->orderBy('date', 'asc')
+                ->get();
+
+            $viewData['upcomings'] = Helper::filterEvents($viewData['upcomings']);
+
+
+            // get all completed submissions for the user
             $viewData['completeds'] = Submissions::with('forms')
                 ->where('email', Auth::user()->email)
                 ->orderBy('created_at', 'desc')

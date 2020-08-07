@@ -7,10 +7,10 @@
             <div class="col-md card">
                 <h2>Overdue</h2>
                 <table class="table table-bordered table-hover">
-                    @foreach( $overdues as $key => $value)
+                    @foreach( $overdues as $overdue)
                         <tr>
-                            <td>{{ $key }}</td>
-                            <td>{{ $value }}</td>
+                            <td><a href="{{ route('forms.show', ['form' => $overdue->forms->id, 'event' => $overdue->id]) }}">{{ $overdue->forms->title }}</a></td>
+                            <td>{{ \App\Helpers\Helper::makeDateReadable($overdue->date) }}</td>
                         </tr>
                     @endforeach
                 </table>
