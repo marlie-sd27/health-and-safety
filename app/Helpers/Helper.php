@@ -57,7 +57,53 @@ class Helper
         if (!Auth::user()->isPrincipal()) {
 
             $events = $events->filter( function($value, $key) {
-                return $value->forms->required_for == 'All Staff';
+                return $value->required_for == 'All Staff';
+            });
+        }
+
+        return $events;
+    }
+
+
+    public static function filterEventsDashboard($events, $user)
+    {
+        // if admin, return all events
+        if ($user->isAdmin()) {
+
+            return $events;
+        }
+
+        // if elementary principal, filter events for principals, all staff and elementary principals
+        if ($user->isElementaryPrincipal()) {
+
+            $events = $events->filter( function($value) {
+                if ($value->required_for == 'All Staff')
+                    return true;
+                if ($value->required_for == 'Elementary Principals Only')
+                    return true;
+                if ($value->required_for == 'Principals and Vice Principals')
+                    return true;
+            });
+        }
+
+        // if secondary principal, filter events for principals, all staff and secondary principals
+        if ($user->isSecondaryPrincipal()) {
+
+            $events = $events->filter( function($value, $key) {
+                if ($value->required_for == 'All Staff')
+                    return true;
+                if ($value->required_for == 'Secondary Principals Only')
+                    return true;
+                if ($value->required_for == 'Principals and Vice Principals')
+                    return true;
+            });
+        }
+
+        // if not principal, filter events for all staff
+        if ($user->isPrincipal()) {
+
+            $events = $events->filter( function($value, $key) {
+                return $value->required_for == 'All Staff';
             });
         }
 

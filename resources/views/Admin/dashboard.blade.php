@@ -12,14 +12,16 @@
                         <th>User</th>
                         <th>Due</th>
                     </tr>
-                    @foreach( $overdues as $overdue)
-                        <tr>
-                            <td>
-                                <a href="{{ route('forms.show', ['form' => $overdue->forms->id, 'event' => $overdue->id]) }}">{{ $overdue->forms->title }}</a>
-                            </td>
-                            <td>{{ Auth::user()->name }}</td>
-                            <td>{{ \App\Helpers\Helper::makeDateReadable($overdue->date) }}</td>
-                        </tr>
+                    @foreach( $overdues as $user => $overdue)
+                        @foreach($overdue as $key => $value)
+                            <tr>
+                                <td>
+                                    <a href="{{ route('forms.show', ['form' => $value->forms_id, 'event' => $value->id]) }}">{{ $value->title }}</a>
+                                </td>
+                                <td>{{ $user }}</td>
+                                <td>{{ \App\Helpers\Helper::makeDateReadable($value->date) }}</td>
+                            </tr>
+                        @endforeach
                     @endforeach
                 </table>
                 <a class="text-right" href="{{ route('report.overdue') }}">See all overdues...</a>

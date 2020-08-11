@@ -2,22 +2,53 @@
 
 @section('content')
     <a href="{{ url()->previous() }}">Back</a>
-    <h1>Overdue Submissions</h1>
     <div class="container">
+    <h1>Overdue Submissions</h1>
+        <article class="container">
+
+
+            <form method="get" action="{{ route('report.overdue') }}">
+                <label>Search by form:
+                    <input class="form-control text-reset" type="text" placeholder="Search" name='form'
+                           value="{{ $form ?? "" }}"
+                           aria-label="Search"/>
+                </label>
+                <label>Search by user:
+                    <input class="form-control" type="text" placeholder="Search" name='user'
+                           value="{{ $user ?? ""}}"
+                           aria-label="Search"/>
+                </label>
+                <label>Search by date from:
+                    <input class="form-control text-reset" type="date" placeholder="Search" name='date_from'
+                           value="{{ $date_from ?? "" }}"
+                           aria-label="Search"/>
+                </label>
+                <label>to:
+                    <input class="form-control text-reset" type="date" placeholder="Search" name='date_to'
+                           value="{{ $date_to ?? "" }}"
+                           aria-label="Search"/>
+                </label>
+
+                <button class="btn btn-primary" type="submit">Search</button>
+                <button class="btn btn-dark" type="button" id="clear">Clear Search Fields</button>
+            </form>
+        </article>
         <table class="table table-bordered table-hover">
             <tr>
                 <th>Form</th>
                 <th>User</th>
                 <th>Due</th>
             </tr>
-            @foreach( $overdues as $overdue)
-                <tr>
-                    <td>
-                        <a href="{{ route('forms.show', ['form' => $overdue->forms->id, 'event' => $overdue->id]) }}">{{ $overdue->forms->title }}</a>
-                    </td>
-                    <td>{{ Auth::user()->name }}</td>
-                    <td>{{ \App\Helpers\Helper::makeDateReadable($overdue->date) }}</td>
-                </tr>
+            @foreach( $overdues as $user => $overdue)
+                @foreach($overdue as $key => $value)
+                    <tr>
+                        <td>
+                            <a href="{{ route('forms.show', ['form' => $value->forms_id, 'event' => $value->id]) }}">{{ $value->title }}</a>
+                        </td>
+                        <td>{{ $user }}</td>
+                        <td>{{ \App\Helpers\Helper::makeDateReadable($value->date) }}</td>
+                    </tr>
+                @endforeach
             @endforeach
         </table>
     </div>
