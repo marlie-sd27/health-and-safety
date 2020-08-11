@@ -11,7 +11,7 @@
                             aria-label="Search">
                         <option></option>
                         @foreach($links as $link)
-                            <option>{{ $link->title }}</option>
+                            <option @if ($form == $link->title) {{ 'selected' }} @endif>{{ $link->title }}</option>
                         @endforeach
                     </select>
                 </label>
