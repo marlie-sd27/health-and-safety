@@ -45,9 +45,17 @@
                         </div>
                     </li>
 
-                    <li class="nav-item">
-                        <a href="{{ route('report') }}" class="nav-link {{$_SERVER['REQUEST_URI'] == '/' ? ' active' : ''}}">Submissions</a>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
+                           aria-haspopup="true" aria-expanded="false">Report
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a href="{{route('report')}}" class="dropdown-item">Submissions</a>
+                            <a href="{{ route('report.overdue') }}" class="dropdown-item">Overdue</a>
+                            <a href="{{ route('report.upcoming') }}" class="dropdown-item">Upcoming</a>
+                        </div>
                     </li>
+
 
                 @else
                     <li class="nav-item">

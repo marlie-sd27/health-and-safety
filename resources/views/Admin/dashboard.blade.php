@@ -68,6 +68,7 @@
                         </tr>
                     @endforeach
                 </table>
+                <a class="text-right" href="{{ route('report') }}">See all submissions...</a>
             </div>
         </div>
     </div>

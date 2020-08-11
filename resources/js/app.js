@@ -146,5 +146,9 @@ $(document).ready(function () {
             $(this)[0].value = "";
         });
 
+        $('option').each(function() {
+            $(this).eq(0)[0].selected = false;
+        });
+
     })
 });

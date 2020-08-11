@@ -5,25 +5,27 @@
     <div class="container">
     <h1>Overdue Submissions</h1>
         <article class="container">
-
-
-            <form method="get" action="{{ route('report.overdue') }}">
+            <form method="get" action="{{ route('report') }}">
                 <label>Search by form:
-                    <input class="form-control text-reset" type="text" placeholder="Search" name='form'
-                           value="{{ $form ?? "" }}"
-                           aria-label="Search"/>
+                    <select class="form-control text-reset" type="text" placeholder="Search" name='form'
+                            aria-label="Search">
+                        <option></option>
+                        @foreach($links as $link)
+                            <option>{{ $link->title }}</option>
+                        @endforeach
+                    </select>
                 </label>
                 <label>Search by user:
                     <input class="form-control" type="text" placeholder="Search" name='user'
                            value="{{ $user ?? ""}}"
                            aria-label="Search"/>
                 </label>
-                <label>Search by date from:
+                <label>Search from date:
                     <input class="form-control text-reset" type="date" placeholder="Search" name='date_from'
                            value="{{ $date_from ?? "" }}"
                            aria-label="Search"/>
                 </label>
-                <label>to:
+                <label>to date:
                     <input class="form-control text-reset" type="date" placeholder="Search" name='date_to'
                            value="{{ $date_to ?? "" }}"
                            aria-label="Search"/>
