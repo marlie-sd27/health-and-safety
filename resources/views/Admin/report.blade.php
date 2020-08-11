@@ -1,6 +1,7 @@
 @extends('layout')
 
 @section('content')
+    <a href="{{ url()->previous() }}">Back</a>
     <div>
         <article class="container">
 
@@ -21,14 +22,17 @@
                            value="{{ $user ?? ""}}"
                            aria-label="Search"/>
                 </label>
-                <label>Search by date submitted:
+                <label>Search by date from:
                     <input class="form-control text-reset" type="date" placeholder="Search" name='date_from'
                            value="{{ $date_from ?? "" }}"
                            aria-label="Search"/>
+                </label>
+                <label>to:
                     <input class="form-control text-reset" type="date" placeholder="Search" name='date_to'
                            value="{{ $date_to ?? "" }}"
                            aria-label="Search"/>
                 </label>
+
                 <button class="btn btn-primary" type="submit">Search</button>
                 <button class="btn btn-dark" type="button" id="clear">Clear Search Fields</button>
             </form>

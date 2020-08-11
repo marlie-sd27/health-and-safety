@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Events;
 use App\Forms;
+use App\Helpers\Helper;
 use App\Submissions;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ReportsController extends Controller
 {
@@ -48,8 +52,33 @@ class ReportsController extends Controller
     }
 
 
-    public function formReport(Forms $form)
+    public function overdue(Request $request)
     {
-        return view('Admin/formReport');
+        // get all overdue events for the user
+        $overdues = Events::with('forms')
+            ->where('date', '<', Carbon::now())
+            ->whereNotIn('events.id', function($query) {
+                $query->select('events_id')
+                    ->from('submissions')
+                    ->where('email', Auth::user()->email)
+                    ->get();
+            })
+            ->orderBy('date', 'asc')
+            ->get();
+
+        return view('Admin/overdue', ['overdues' => $overdues]);
+    }
+
+
+    public function upcoming(Request $request)
+    {
+        // get all upcoming events
+        $upcomings = Events::with('forms')
+            ->where('date', '>', Carbon::now())
+            ->where('date', '<', Carbon::now()->addMonths(3))
+            ->orderBy('date', 'asc')
+            ->get();
+
+        return view('Admin/upcoming', ['upcomings' => $upcomings]);
     }
 }

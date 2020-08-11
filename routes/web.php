@@ -17,7 +17,8 @@ Route::middleware(['auth','isadmin'])->group(function ()
     Route::resource('forms', 'FormsController')->except('show');
 
     Route::get('report', 'ReportsController@report')->name('report');
-    Route::get('report/forms', 'ReportsController@formReport')->name('report.forms');
+    Route::get('report/overdue', 'ReportsController@overdue')->name('report.overdue');
+    Route::get('report/upcoming', 'ReportsController@upcoming')->name('report.upcoming');
 
 });
 

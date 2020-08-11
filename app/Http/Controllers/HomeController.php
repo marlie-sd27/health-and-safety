@@ -23,11 +23,11 @@ class HomeController extends Controller
                 ->where('date', '>', Carbon::now())
                 ->where('date', '<', Carbon::now()->addMonths(3))
                 ->orderBy('date', 'asc')
-                ->limit(5)
+                ->limit(3)
                 ->get();
 
 
-            // get all overdue events for the user
+            // get all overdue events for all users
             $viewData['overdues'] = Events::with('forms')
                 ->where('date', '<', Carbon::now())
                 ->whereNotIn('events.id', function($query) {
@@ -37,9 +37,8 @@ class HomeController extends Controller
                         ->get();
                 })
                 ->orderBy('date', 'asc')
+                ->limit(3)
                 ->get();
-
-            $viewData['overdues'] = Helper::filterEvents($viewData['overdues']);
 
 
             // get all recent submissions
@@ -64,7 +63,7 @@ class HomeController extends Controller
                         ->get();
                 })
                 ->orderBy('date', 'asc')
-                ->limit(5)
+                ->limit(3)
                 ->get();
 
             $viewData['upcomings'] = Helper::filterEvents($viewData['upcomings']);
@@ -80,6 +79,7 @@ class HomeController extends Controller
                         ->get();
                 })
                 ->orderBy('date', 'asc')
+                ->limit(3)
                 ->get();
 
             $viewData['overdues'] = Helper::filterEvents($viewData['overdues']);
