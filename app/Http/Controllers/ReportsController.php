@@ -56,7 +56,6 @@ class ReportsController extends Controller
 
     public function overdue(Request $request)
     {
-        // get first 5 overdue events for all users
         $overdues = array();
 
         // for each user, get all the overdue submissions (with form and event info)
