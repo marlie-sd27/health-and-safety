@@ -18,11 +18,17 @@
             <article class="container">
                 <div class="form-group">
                     <label for="form_title">Title</label>
-                    <input class="form-control" type="text" name="form_title" required value="{{ $form->title }}">
+                    <input class="form-control @error('form_title') border-danger @enderror"
+                           type="text"
+                           name="form_title"
+                           value="@if (old('form_title')){{ old('form_title') }}@else {{ $form->title }} @endif"
+                           required
+                    />
                 </div>
                 <div class="form-group">
                     <label for="form_description">Description</label>
-                    <textarea class="form-control" name="form_description">{{ $form->description }}</textarea>
+                    <textarea class="form-control @error('form_description') border-danger @enderror"
+                              name="form_description">@if (old('form_description')){{ old('form_description') }}@else {{ $form->description }} @endif</textarea>
                 </div>
             </article>
             <article class="container">
@@ -36,9 +42,18 @@
                             any
                             employee, but will still be available to fill out and submit.</b></small></p>
                 <div class="form-group">
-                    <label for="first_occurence_at">Select one or more due dates</label>
-                    <input class="form-control" type="text" name="first_occurence_at" placeholder="Pick a date"
-                           value="{{ $form->first_occurence_at }}">
+                    <label for="first_occurence_at">Enter one or more due dates separated by a comma</label>
+                    <p><small>Examples: '2020-09-01,2020-12-01' or '2020-10-30'. Dates must be in the format yyyy-mm-dd. Leave blank for no due dates</small></p>
+                    <input class="form-control @error('first_occurence_at') border-danger @enderror"
+                           type="text"
+                           name="first_occurence_at"
+                           placeholder="Pick a date"
+                           value="@if (old('first_occurence_at')){{ old('first_occurence_at') }}@else {{ $form->first_occurence_at }} @endif"
+                    />
+
+                    @error('first_occurence_at')
+                        <p class="help text-danger">{{ $errors->first('first_occurence_at') }}</p>
+                    @enderror
                 </div>
                 <div class="form-group">
                     <label for="interval">Define a recurrence interval for the due dates</label>
@@ -47,7 +62,7 @@
                            value="{{ $form->interval }}">
                 </div>
                 <div class="form-group">
-                    <input type="checkbox" name="full_year" @if (isset($form->full_year)) checked @endif>
+                    <input type="checkbox" name="full_year" @if ($form->full_year)) checked @endif>
                     <label for="full_year">Include July and August for scheduling?</label>
                     <p><small><b>Note that due dates will not be scheduled in July or August unless otherwise specified</b>
                         </small></p>

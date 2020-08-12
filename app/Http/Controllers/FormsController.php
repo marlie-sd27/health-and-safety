@@ -70,9 +70,10 @@ class FormsController extends Controller
             $form->update([
                 'title' => $validated['title'],
                 'description' => $validated['description'],
-                'recurrence' => $validated['recurrence'],
+                'first_occurence_at' => $validated['first_occurence_at'],
+                'interval' => $validated['interval'],
                 'required_role' => $validated['required_role'],
-                'full_year' => $validated['full_year']
+                'full_year' => $validated['full_year'],
             ]);
 
             $form->deleteAllSectionsandFields();
