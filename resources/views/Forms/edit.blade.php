@@ -24,11 +24,17 @@
                            value="@if (old('form_title')){{ old('form_title') }}@else {{ $form->title }} @endif"
                            required
                     />
+                    @error('form_title')
+                    <p class="help text-danger">{{ $errors->first('form_title') }}</p>
+                    @enderror
                 </div>
                 <div class="form-group">
                     <label for="form_description">Description</label>
                     <textarea class="form-control @error('form_description') border-danger @enderror"
                               name="form_description">@if (old('form_description')){{ old('form_description') }}@else {{ $form->description }} @endif</textarea>
+                    @error('form_description')
+                    <p class="help text-danger">{{ $errors->first('form_description') }}</p>
+                    @enderror
                 </div>
             </article>
             <article class="container">
@@ -58,34 +64,48 @@
                 <div class="form-group">
                     <label for="interval">Define a recurrence interval for the due dates</label>
                     <p><small>Examples: '1 year' or '3 months' or '1 month 2 weeks'</small></p>
-                    <input class="form-control" type="text" name="interval" placeholder="Define an interval"
-                           value="{{ $form->interval }}">
+                    <input class="form-control @error('interval') border-danger @enderror"
+                           type="text"
+                           name="interval"
+                           placeholder="Define an interval"
+                           value="@if (old('interval')){{ old('interval') }}@else {{ $form->interval }} @endif">
+                    @error('interval')
+                        <p class="help text-danger">{{ $errors->first('interval') }}</p>
+                    @enderror
                 </div>
                 <div class="form-group">
-                    <input type="checkbox" name="full_year" @if ($form->full_year)) checked @endif>
+                    <input type="checkbox"
+                           class="@error('full_year') border-danger @enderror"
+                           name="full_year" @if ($form->full_year | is_array(old('full_year'))) checked @endif>
                     <label for="full_year">Include July and August for scheduling?</label>
+                    @error('full_year')
+                        <p class="help text-danger">{{ $errors->first('full_year') }}</p>
+                    @enderror
                     <p><small><b>Note that due dates will not be scheduled in July or August unless otherwise specified</b>
                         </small></p>
                 </div>
                 <div class="form-group">
                     <label for="required_for">Who is required to submit this form?</label>
-                    <select class="form-control" name="required_for">
-                        <option value="All Staff" @if ($form->required_for == "All Staff") {{ 'selected' }} @endif>
+                    <select class="form-control @error('required_for') border-danger @enderror" name="required_for">
+                        <option value="All Staff" @if ($form->required_for == "All Staff" | old('required_for') == "All Staff") {{ 'selected' }} @endif>
                             All staff
                         </option>
                         <option
-                            value="Principals and Vice Principals" @if ($form->required_for == "Principals and Vice Principals") {{ 'selected' }} @endif>
+                            value="Principals and Vice Principals" @if ($form->required_for == "Principals and Vice Principals" | old('required_for') == "Principals and Vice Principals") {{ 'selected' }} @endif>
                             Principals and Vice Principals
                         </option>
                         <option
-                            value="Secondary Principals Only" @if ($form->required_for == "Secondary Principals Only") {{ 'selected' }} @endif>
+                            value="Secondary Principals Only" @if ($form->required_for == "Secondary Principals Only" | old('required_for') == "Secondary Principals Only") {{ 'selected' }} @endif>
                             Secondary Principals Only
                         </option>
                         <option
-                            value="Elementary Principals Only" @if ($form->required_for == "Elementary Principals Only") {{ 'selected' }} @endif>
+                            value="Elementary Principals Only" @if ($form->required_for == "Elementary Principals Only" | old('required_for') == "Elementary Principals Only") {{ 'selected' }} @endif>
                             Elementary Principals Only
                         </option>
                     </select>
+                    @error('required_for')
+                        <p class="help text-danger">{{ $errors->first('required_for') }}</p>
+                    @enderror
                 </div>
             </article>
 
@@ -104,13 +124,21 @@
 
                                 <div class="form-group">
                                     <label for="section_title">Title</label>
-                                    <input class="form-control" type="text" name="section_title[]"
-                                           value="{{ $section->title }}">
+                                    <input class="form-control @error("section_title.$loop->index") border-danger @enderror"
+                                           type="text"
+                                           name="section_title[]"
+                                           value="@if (old("section_title.$loop->index")){{ old("section_title.$loop->index") }}@else{{ $section->title }} @endif">
+                                    @error("section_title.$loop->index")
+                                        <p class="help text-danger">{{ $errors->first("section_title.$loop->index") }}</p>
+                                    @enderror
                                 </div>
                                 <div class="form-group">
                                     <label for="section_description">Description</label>
-                                    <textarea class="form-control"
-                                              name="section_description[]">{{ $section->description }}</textarea>
+                                    <textarea class="form-control @error("section_description.$loop->index") border-danger @enderror"
+                                              name="section_description[]">@if (old("section_description[$loop->index]")){{ old("section_description[$loop->index]") }}@else{{ $section->description }}@endif</textarea>
+                                    @error("section_description.$loop->index")
+                                        <p class="help text-danger">{{ $errors->first("section_description.$loop->index") }}</p>
+                                    @enderror
                                 </div>
                                 <h3>Add fields to your section</h3>
                                 <div id="fields">
@@ -125,13 +153,18 @@
                                                        value="{{ $field->sections_id }}"/>
                                                 <div class="form-group">
                                                     <label for="type">Label</label>
-                                                    <input class="form-control" type="text" name="label[]"
-                                                           value="{{ $field->label }}"/>
+                                                    <input class="form-control @error("label.$loop->index") border-danger @enderror"
+                                                           type="text"
+                                                           name="label[]"
+                                                           value="@if (old("label.$loop->index")){{ old("label.$loop->index") }}@else{{ $field->label }}@endif"/>
+                                                    @error("label.$loop->index")
+                                                        <p class="help text-danger">{{ $errors->first("label.$loop->index") }}</p>
+                                                    @enderror
                                                 </div>
                                                 <div class="form-group">
                                                     <input type="checkbox"
-                                                           name="required[{{ $field->id }}]" {{ $field->required == true ? "checked" : "" }}
-                                                    "/>
+                                                           name="required[{{ $field->id }}]" {{ $field->required ? "checked" : "" }}
+                                                    />
                                                     <label for="required">Required?</label>
                                                 </div>
                                                 <div class="form-group">
@@ -201,4 +234,5 @@
             </div>
         </form>
     </div>
+    {{ dd(\Illuminate\Support\Facades\Session::all()) }}
 @endsection

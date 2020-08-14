@@ -37,6 +37,7 @@ class StoreForm extends FormRequest
             'options' => 'array|nullable',
             'options.*' => 'string',
         ];
+
     }
 
 

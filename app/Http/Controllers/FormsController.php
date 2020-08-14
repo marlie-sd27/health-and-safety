@@ -66,6 +66,8 @@ class FormsController extends Controller
     // update the form in the database with new data
     public function update(StoreForm $validated, Forms $form)
     {
+
+//        dd($validated);
         DB::transaction(function () use ($validated, $form) {
             $form->update([
                 'title' => $validated['title'],
