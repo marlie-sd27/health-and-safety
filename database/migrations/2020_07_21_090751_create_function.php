@@ -24,7 +24,7 @@ class CreateFunction extends Migration
 
     BEGIN
 
-        IF new.interval IS NOT NULL THEN
+        IF (new.interval IS NOT NULL AND new.first_occurence_at IS NOT NULL) THEN
 
             SELECT string_to_array(new.first_occurence_at, \',\') INTO schedule_dates;
 
