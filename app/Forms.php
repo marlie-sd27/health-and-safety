@@ -14,11 +14,6 @@ class Forms extends Model
         'title', 'description', 'first_occurence_at', 'interval', 'required_for', 'full_year'
     ];
 
-    protected $casts = [
-        'first_occurence_at' => 'array'
-    ];
-
-
 
     // Get the sections for a form
     public function sections()

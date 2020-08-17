@@ -16,25 +16,15 @@ class ValidInterval implements Rule
         //
     }
 
-    /**
-     * Determine if the validation rule passes.
-     *
-     * @param  string  $attribute
-     * @param  mixed  $value
-     * @return bool
-     */
+    // determine if the interval is valid
     public function passes($attribute, $value)
     {
-        //
+        // TODO: write logic
     }
 
-    /**
-     * Get the validation error message.
-     *
-     * @return string
-     */
+    // error message returned if rule fails
     public function message()
     {
-        return 'The validation error message.';
+        return 'The interval is not valid. Must be in format "quantity unit ..."';
     }
 }

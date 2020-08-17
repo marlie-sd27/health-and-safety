@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Rules\ValidDates;
+use App\Rules\ValidInterval;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreForm extends FormRequest
@@ -30,7 +31,7 @@ class StoreForm extends FormRequest
             'section_description.*' => 'string|nullable',
 
             'label' => 'array|nullable',
-            'label.*' => 'required|string|distinct',
+            'label.*' => ['required','string', new ValidInterval()],
             'type' => 'array|nullable',
             'type.*' => 'in:select,text,textarea,number,radio,checkbox,slider,date,time',
             'required' => 'array|nullable',

@@ -54,8 +54,7 @@
                            type="text"
                            name="first_occurence_at"
                            placeholder="Pick a date"
-                           value="@if (old('first_occurence_at')){{ old('first_occurence_at') }}@else {{ $form->first_occurence_at }} @endif"
-                    />
+                           value="@if (old('first_occurence_at')){{ old('first_occurence_at') }}@else{{ $form->first_occurence_at }}@endif">
 
                     @error('first_occurence_at')
                         <p class="help text-danger">{{ $errors->first('first_occurence_at') }}</p>
@@ -234,5 +233,4 @@
             </div>
         </form>
     </div>
-    {{ dd(\Illuminate\Support\Facades\Session::all()) }}
 @endsection
