@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\ValidDates;
+use App\Rules\ValidInterval;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreForm extends FormRequest
@@ -18,7 +20,7 @@ class StoreForm extends FormRequest
         return [
             'title' => 'sometimes|required|max:255',
             'description' => 'string|nullable',
-            'first_occurence_at' => 'string|nullable',
+            'first_occurence_at' => ['string','nullable', new ValidDates()],
             'interval' => 'string|nullable',
             'required_for' => 'nullable|in:All Staff,Principals and Vice Principals,Elementary Principals Only,Secondary Principals Only',
             'full_year' => 'boolean',
@@ -29,13 +31,14 @@ class StoreForm extends FormRequest
             'section_description.*' => 'string|nullable',
 
             'label' => 'array|nullable',
-            'label.*' => 'required|string|distinct',
+            'label.*' => ['required','string', new ValidInterval()],
             'type' => 'array|nullable',
             'type.*' => 'in:select,text,textarea,number,radio,checkbox,slider,date,time',
             'required' => 'array|nullable',
             'options' => 'array|nullable',
             'options.*' => 'string',
         ];
+
     }
 
 
@@ -64,7 +67,6 @@ class StoreForm extends FormRequest
                 $options[$key] = filter_var($this->options[$key], FILTER_SANITIZE_STRING);
             }
         }
-
 
         $this->merge([
             'title' => filter_var($this->form_title, FILTER_SANITIZE_STRING),

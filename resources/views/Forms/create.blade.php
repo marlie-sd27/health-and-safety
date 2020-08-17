@@ -35,27 +35,43 @@
                             complete by
                             any
                             employee, but will still be available to fill out and submit.</b></small></p>
-                <div class="form-group">
-                    <label for="first_occurence_at">Select one or more due dates</label>
-                    <input class="form-control date" type="text" name="first_occurence_at" placeholder="Pick a date"
-                           value="{{ old('first_occurence_at') }}">
-                </div>
+                <input class="form-control @error('first_occurence_at') border-danger @enderror"
+                       type="text"
+                       name="first_occurence_at"
+                       placeholder="Pick a date"
+                       value="{{ old('first_occurence_at') }}">
+
+                @error('first_occurence_at')
+                <p class="help text-danger">{{ $errors->first('first_occurence_at') }}</p>
+                @enderror
                 <div class="form-group">
                     <label for="interval">Define a recurrence interval for the due dates</label>
                     <p><small>Examples: '1 year' or '3 months' or '1 month 2 weeks'</small></p>
-                    <input class="form-control" type="text" name="interval" placeholder="Define an interval"
+                    <input class="form-control @error('interval') border-danger @enderror"
+                           type="text"
+                           name="interval"
+                           placeholder="Define an interval"
                            value="{{ old('interval') }}">
+                    @error('interval')
+                    <p class="help text-danger">{{ $errors->first('interval') }}</p>
+                    @enderror
                 </div>
                 <div class="form-group">
-                    <input type="checkbox" name="full_year" @if (is_array(old('full_year'))) checked @endif>
+                    <input type="checkbox"
+                           class="@error('full_year') border-danger @enderror"
+                           name="full_year"
+                           @if (old('full_year')) checked @endif>
                     <label for="full_year">Include July and August for scheduling?</label>
                     <p><small><b>Note that due dates will not be scheduled in July or August unless otherwise specified</b>
                         </small></p>
+                    @error('full_year')
+                    <p class="help text-danger">{{ $errors->first('full_year') }}</p>
+                    @enderror
                 </div>
 
                 <div class="form-group">
                     <label for="required_for">Who is required to submit this form?</label>
-                    <select class="form-control" name="required_for">
+                    <select class="form-control @error('required_for') border-danger @enderror" name="required_for">
                         <option value="All Staff" @if (old('required_for') == "All Staff") {{ 'selected' }} @endif>
                             All Staff
                         </option>
@@ -72,6 +88,9 @@
                             Elementary Principals Only
                         </option>
                     </select>
+                    @error('required_for')
+                    <p class="help text-danger">{{ $errors->first('required_for') }}</p>
+                    @enderror
                 </div>
             </article>
 
