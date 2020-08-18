@@ -69,6 +69,9 @@ class FormsController extends Controller
 
 //        dd($validated);
         DB::transaction(function () use ($validated, $form) {
+
+            $form->deleteAllAssociatedEvents();
+
             $form->update([
                 'title' => $validated['title'],
                 'description' => $validated['description'],
@@ -79,11 +82,11 @@ class FormsController extends Controller
             ]);
 
             $form->deleteAllSectionsandFields();
-
             $form->createSectionsandFields($validated);
 
             $form->save();
         });
+
 
         return redirect(route('forms.show', ['form' => $form->id]))->with('message','Successfully updated the form!');
     }
