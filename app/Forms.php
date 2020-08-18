@@ -166,4 +166,13 @@ class Forms extends Model
         // otherwise return null
         else return null;
     }
+
+    public function deleteAllAssociatedEvents()
+    {
+        $events = $this->events;
+        foreach ($events as $event)
+        {
+            Events::destroy($event->id);
+        }
+    }
 }

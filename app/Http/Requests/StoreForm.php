@@ -20,8 +20,8 @@ class StoreForm extends FormRequest
         return [
             'title' => 'sometimes|required|max:255',
             'description' => 'string|nullable',
-            'first_occurence_at' => ['string','nullable', new ValidDates()],
-            'interval' => 'string|nullable',
+            'first_occurence_at' => ['string','nullable', new ValidDates(), 'required_with:interval'],
+            'interval' => ['string','nullable', new ValidInterval()],
             'required_for' => 'nullable|in:All Staff,Principals and Vice Principals,Elementary Principals Only,Secondary Principals Only',
             'full_year' => 'boolean',
 
@@ -31,7 +31,7 @@ class StoreForm extends FormRequest
             'section_description.*' => 'string|nullable',
 
             'label' => 'array|nullable',
-            'label.*' => ['required','string', new ValidInterval()],
+            'label.*' => ['required','string'],
             'type' => 'array|nullable',
             'type.*' => 'in:select,text,textarea,number,radio,checkbox,slider,date,time',
             'required' => 'array|nullable',
