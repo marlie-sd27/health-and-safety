@@ -7,6 +7,7 @@ use App\Http\Requests\StoreForm;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class Forms extends Model
 {
@@ -92,7 +93,7 @@ class Forms extends Model
                 Fields::create([
                     'sections_id' => $section_ids[$request->section_id[$key]],
                     'label' => $request->label[$key],
-                    'name' => $request->label[$key],
+                    'name' => Str::random(),
                     'type' => $request->type[$key],
                     'required' => isset($request->required[$value]),
                     'options' => $request->options[$key],
