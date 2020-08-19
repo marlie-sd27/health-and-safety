@@ -60,7 +60,7 @@
                             <label>{{ $f->label }}
                                 <select name="data[{{ $f->name }}]" class="form-control" {{ $f->required ? 'required' : '' }}>
                                     @foreach($f->options as $option)
-                                        <option @if ($submission->data[$f->label] == "$option") {{ 'selected' }} @endif>{{ $option }}</option>
+                                        <option @if ($submission->data[$f->name] == "$option") {{ 'selected' }} @endif>{{ $option }}</option>
                                     @endforeach
                                 </select>
                             </label>
@@ -70,7 +70,7 @@
                         @case("textarea")
                         <div class="form-group">
                             <label>{{ $f->label }}</label>
-                                <textarea class="form-control" name="data[{{ $f->name }}]" placeholder="{{ $f->name }}" {{ $f->required ? 'required' : '' }}>{{ $submission->data[$f->label] ?? ""}}</textarea>
+                                <textarea class="form-control" name="data[{{ $f->name }}]" placeholder="{{ $f->label }}" {{ $f->required ? 'required' : '' }}>{{ $submission->data[$f->name] ?? ""}}</textarea>
 
                         </div>
                         @break
@@ -80,7 +80,7 @@
                         @foreach($f->options as $option)
                             <div>
                                 <label>
-                                    <input type="radio" name="data[{{ $f->name }}]" value="{{ $option }}" {{ isset($submission->data[$f->label]) && trim($submission->data[$f->label]) === trim($option) ? "checked" : ""}} {{ $f->required ? 'required' : '' }}/>
+                                    <input type="radio" name="data[{{ $f->name }}]" value="{{ $option }}" {{ isset($submission->data[$f->name]) && trim($submission->data[$f->name]) === trim($option) ? "checked" : ""}} {{ $f->required ? 'required' : '' }}/>
                                     {{ $option }}
                                 </label>
                             </div>
@@ -93,7 +93,7 @@
                         @foreach($f->options as $option)
                             <div>
                                 <label>
-                                    <input type="checkbox" name="data[{{ $f->name }}][{{ $option }}]" {{ isset($submission->data[$f->label]) && in_array($option, explode(", ", $submission->data[$f->label])) ? "checked" : "" }} {{ $f->required ? 'required' : '' }} />
+                                    <input type="checkbox" name="data[{{ $f->name }}][{{ $option }}]" {{ isset($submission->data[$f->name]) && in_array($option, explode(", ", $submission->data[$f->name])) ? "checked" : "" }} {{ $f->required ? 'required' : '' }} />
                                     {{ $option }}
                                 </label>
                             </div>
@@ -104,8 +104,8 @@
                         @case("slider")
                         <div class="form-group">
                             <label for="slider">{{ $f->label }}</label>
-                            {{ $f->options[0] }}<input id="slider" name="data[{{$f->name}}]" value="{{ $submission->data[$f->label] ?? ""}}" type="range" min="{{ $f->options[0] }}" max="{{ $f->options[1] }}" >{{ $f->options[1] }}
-                            <p>Value: <span id="slider_value">{{ $submission->data[$f->label] ?? ""}}</span></p>
+                            {{ $f->options[0] }}<input id="slider" name="data[{{$f->name}}]" value="{{ $submission->data[$f->name] ?? ""}}" type="range" min="{{ $f->options[0] }}" max="{{ $f->options[1] }}" >{{ $f->options[1] }}
+                            <p>Value: <span id="slider_value">{{ $submission->data[$f->name] ?? ""}}</span></p>
                         </div>
                         @break
 
@@ -113,7 +113,7 @@
                         <div class="form-group">
                             <label>{{ $f->label }}</label>
                                 <input type="{{ $f->type }}" name="data[{{ $f->name }}]"
-                                       value="{{ $submission->data[$f->label] ?? ""}}"
+                                       value="{{ $submission->data[$f->name] ?? ""}}"
                                        {{ $f->required ? 'required' : '' }} class="form-control"/>
                         </div>
                     @endswitch
