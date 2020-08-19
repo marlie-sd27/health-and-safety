@@ -90,6 +90,7 @@ class LoginController extends Controller
 
                 // build query to get membership groups
                 $principal = false;
+                $elementary = false;
                 $queryParams = array(
                     '$select' => 'displayName',
                 );
@@ -129,8 +130,8 @@ class LoginController extends Controller
                     // otherwise update the principal status and last login timestamp
                 } else {
                     $localUser->update([
-//                        'principal' => $principal,
-//                        'elementary_principal' => $elementary,
+                        'principal' => $principal,
+                        'elementary_principal' => $elementary,
                         'last_login' => Carbon::now()->format('Y-m-d H:i:s'),
                     ]);
                     $localUser->save();

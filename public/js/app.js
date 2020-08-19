@@ -36545,7 +36545,6 @@ $(document).ready(function () {
       $(this)[0].value = "";
     });
     $('option').each(function () {
-      console.log($(this).eq(0)[0].selected);
       $(this).eq(0)[0].selected = false;
     });
   });
