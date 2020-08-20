@@ -36,14 +36,11 @@
                 <tr>
                     <th colspan="2" class="text-center">{{ $section->title }}</th>
                 </tr>
-                <tr>
-                    <th>Field</th>
-                    <th>Value</th>
-                </tr>
+
                 @foreach($section->fields as $field)
                     <tr>
                         <td>{{ $field->label }}</td>
-                        <td>{{ $submission->data[$field->label] ?? "" }}</td>
+                        <td>{{ $submission->data[$field->name] ?? "" }}</td>
                     </tr>
                 @endforeach
             @endforeach
