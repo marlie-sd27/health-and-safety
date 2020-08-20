@@ -111,23 +111,32 @@
 <!-- Page Content -->
     <main role="main" class="container">
         @if(session('error'))
-            <div class="alert alert-danger" role="alert">
+            <div class="alert alert-danger alert-dismissible alert-dismissible fade show" role="alert">
                 <p class="mb-3">{{ session('error') }}</p>
                 @if(session('errorDetail'))
                     <pre class="alert-pre border bg-light p-2"><code>{{ session('errorDetail') }}</code></pre>
                 @endif
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
         @endif
 
         @if ($errors->any())
-            <div class="alert alert-danger">
+            <div class="alert alert-danger alert-dismissible alert-dismissible fade show" role="alert">
                 <p>Check below to  fix errors in your submission</p>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
         @endif
 
         @if(session()->has('message'))
-            <div class="alert alert-success">
+            <div class="alert alert-success alert-dismissible alert-dismissible fade show" role="alert">
                 {{ session()->get('message') }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
         @endif
 
