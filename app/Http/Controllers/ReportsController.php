@@ -3,15 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Events;
-use App\Forms;
-use App\Helpers\Helper;
+use App\Helpers\QueryHelper;
 use App\Helpers\ReportHelper;
-use App\Submissions;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Response;
 
 class ReportsController extends Controller
@@ -24,7 +20,7 @@ class ReportsController extends Controller
         $date_from = $request->filled('date_from') ? $request->date_from : null;
         $date_to = $request->filled('date_to') ? $request->date_to : null;
 
-       $submissions = ReportHelper::generateReport($request, $user, $site, $form, $date_from, $date_to);
+       $submissions = ReportHelper::generateReport($user, $site, $form, $date_from, $date_to);
 
         return view('Admin/report', [
             'submissions' => $submissions,
@@ -43,28 +39,7 @@ class ReportsController extends Controller
 
         // for each user, get all the overdue submissions (with form and event info)
         foreach (User::all() as $user) {
-            $overdue = DB::select(DB::raw(
-                'SELECT e.*, f.title, f.required_for ' .
-                "FROM events e " .
-                "JOIN forms f ON f.id = e.forms_id " .
-
-                // get only overdue events
-                "WHERE e.date < :now " .
-
-                // filter events by only taking events that don't have an entry in the user's submissions
-                "AND NOT EXISTS " .
-                "(SELECT null FROM submissions s " .
-                "WHERE e.id = s.events_id " .
-                "AND s.email = :user) "),
-                array(
-                    'now' => Carbon::now(),
-                    'user' => $user->email,
-                )
-            );
-
-            // filter events to make sure only events applicable to the user's group apply
-            // ie. an elementary principal shouldn't be getting a secondary principal's events
-            $overdue = Helper::filterEventsDashboard(collect($overdue), $user);
+            $overdue = QueryHelper::getOverdues($user);
 
             // push the user's overdues to the array with their name as the index
             $overdues[$user->name] = $overdue;
@@ -104,6 +79,17 @@ class ReportsController extends Controller
     // export report as csv
     public function export(Request $request)
     {
+        $form = $request->filled('form') ? $request->form : null;
+        $site = $request->filled('site') ? $request->site : null;
+        $user = $request->filled('user') ? $request->user : null;
+        $date_from = $request->filled('date_from') ? $request->date_from : null;
+        $date_to = $request->filled('date_to') ? $request->date_to : null;
+
+        if (!$form)
+        {
+            return redirect(route('report'))->with('error','Exports are only available when a form is specified in the search parameters');
+        }
+
         $headers = [
             'Cache-Control' => 'must-revalidate, post-check=0, pre-check=0',
             'Content-type' => 'text/csv',
@@ -112,13 +98,8 @@ class ReportsController extends Controller
             'Pragma' => 'public'
         ];
 
-        $user = $request->filled('user') ? $request->user : null;
-        $site = $request->filled('site') ? $request->site : null;
-        $form = $request->filled('form') ? $request->form : null;
-        $date_from = $request->filled('date_from') ? $request->date_from : null;
-        $date_to = $request->filled('date_to') ? $request->date_to : null;
-
-        $list = ReportHelper::generateReport($request, $user, $site, $form, $date_from, $date_to)->toArray();
+        $list = ReportHelper::generateReport( $user, $site, $form, $date_from, $date_to);
+        $list = ReportHelper::prepareData($list)->toArray();
 
         # add headers for each column in the CSV download
         array_unshift($list, array_keys($list[0]));
