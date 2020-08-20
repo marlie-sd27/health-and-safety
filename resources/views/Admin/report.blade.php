@@ -67,6 +67,8 @@
                 <button class="btn btn-primary" type="submit">Search</button>
                 <button class="btn btn-dark" type="button" id="clear">Clear Search Fields</button>
             </form>
+
+            <a href="export" class="btn btn-success">Export</a>
         </article>
         <table id="users" class="table table-bordered table-hover">
             <tr>

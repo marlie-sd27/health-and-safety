@@ -7,10 +7,9 @@ Route::get('/', 'HomeController@welcome')->name('welcome');
 Route::get('/signin', 'LoginController@signin')->name('signin');
 Route::get('/callback', 'LoginController@callback');
 Route::get('/signout', 'LoginController@signout')->name('signout');
-Route::get('/calendar', 'CalendarController@calendar')->name('calendar');
 
 
-// Admin routes (prefix=admin and name prefix=admin)
+// Admin routes
 Route::middleware(['auth','isadmin'])->group(function ()
 {
 
@@ -26,6 +25,13 @@ Route::middleware(['auth','isadmin'])->group(function ()
 // authenticate (ensure user is logged in)
 Route::middleware('auth')->group(function () {
 
+    // reporting submissions requires admin or principal designation
+    Route::middleware('admin_or_principal')->group(function() {
+        Route::get('report', 'ReportsController@report')->name('report');
+        Route::get('export', 'ReportsController@export')->name('export');
+    });
+
+
     Route::resource('submissions', 'SubmissionsController');
     Route::get('forms/{form}', 'FormsController@show')->name('forms.show');
 
@@ -35,6 +41,8 @@ Route::middleware('auth')->group(function () {
     // Dashboard
     Route::get('/dashboard', 'HomeController@dashboard')->name('dashboard');
 
+    // Calendar
+    Route::get('/calendar', 'CalendarController@calendar')->name('calendar');
     Route::get('/events', 'EventsController@index');
 });
 
