@@ -97,6 +97,7 @@ class Forms extends Model
                     'type' => $request->type[$key],
                     'required' => isset($request->required[$value]),
                     'options' => $request->options[$key],
+                    'help' => $request->help[$key],
                 ]);
             }
         }

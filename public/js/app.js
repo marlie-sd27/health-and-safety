@@ -36473,7 +36473,12 @@ module.exports = function(module) {
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 $(document).ready(function () {
-  // i keeps track of section numbers
+  $(function () {
+    $('[data-toggle="popover"]').popover({
+      container: 'body'
+    });
+  }); // i keeps track of section numbers
+
   var i = parseInt($("input[name='s_id[]']").last().val()) + 1;
 
   if (isNaN(i)) {
@@ -36499,11 +36504,16 @@ $(document).ready(function () {
   }); // when #addField is clicked, add another field to the section
 
   $('body').on('click', '#addField', function () {
+    $(function () {
+      $('[data-toggle="popover"]').popover({
+        container: 'body'
+      });
+    });
     var fields_div = $(this).prev(); // get the ID of the section this field is in
     // the first sibling is the input who's value is the section's ID
 
     var section_id = $(this).siblings()[0].value;
-    $('<article>' + '<img id="removeField" src="/images/delete.png" height="25em;" alt="remove"/>' + '<div class="toggle-expand"></div>' + '<div class="container">' + '<input type="hidden" name="section_id[]" value="' + section_id + '" />' + '<div class="form-group">' + '<label for="label[]">Label</label>' + '<input class="form-control" type="text" name="label[]" placeholder="Label" required/>' + '</div>' + '<div class="form-group">' + '<input type="checkbox" name="required[' + j + ']"/>' + '<label for="required">Required?</label>' + '</div>' + '<div class="form-group">' + '<label for="type">Type of Input</label><br/>' + '<select class="form-control" name="type[]" id="type">' + '<option value="text">Single Line Text</option>' + '<option value="textarea">Multi Line Text</option>' + '<option value="select">Drop Down Menu</option>' + '<option value="number">Number</option>' + '<option value="radio">Radio Button</option>' + '<option value="checkbox">Checkboxes</option>' + '<option value="slider">Slider</option>' + '<option value="date">Date</option>' + '\'<option value="time">Time</option>' + '</select></div>' + '<input type="hidden" name="field_id[]" value="' + j + '"/>' + '<div id="options" class="d-none">' + '<label for="options[]">Options (enter each option separated by a comma)</label>' + '<input type="text" name="options[]" class="form-control"/>' + '</div></div></article>').appendTo(fields_div);
+    $('<article>' + '<img id="removeField" src="/images/delete.png" height="25em;" alt="remove"/>' + '<div class="toggle-expand"></div>' + '<div class="container">' + '<input type="hidden" name="section_id[]" value="' + section_id + '" />' + '<div class="form-group">' + '<label for="label[]"><span class="required">*</span>Label</label>' + '<input class="form-control" type="text" name="label[]" placeholder="Label" required/>' + '</div>' + '<div class="form-group">' + '<label for="help[]">Help Description (optional)</label>' + '<button type="button" class="help" data-container="body" data-toggle="popover" ' + 'data-placement="right" data-content="A help description looks just like this! It\'ll be right beside the field and give your users more clarification as to what this field is."><b>?</b>' + '</button>' + '<input class="form-control" type="text" name="help[]" placeholder="Help Description"/>' + '</div>' + '<div class="form-group">' + '<input type="checkbox" name="required[' + j + ']"/>' + '<label for="required">Required?</label>' + '</div>' + '<div class="form-group">' + '<label for="type">Type of Input</label><br/>' + '<select class="form-control" name="type[]" id="type">' + '<option value="text">Single Line Text</option>' + '<option value="textarea">Multi Line Text</option>' + '<option value="select">Drop Down Menu</option>' + '<option value="number">Number</option>' + '<option value="radio">Radio Button</option>' + '<option value="checkbox">Checkboxes</option>' + '<option value="slider">Slider</option>' + '<option value="date">Date</option>' + '\'<option value="time">Time</option>' + '</select></div>' + '<input type="hidden" name="field_id[]" value="' + j + '"/>' + '<div id="options" class="d-none">' + '<label for="options[]"><span class="required">*</span>Options (enter each option separated by a comma)</label>' + '<button type="button" class="help" data-container="body" data-toggle="popover" ' + 'data-placement="right" data-content="For a slider, the options are the min and max values for the slider. Otherwise, it\'s the options for the input field"><b>?</b>' + '</button>' + '<input type="text" name="options[]" class="form-control"/>' + '</div></div></article>').appendTo(fields_div);
     j++;
   }); // when #removeField is clicked, remove the whole article containing the field
 

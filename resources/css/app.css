@@ -73,9 +73,34 @@ tr, td, th {
     padding-top: 1.3em;
     padding-bottom: 1.3em;
 }
+.form-group {
+    position: relative;
+}
+
+.help {
+    margin-left: 8px;
+    height: 20px;
+    width: 20px;
+    border: solid 1pt var(--dark-font);
+    border-radius: 15px;
+    position: absolute;
+    top: 3px;
+}
+
+.help b {
+    position: absolute;
+    top: -2px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+}
 
 .navbar {
     padding: 1em 3em;
+}
+
+.required {
+    color: red;
 }
 
 .toggle-collapse, .toggle-expand {
