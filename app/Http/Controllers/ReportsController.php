@@ -90,10 +90,11 @@ class ReportsController extends Controller
             return redirect(route('report'))->with('error','Exports are only available when a form is specified in the search parameters');
         }
 
+        $filename = $form . "_" . Carbon::now() . ".csv";
         $headers = [
             'Cache-Control' => 'must-revalidate, post-check=0, pre-check=0',
             'Content-type' => 'text/csv',
-            'Content-Disposition' => 'attachment; filename=report.csv',
+            'Content-Disposition' => "attachment; filename=$filename",
             'Expires' => '0',
             'Pragma' => 'public'
         ];
