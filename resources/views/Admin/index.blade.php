@@ -10,9 +10,10 @@
             other site admins</p>
         <article class="container">
             <form method="post" action="{{ route('admins.store') }}">
+                @csrf
                 <div class="form-group">
                     <label>Enter an email to assign as website admin:
-                        <input type="text" placeholder="Enter Email" class="form-control"/>
+                        <input type="text" placeholder="Enter Email" class="form-control" name="email"/>
                     </label>
                 </div>
                 <button class="btn btn-primary" type="submit">Enter</button>
