@@ -36539,13 +36539,33 @@ $(document).ready(function () {
     var value = $(this)[0].value;
     var target = $(this).parent().find("#slider_value");
     target.html(value);
-  });
+  }); // clear search form inputs
+
   $('body').on('click', '#clear', function () {
     $('input').each(function () {
       $(this)[0].value = "";
     });
     $('option').each(function () {
       $(this).eq(0)[0].selected = false;
+    });
+  }); // send ajax request to toggle a form's live/retired state
+
+  $('body').on('click', '#live-toggle', function (event) {
+    var form_id = event.target.name;
+    var live = event.target.checked;
+    $.ajax({
+      method: 'post',
+      url: "toggle-live",
+      data: {
+        '_token': $('meta[name="csrf-token"]').attr('content'),
+        'form': form_id,
+        'live': live
+      },
+      dataType: 'JSON'
+    }).done(function (msg) {
+      if (msg !== "success") {
+        alert("Something went wrong. Please reload the page and try again.");
+      }
     });
   });
 });

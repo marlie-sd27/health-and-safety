@@ -140,6 +140,7 @@ $(document).ready(function () {
     })
 
 
+    // clear search form inputs
     $('body').on('click', '#clear', function() {
 
         $('input').each(function( ) {
@@ -151,4 +152,29 @@ $(document).ready(function () {
         });
 
     })
+
+    // send ajax request to toggle a form's live/retired state
+    $('body').on('click', '#live-toggle', function(event) {
+
+        const form_id = event.target.name;
+        const live = event.target.checked;
+
+        $.ajax({
+                method: 'post',
+                url: "toggle-live",
+                data: {
+                    '_token': $('meta[name="csrf-token"]').attr('content'),
+                    'form': form_id,
+                    'live': live,
+                },
+                dataType: 'JSON'
+        }).done( function(msg) {
+            if(msg !== "success")
+            {
+                alert("Something went wrong. Please reload the page and try again.")
+            }
+        });
+
+    });
+
 });

@@ -13,6 +13,7 @@ Route::get('/signout', 'LoginController@signout')->name('signout');
 Route::middleware(['auth','isadmin'])->group(function ()
 {
     Route::resource('forms', 'FormsController')->except('show');
+    Route::post('toggle-live', 'FormsController@toggleLive');
 
     Route::get('report', 'ReportsController@report')->name('report');
     Route::get('report/overdue', 'ReportsController@overdue')->name('report.overdue');

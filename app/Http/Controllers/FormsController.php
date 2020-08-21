@@ -14,7 +14,7 @@ class FormsController extends Controller
     // list all forms
     public function index()
     {
-        return view('Forms/index', ['forms' => Forms::all()]);
+        return view('Forms/index', ['forms' => Forms::all()->sortBy('id')]);
     }
 
 
@@ -87,6 +87,22 @@ class FormsController extends Controller
 
 
         return redirect(route('forms.show', ['form' => $form->id]))->with('message','Successfully updated the form!');
+    }
+
+
+    public function toggleLive(Request $request)
+    {
+        if (!is_bool(boolval($request->live)))
+        {
+            return response()->json("Value is not boolean");
+        }
+        $form = Forms::find($request->form);
+        $form->update([
+            'live' => $request->live,
+        ]);
+        $form->save();
+
+        return response()->json("success");
     }
 
 
