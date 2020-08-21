@@ -23,7 +23,7 @@
             @if(isset($event))
                 <input type="hidden" value="{{ $event->id }}" name="event_id"/>
             @endif
-            <label>School/Site</label>
+            <span class="required">*</span><label>School/Site</label>
             <select name="site" class="form-control">
                 <option>--</option>
                 <option>100 Mile Elementary</option>
