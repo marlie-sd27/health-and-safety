@@ -105,7 +105,7 @@
                                   action="{{route('submissions.destroy', $submission->id)}}">
                                 @csrf
                                 @method('delete')
-                                <button type="submit">Delete</button>
+                                <button type="submit" class="btn btn-secondary" onclick="return confirm('Are you sure?')">Delete</button>
                             </form>
                         </td>
                     @endif

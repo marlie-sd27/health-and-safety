@@ -22,7 +22,7 @@ class ReportsController extends Controller
 
        $submissions = ReportHelper::generateReport($user, $site, $form, $date_from, $date_to);
 
-        return view('Admin/report', [
+        return view('Report/report', [
             'submissions' => $submissions,
             'user' => $user,
             'site' => $site,
@@ -53,7 +53,7 @@ class ReportsController extends Controller
 
         $overdues = ReportHelper::filterOverdues($overdues, $user, $form, $date_from, $date_to);
 
-        return view('Admin/overdue', [
+        return view('Report/overdue', [
             'overdues' => $overdues,
             'user' => $user,
             'form' => $form,
@@ -63,7 +63,7 @@ class ReportsController extends Controller
     }
 
 
-    public function upcoming(Request $request)
+    public function upcoming()
     {
         // get all upcoming events
         $upcomings = Events::with('forms')
@@ -72,7 +72,7 @@ class ReportsController extends Controller
             ->orderBy('date', 'asc')
             ->get();
 
-        return view('Admin/upcoming', ['upcomings' => $upcomings]);
+        return view('Report/upcoming', ['upcomings' => $upcomings]);
     }
 
 

@@ -55,6 +55,9 @@
                             <a href="{{ route('report.upcoming') }}" class="dropdown-item">Upcoming</a>
                         </div>
                     </li>
+                    <li class="nav-item">
+                        <a href="{{ route('admins') }}" class="nav-link {{$_SERVER['REQUEST_URI'] == '/admins' ? ' active' : ''}}">Admins</a>
+                    </li>
                 @elseif(Auth::user()->isPrincipal())
                     <li class="nav-item">
                         <a href="{{ route('report') }}" class="nav-link {{$_SERVER['REQUEST_URI'] == '/report' ? ' active' : ''}}">Submissions</a>

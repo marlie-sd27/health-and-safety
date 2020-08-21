@@ -12,12 +12,15 @@ Route::get('/signout', 'LoginController@signout')->name('signout');
 // Admin routes
 Route::middleware(['auth','isadmin'])->group(function ()
 {
-
     Route::resource('forms', 'FormsController')->except('show');
 
     Route::get('report', 'ReportsController@report')->name('report');
     Route::get('report/overdue', 'ReportsController@overdue')->name('report.overdue');
     Route::get('report/upcoming', 'ReportsController@upcoming')->name('report.upcoming');
+
+    Route::get('admins', 'AdminController@index')->name('admins');
+    Route::post('admins', 'AdminController@store')->name('admins.store');
+    Route::delete('admins/{admin}', 'AdminController@destroy')->name('admins.destroy');
 
 });
 
