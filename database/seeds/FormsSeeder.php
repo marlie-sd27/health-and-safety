@@ -65,8 +65,8 @@ class FormsSeeder extends Seeder
                     "Please view the PowerPoint and answer the following questions. " .
                     "\n\nPlease download the powerpoint at https://www.sd27.bc.ca/wp-content/uploads/2020/08/2019-10-25-Asbestos-Awareness-Training.pptx and respond to the following questions:",
 
-                'interval' => null,
-                'first_occurence_at' => null,
+                'interval' => '1 year',
+                'first_occurence_at' => '2020-09-30',
                 'required_for' => 'All Staff',
                 'full_year' => null,
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
