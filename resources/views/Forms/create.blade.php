@@ -13,9 +13,11 @@
                     the form must be completed and who must complete the form. Add sections to break up the form!
                     You can always
                     edit it
-                    again later</p>
+                    again later.</p>
+                <p><b>Newly created forms will go live right away. If you want to disable them, toggle the "live" switch
+                        on the menu to index forms.</b></p>
                 <div class="form-group">
-                    <label for="form_title">Title</label>
+                    <label for="form_title"><span class="required">*</span>Title</label>
                     <input class="form-control" type="text" name="form_title" placeholder="Title" required
                            value="{{ old('form_title') }}">
                 </div>
@@ -70,7 +72,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="required_for">Who is required to submit this form?</label>
+                    <label for="required_for"><span class="required">*</span>Who is required to submit this form?</label>
                     <select class="form-control @error('required_for') border-danger @enderror" name="required_for">
                         <option value="All Staff" @if (old('required_for') == "All Staff") {{ 'selected' }} @endif>
                             All Staff

@@ -17,7 +17,7 @@
             @csrf
             <article class="container">
                 <div class="form-group">
-                    <label for="form_title">Title</label>
+                    <label for="form_title"><span class="required">*</span>Title</label>
                     <input class="form-control @error('form_title') border-danger @enderror"
                            type="text"
                            name="form_title"
@@ -84,7 +84,7 @@
                         </small></p>
                 </div>
                 <div class="form-group">
-                    <label for="required_for">Who is required to submit this form?</label>
+                    <label for="required_for"><span class="required">*</span>Who is required to submit this form?</label>
                     <select class="form-control @error('required_for') border-danger @enderror" name="required_for">
                         <option value="All Staff" @if ($form->required_for == "All Staff" | old('required_for') == "All Staff") {{ 'selected' }} @endif>
                             All staff
@@ -151,7 +151,7 @@
                                                 <input type="hidden" name="section_id[]"
                                                        value="{{ $field->sections_id }}"/>
                                                 <div class="form-group">
-                                                    <label for="type">Label</label>
+                                                    <label for="type"><span class="required">*</span>Label</label>
                                                     <input class="form-control @error("label.$loop->index") border-danger @enderror"
                                                            type="text"
                                                            name="label[]"
@@ -160,6 +160,25 @@
                                                         <p class="help text-danger">{{ $errors->first("label.$loop->index") }}</p>
                                                     @enderror
                                                 </div>
+                                                <div class="form-group">
+                                                    <label for="help[]">Help Description (optional)</label>
+                                                    <button type="button"
+                                                        class="help"
+                                                        data-container="body"
+                                                        data-toggle="popover"
+                                                        data-placement="right"
+                                                            data-content="A help description looks just like this! It\'ll be right beside the field and give your users more clarification as to what this field is.">
+                                                        <b>?</b>
+                                                    </button>
+                                                    <input class="form-control"
+                                                           type="text"
+                                                           name="help[]"
+                                                           placeholder="Help Description"
+                                                           value="@if (old("help.$loop->index")){{ old("help.$loop->index") }}@else{{ $field->help }}@endif"/>
+                                                    @error("help.$loop->index")
+                                                        <p class="help text-danger">{{ $errors->first("help.$loop->index") }}</p>
+                                                    @enderror
+                                                    </div>
                                                 <div class="form-group">
                                                     <input type="checkbox"
                                                            name="required[{{ $field->id }}]" {{ $field->required ? "checked" : "" }}

@@ -3,14 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Events;
-use App\Forms;
-use App\Helpers\Helper;
-use App\Submissions;
+use App\Helpers\QueryHelper;
+use App\Helpers\ReportHelper;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Response;
 
 class ReportsController extends Controller
 {
@@ -22,28 +20,9 @@ class ReportsController extends Controller
         $date_from = $request->filled('date_from') ? $request->date_from : null;
         $date_to = $request->filled('date_to') ? $request->date_to : null;
 
-        $submissions = Submissions::join('forms', 'forms_id', '=', 'forms.id')
-            ->join('users', 'submissions.email', '=', 'users.email')
-            ->when($user, function ($query, $user) {
-                return $query->where('users.name', 'like', '%' . $user . '%');
-            })
-            ->when($site, function ($query, $site) {
-                return $query->where('site', 'like', '%' . $site . '%');
-            })
-            ->when($form, function ($query, $form) {
-                return $query->where('title', 'like', '%' . $form . '%');
-            })
-            ->when($date_from, function ($query, $date_from) {
-                return $query->where('submissions.created_at', '>', $date_from);
-            })
-            ->when($date_to, function ($query, $date_to) {
-                return $query->where('submissions.created_at', '<', $date_to);
-            })
-            ->orderBy('submissions.created_at', 'desc')
-            ->select('submissions.*', 'users.name', 'forms.title')
-            ->get();
+       $submissions = ReportHelper::generateReport($user, $site, $form, $date_from, $date_to);
 
-        return view('Admin/report', [
+        return view('Report/report', [
             'submissions' => $submissions,
             'user' => $user,
             'site' => $site,
@@ -60,28 +39,7 @@ class ReportsController extends Controller
 
         // for each user, get all the overdue submissions (with form and event info)
         foreach (User::all() as $user) {
-            $overdue = DB::select(DB::raw(
-                'SELECT e.*, f.title, f.required_for ' .
-                "FROM events e " .
-                "JOIN forms f ON f.id = e.forms_id " .
-
-                // get only overdue events
-                "WHERE e.date < :now " .
-
-                // filter events by only taking events that don't have an entry in the user's submissions
-                "AND NOT EXISTS " .
-                "(SELECT null FROM submissions s " .
-                "WHERE e.id = s.events_id " .
-                "AND s.email = :user) "),
-                array(
-                    'now' => Carbon::now(),
-                    'user' => $user->email,
-                )
-            );
-
-            // filter events to make sure only events applicable to the user's group apply
-            // ie. an elementary principal shouldn't be getting a secondary principal's events
-            $overdue = Helper::filterEventsDashboard(collect($overdue), $user);
+            $overdue = QueryHelper::getOverdues($user);
 
             // push the user's overdues to the array with their name as the index
             $overdues[$user->name] = $overdue;
@@ -93,47 +51,9 @@ class ReportsController extends Controller
         $date_from = $request->filled('date_from') ? $request->date_from : null;
         $date_to = $request->filled('date_to') ? $request->date_to : null;
 
-        // convert our array of users' overdue submissions into an Eloquent collection for easy filtering
-        // filter by user's search parameters
-        $overdues = collect($overdues)
+        $overdues = ReportHelper::filterOverdues($overdues, $user, $form, $date_from, $date_to);
 
-            // filter out users with no overdue events
-            ->filter(function ($instance) {
-                return sizeof($instance) > 0;
-            })
-
-            // when the user search parameter is filled, filter out collections whose key is not the user
-            ->when($user, function ($collection, $user) {
-                return $collection->filter(function ($value, $key) use ($user) {
-                    return strstr($key, $user) != false;
-                });
-
-            })
-            // when the form search parameter is filled, filter out instances who's title value is not the form
-            ->when($form, function ($collection, $form) {
-                return $collection->map(function( $instance ) use ($form) {
-                    return $instance->filter(function ($value) use ($form) {
-                        return strstr($value->title, $form) != false;
-                    });
-                });
-            })
-            //
-            ->when( $date_from, function ($collection, $date_from) {
-                return $collection->map(function( $instance ) use ($date_from) {
-                    return $instance->filter(function ($value) use ($date_from) {
-                        return $value->date >= $date_from;
-                    });
-                });
-            })
-            ->when( $date_to, function ($collection, $date_to) {
-                return $collection->map(function( $instance ) use ($date_to) {
-                    return $instance->filter(function ($value) use ($date_to) {
-                        return $value->date <= $date_to;
-                    });
-                });
-            });
-
-        return view('Admin/overdue', [
+        return view('Report/overdue', [
             'overdues' => $overdues,
             'user' => $user,
             'form' => $form,
@@ -143,7 +63,7 @@ class ReportsController extends Controller
     }
 
 
-    public function upcoming(Request $request)
+    public function upcoming()
     {
         // get all upcoming events
         $upcomings = Events::with('forms')
@@ -152,6 +72,48 @@ class ReportsController extends Controller
             ->orderBy('date', 'asc')
             ->get();
 
-        return view('Admin/upcoming', ['upcomings' => $upcomings]);
+        return view('Report/upcoming', ['upcomings' => $upcomings]);
+    }
+
+
+    // export report as csv
+    public function export(Request $request)
+    {
+        $form = $request->filled('form') ? $request->form : null;
+        $site = $request->filled('site') ? $request->site : null;
+        $user = $request->filled('user') ? $request->user : null;
+        $date_from = $request->filled('date_from') ? $request->date_from : null;
+        $date_to = $request->filled('date_to') ? $request->date_to : null;
+
+        if (!$form)
+        {
+            return redirect(route('report'))->with('error','Exports are only available when a form is specified in the search parameters');
+        }
+
+        $filename = $form . "_" . Carbon::now() . ".csv";
+        $headers = [
+            'Cache-Control' => 'must-revalidate, post-check=0, pre-check=0',
+            'Content-type' => 'text/csv',
+            'Content-Disposition' => "attachment; filename=$filename",
+            'Expires' => '0',
+            'Pragma' => 'public'
+        ];
+
+        $list = ReportHelper::generateReport( $user, $site, $form, $date_from, $date_to);
+        $list = ReportHelper::prepareData($list)->toArray();
+
+        # add headers for each column in the CSV download
+        array_unshift($list, array_keys($list[0]));
+
+        $callback = function() use ($list)
+        {
+            $FH = fopen('php://output', 'w');
+            foreach ($list as $row) {
+                fputcsv($FH, $row);
+            }
+            fclose($FH);
+        };
+
+        return Response::stream($callback, 200, $headers);
     }
 }

@@ -23,7 +23,7 @@
             @if(isset($event))
                 <input type="hidden" value="{{ $event->id }}" name="event_id"/>
             @endif
-            <label>School/Site</label>
+            <span class="required">*</span><label>School/Site</label>
             <select name="site" class="form-control">
                 <option>--</option>
                 <option>100 Mile Elementary</option>
@@ -64,25 +64,59 @@
                         @case("select")
                         <div class="form-group">
                             <label>{{ $f->label }}</label>
-                                <select name="data[{{ $f->name }}]"
-                                        class="form-control" {{ $f->required ? 'required' : '' }}>
-                                    @foreach($f->options as $option)
-                                        <option>{{ $option }}</option>
-                                    @endforeach
-                                </select>
+                            @if($f->help)
+                                <button type="button"
+                                        class="help"
+                                        data-container="body"
+                                        data-toggle="popover"
+                                        data-placement="right"
+                                        data-content="{{ $f->help }}">
+                                    <b>?</b>
+                                </button>
+                            @endif
+                            <select name="data[{{ $f->name }}]"
+                                    class="form-control" {{ $f->required ? 'required' : '' }}>
+                                @foreach($f->options as $option)
+                                    <option>{{ $option }}</option>
+                                @endforeach
+                            </select>
                         </div>
                         @break
 
                         @case("textarea")
                         <div class="form-group">
                             <label>{{ $f->label }}</label>
+                            @if($f->help)
+                                <button type="button"
+                                        class="help"
+                                        data-container="body"
+                                        data-toggle="popover"
+                                        data-placement="right"
+                                        data-content="{{ $f->help }}">
+                                    <b>?</b>
+                                </button>
+                            @endif
                             <textarea class="form-control"
                                       name="data[{{ $f->name }}]" {{ $f->required ? 'required' : '' }}></textarea>
                         </div>
                         @break
 
                         @case("radio")
-                        {{ $f->label }}
+                        <div class="form-group">
+                            {{ $f->label }}
+
+                            @if($f->help)
+                                <button type="button"
+                                        class="help"
+                                        data-container="body"
+                                        data-toggle="popover"
+                                        data-placement="right"
+                                        data-content="{{ $f->help }}">
+                                    <b>?</b>
+                                </button>
+                            @endif
+                        </div>
+
                         @foreach($f->options as $option)
                             <div>
                                 <label>
@@ -96,7 +130,20 @@
                         @break
 
                         @case("checkbox")
-                        {{ $f->label }}
+                        <div class="form-group">
+                            {{ $f->label }}
+
+                            @if($f->help)
+                                <button type="button"
+                                        class="help"
+                                        data-container="body"
+                                        data-toggle="popover"
+                                        data-placement="right"
+                                        data-content="{{ $f->help }}">
+                                    <b>?</b>
+                                </button>
+                            @endif
+                        </div>
                         @foreach($f->options as $option)
                             <div>
                                 <label>
@@ -111,6 +158,17 @@
                         @case("slider")
                         <div class="form-group">
                             <label for="slider">{{ $f->label }}</label>
+                            @if($f->help)
+                                <button type="button"
+                                        class="help"
+                                        data-container="body"
+                                        data-toggle="popover"
+                                        data-placement="right"
+                                        data-content="{{ $f->help }}">
+                                    <b>?</b>
+                                </button>
+                            @endif
+                            <br>
                             {{ $f->options[0] }}<input type="range" id="slider" name="data[{{$f->name}}]"
                                                        min="{{ $f->options[0] }}"
                                                        max="{{ $f->options[1] }}">{{ $f->options[1] }}
@@ -121,6 +179,16 @@
                         @default
                         <div class="form-group">
                             <label>{{ $f->label }}</label>
+                            @if($f->help)
+                                <button type="button"
+                                        class="help"
+                                        data-container="body"
+                                        data-toggle="popover"
+                                        data-placement="right"
+                                        data-content="{{ $f->help }}">
+                                    <b>?</b>
+                                </button>
+                            @endif
                             <input type="{{ $f->type }}" name="data[{{ $f->name }}]"
                                    {{ $f->required ? 'required' : '' }} class="form-control"/>
 
