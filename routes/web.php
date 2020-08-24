@@ -23,6 +23,9 @@ Route::middleware(['auth','isadmin'])->group(function ()
     Route::post('admins', 'AdminController@store')->name('admins.store');
     Route::delete('admins/{admin}', 'AdminController@destroy')->name('admins.destroy');
 
+    Route::delete('events/{event}', 'EventsController@destroy')->name('events.destroy');
+    Route::get('events', 'EventsController@index')->name('events');
+
 });
 
 
@@ -47,7 +50,7 @@ Route::middleware('auth')->group(function () {
 
     // Calendar
     Route::get('/calendar', 'CalendarController@calendar')->name('calendar');
-    Route::get('/events', 'EventsController@index');
+    Route::get('/events/ajax', 'EventsController@ajax')->name('events.ajax');
 });
 
 

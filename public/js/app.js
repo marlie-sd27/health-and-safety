@@ -36646,7 +36646,7 @@ document.addEventListener('DOMContentLoaded', function () {
     navLinks: true,
     // can click day/week names to navigate views
     editable: true,
-    events: '/events'
+    events: '/events/ajax'
   });
   calendar.render();
 });
