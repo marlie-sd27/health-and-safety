@@ -37,8 +37,18 @@ class EventsController extends Controller
     }
 
 
-    public function destroy(Events $events)
+    public function index()
     {
+        $events = Events::with('Forms')
+            ->orderBy('date')
+            ->paginate(20);
 
+        return view('events', ['events' => $events]);
+    }
+
+    public function destroy(Events $event)
+    {
+        Events::destroy($event->id);
+        return redirect(route('events'))->with('message', 'Successfully deleted event!');
     }
 }
