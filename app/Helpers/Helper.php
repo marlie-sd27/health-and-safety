@@ -61,7 +61,7 @@ class Helper
             });
         }
 
-        return $events;
+        return $events->values();
     }
 
 
