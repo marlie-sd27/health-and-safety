@@ -11,13 +11,17 @@ class EventsController extends Controller
 
     public function index(Request $request)
     {
-        $start = $request->query('start');
-        $end = $request->query('end');
+        $start = $request->filled('start') ? $request->query('start') : null;
+        $end = $request->filled('end') ? $request->query('end') : null;
 
         // query for the events between start and end date
         $events = Events::with('forms')
-            ->where('date', '>', $start)
-            ->where('date', '<', $end)
+            ->when($start, function ($query, $start) {
+                return $query->where('date', '>', $start);
+            })
+            ->when($end, function ($query, $end) {
+                return $query->where('date', '<', $end);
+            })
             ->get();
 
 

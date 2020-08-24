@@ -68,7 +68,7 @@ class ReportsController extends Controller
         // get all upcoming events
         $upcomings = Events::with('forms')
             ->where('date', '>', Carbon::now())
-            ->where('date', '<', Carbon::now()->addMonths(3))
+            ->where('date', '<', Carbon::now()->addMonths(6))
             ->orderBy('date', 'asc')
             ->get();
 
