@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 class EventsController extends Controller
 {
 
-    public function index(Request $request)
+    public function ajax(Request $request)
     {
         $start = $request->filled('start') ? $request->query('start') : null;
         $end = $request->filled('end') ? $request->query('end') : null;
