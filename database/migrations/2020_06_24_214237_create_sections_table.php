@@ -19,7 +19,7 @@ class CreateSectionsTable extends Migration
             $table->bigInteger('forms_id');
             $table->foreign('forms_id')->references('id')->on('forms')->onDelete('cascade');
             $table->string('title')->nullable();
-            $table->string('description')->nullable();
+            $table->text('description')->nullable();
             $table->integer('columns')->nullable()->default(1);
         });
     }
