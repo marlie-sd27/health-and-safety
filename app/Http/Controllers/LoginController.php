@@ -122,16 +122,16 @@ class LoginController extends Controller
                         'name' => $user->getDisplayName(),
                         'email' => strtolower($user->getMail()),
                         'admin' => false,
-                        'principal' => $principal,
-                        'elementary_principal' => $elementary,
+                        'principal' => true,
+                        'elementary_principal' => true,
                         'last_login' => Carbon::now()->format('Y-m-d H:i:s'),
                     ]);
 
                     // otherwise update the principal status and last login timestamp
                 } else {
                     $localUser->update([
-                        'principal' => $principal,
-                        'elementary_principal' => $elementary,
+                        'principal' => true,
+                        'elementary_principal' => true,
                         'last_login' => Carbon::now()->format('Y-m-d H:i:s'),
                     ]);
                     $localUser->save();
