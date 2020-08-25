@@ -58,7 +58,7 @@
         @foreach($form->sections as $s)
             <article>
                 <h2>{{ $s->title }}</h2>
-                <p>{{ $s->description }}</p>
+                <p style="white-space: pre-wrap;">{{ $s->description }}</p>
                 @foreach($s->fields as $f)
                     @switch($f->type)
                         @case("select")

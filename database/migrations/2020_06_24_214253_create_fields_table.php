@@ -23,7 +23,7 @@ class CreateFieldsTable extends Migration
             $table->string('help')->nullable();
             $table->string('type');
             $table->boolean('required');
-            $table->string('options')->nullable();
+            $table->text('options')->nullable();
         });
     }
 
