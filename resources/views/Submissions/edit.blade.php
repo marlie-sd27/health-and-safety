@@ -10,7 +10,7 @@
         @endif
         <p style="white-space: pre-wrap;">{{ $submission->form->description }}</p>
     </div>
-    <form method="post" action="{{ route('submissions.update', ['submission' => $submission]) }}">
+    <form method="post" action="{{ route('submissions.update', ['submission' => $submission]) }}" enctype="multipart/form-data">
         @csrf
         @method('PUT')
 
@@ -163,6 +163,25 @@
                             <p>Value: <span id="slider_value">{{ $submission->data[$f->name] ?? ""}}</span></p>
                         </div>
                         @break
+
+                    @case("file")
+                        <div class="form-group">
+                            <label>{{ $f->label }}</label>
+                            @if($f->help)
+                                <button type="button"
+                                        class="help"
+                                        data-container="body"
+                                        data-toggle="popover"
+                                        data-placement="right"
+                                        data-content="{{ $f->help }}">
+                                    <b>?</b>
+                                </button>
+                            @endif
+                            <input type="{{ $f->type }}" name="{{ $f->name }}"
+                                   value="{{ $submission->data[$f->name] ?? ""}}"
+                                   {{ $f->required ? 'required' : '' }} class="form-control-file"/>
+                        </div>
+                    @break
 
                         @default
                         <div class="form-group">

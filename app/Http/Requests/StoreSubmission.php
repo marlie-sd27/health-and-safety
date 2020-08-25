@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Log;
 
 class StoreSubmission extends FormRequest
 {
@@ -37,6 +38,8 @@ class StoreSubmission extends FormRequest
                 $cleanedValue = is_array($value) ? $value : filter_var($value, FILTER_SANITIZE_STRING);
 
                 $data[$cleanedKey] = $cleanedValue;
+
+
             }
         }
 

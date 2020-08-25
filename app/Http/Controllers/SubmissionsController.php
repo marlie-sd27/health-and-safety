@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreSubmission;
 use App\Submissions;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class SubmissionsController extends Controller
 {
@@ -58,9 +59,21 @@ class SubmissionsController extends Controller
     {
         $this->authorize('update', $submission);
 
+        // if any files are uploaded, store them properly and put the path into the files array
+        $files = array();
+        if( isset($validated->files))
+        {
+            foreach ($validated->files as $key => $value)
+            {
+                $path = $validated->file($key)->store($submission->forms->title);
+                $files[$key] = $path;
+            }
+        }
+
         $submission->update([
             'site' => $validated->site,
             'data' => $validated->data,
+            'files' => implode(',', $files),
         ]);
         $submission->save();
 

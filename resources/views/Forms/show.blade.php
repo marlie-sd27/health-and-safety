@@ -16,7 +16,7 @@
         @endif
         <p style="white-space: pre-wrap;">{{ $form->description }}</p>
     </div>
-    <form method="post" action="{{ route('submissions.store') }}">
+    <form method="post" action="{{ route('submissions.store') }}" enctype="multipart/form-data">
         @csrf
         <article>
             <input type="hidden" value="{{ $form->id }}" name="form_id"/>
@@ -173,6 +173,24 @@
                                                        min="{{ $f->options[0] }}"
                                                        max="{{ $f->options[1] }}">{{ $f->options[1] }}
                             <p>Value: <span id="slider_value"></span></p>
+                        </div>
+                        @break
+
+                        @case("file")
+                        <div class="form-group">
+                            <label>{{ $f->label }}</label>
+                            @if($f->help)
+                                <button type="button"
+                                        class="help"
+                                        data-container="body"
+                                        data-toggle="popover"
+                                        data-placement="right"
+                                        data-content="{{ $f->help }}">
+                                    <b>?</b>
+                                </button>
+                            @endif
+                            <input type="{{ $f->type }}" name="{{ $f->name }}"
+                                   {{ $f->required ? 'required' : '' }} class="form-control-file"/>
                         </div>
                         @break
 

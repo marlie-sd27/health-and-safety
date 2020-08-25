@@ -224,6 +224,10 @@
                                                             value="time" @if ($field->type == "time") {{ 'selected' }} @endif>
                                                             Time
                                                         </option>
+                                                        <option
+                                                            value="file" @if ($field->type == "file") {{ 'selected' }} @endif>
+                                                            File Upload
+                                                        </option>
                                                     </select></div>
                                                 <div id="options" class="{{ $field->options !== "" ? "" : "d-none" }}">
                                                     <input type="hidden" name="field_id[]" value="{{ $field->id }}"/>
