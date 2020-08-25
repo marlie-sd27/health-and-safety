@@ -1737,7 +1737,6 @@ class FieldsSeeder extends Seeder
                 'options' => ' Ensuring that supervisors and workers are trained to an acceptable level of competency, Ensure the safety of the superintendent, choose the OH&S team',
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
                 'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),],
-
-        ]);
+            ]);
     }
 }

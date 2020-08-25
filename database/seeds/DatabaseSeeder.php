@@ -16,7 +16,8 @@ class DatabaseSeeder extends Seeder
             FormsSeeder::class,
             SectionsSeeder::class,
             FieldsSeeder::class,
-            SubmissionsSeeder::class
+            SubmissionsSeeder::class,
+            SecondarySchoolInspectionSeeder::class
         ]);
     }
 }
