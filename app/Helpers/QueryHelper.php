@@ -31,6 +31,12 @@ class QueryHelper
             )
         );
 
+        // if user is an admin, don't return any as overdue.
+        if ($user->isAdmin())
+        {
+            return [];
+        }
+
         // filter events to make sure only events applicable to the user's group apply
         // ie. an elementary principal shouldn't be getting a secondary principal's events
         return Helper::filterEventsDashboard(collect($overdues), $user);
