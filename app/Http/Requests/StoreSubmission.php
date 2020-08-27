@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\ValidSite;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Log;
 
@@ -20,7 +21,7 @@ class StoreSubmission extends FormRequest
             'forms_id' => 'exists:forms',
             'events_id' => 'exists:events|nullable',
             'data' => 'string',
-            'site' => 'string',
+            'site' => ['string', new ValidSite()],
         ];
     }
 
@@ -38,8 +39,6 @@ class StoreSubmission extends FormRequest
                 $cleanedValue = is_array($value) ? $value : filter_var($value, FILTER_SANITIZE_STRING);
 
                 $data[$cleanedKey] = $cleanedValue;
-
-
             }
         }
 

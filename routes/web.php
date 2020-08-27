@@ -40,6 +40,7 @@ Route::middleware('auth')->group(function () {
 
 
     Route::resource('submissions', 'SubmissionsController');
+    Route::post('file', 'FileController')->name('file.download');
     Route::get('forms/{form}', 'FormsController@show')->name('forms.show');
 
     // Profile

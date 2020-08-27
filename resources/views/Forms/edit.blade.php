@@ -86,19 +86,19 @@
                 <div class="form-group">
                     <label for="required_for"><span class="required">*</span>Who is required to submit this form?</label>
                     <select class="form-control @error('required_for') border-danger @enderror" name="required_for">
-                        <option value="All Staff" @if ($form->required_for == "All Staff" | old('required_for') == "All Staff") {{ 'selected' }} @endif>
+                        <option value="All Staff" @if (old('required_for') == "All Staff" || $form->required_for == "All Staff" ) {{ 'selected' }} @endif>
                             All staff
                         </option>
                         <option
-                            value="Principals and Vice Principals" @if ($form->required_for == "Principals and Vice Principals" | old('required_for') == "Principals and Vice Principals") {{ 'selected' }} @endif>
+                            value="Principals and Vice Principals" @if (old('required_for') == "Principals and Vice Principals" || $form->required_for == "Principals and Vice Principals" ) {{ 'selected' }} @endif>
                             Principals and Vice Principals
                         </option>
                         <option
-                            value="Secondary Principals Only" @if ($form->required_for == "Secondary Principals Only" | old('required_for') == "Secondary Principals Only") {{ 'selected' }} @endif>
+                            value="Secondary Principals Only" @if (old('required_for') == "Secondary Principals Only" || $form->required_for == "Secondary Principals Only" ) {{ 'selected' }} @endif>
                             Secondary Principals Only
                         </option>
                         <option
-                            value="Elementary Principals Only" @if ($form->required_for == "Elementary Principals Only" | old('required_for') == "Elementary Principals Only") {{ 'selected' }} @endif>
+                            value="Elementary Principals Only" @if (old('required_for') == "Elementary Principals Only" || $form->required_for == "Elementary Principals Only" ) {{ 'selected' }} @endif>
                             Elementary Principals Only
                         </option>
                     </select>

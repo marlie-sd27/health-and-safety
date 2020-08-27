@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\Helper;
 use App\Http\Requests\StoreSubmission;
 use App\Submissions;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class SubmissionsController extends Controller
 {
@@ -25,12 +28,24 @@ class SubmissionsController extends Controller
     // store the newly created submission in the database
     public function store(StoreSubmission $validated)
     {
+        // if any files are uploaded, store them properly and put the path into the files array
+        $files = array();
+        if( isset($validated->files))
+        {
+            foreach ($validated->files as $key => $value)
+            {
+                $path = $validated->file($key)->storeAs( $validated->forms->title, Auth::user()->name . "_" . Carbon::now());
+                $files[$key] = $path;
+            }
+        }
+
         Submissions::create([
             'forms_id' => $validated->form_id,
             'events_id' => $validated->event_id,
             'site' => $validated->site,
             'email' => Auth::user()->email,
             'data' => $validated->data,
+            'files' => http_build_query($files),
         ]);
 
         return redirect(route('submissions.index'))
@@ -59,21 +74,34 @@ class SubmissionsController extends Controller
     {
         $this->authorize('update', $submission);
 
+        // delete previous file uploads for the submission
+        $oldFiles = Helper::parseHTTPQuery($submission->files);
+        foreach($oldFiles as $file)
+        {
+            if( Storage::exists($file))
+            {
+                Storage::delete($file);
+            }
+        }
+
         // if any files are uploaded, store them properly and put the path into the files array
         $files = array();
         if( isset($validated->files))
         {
             foreach ($validated->files as $key => $value)
             {
-                $path = $validated->file($key)->store($submission->forms->title);
+                $fileName = $key . "-" . Auth::user()->name . "-" . Carbon::now()->toDateString() . "." . $validated->file($key)->extension();
+                $path = $validated->file($key)->storeAs( $submission->forms->title, $fileName);
                 $files[$key] = $path;
             }
         }
 
+
+
         $submission->update([
             'site' => $validated->site,
             'data' => $validated->data,
-            'files' => implode(',', $files),
+            'files' => http_build_query($files),
         ]);
         $submission->save();
 
