@@ -28,7 +28,7 @@ class Helper
         }
 
         // if elementary principal, filter events for principals, all staff and elementary principals
-        if (Auth::user()->isElementaryPrincipal()) {
+        elseif (Auth::user()->isElementaryPrincipal()) {
 
             $events = $events->filter( function($value) {
                 if ($value->forms->required_for == 'All Staff')
@@ -41,7 +41,7 @@ class Helper
         }
 
         // if secondary principal, filter events for principals, all staff and secondary principals
-        if (Auth::user()->isSecondaryPrincipal()) {
+        elseif (Auth::user()->isSecondaryPrincipal()) {
 
             $events = $events->filter( function($value, $key) {
                 if ($value->forms->required_for == 'All Staff')
@@ -54,14 +54,14 @@ class Helper
         }
 
         // if not principal, filter events for all staff
-        if (!Auth::user()->isPrincipal()) {
-
+        else {
             $events = $events->filter( function($value, $key) {
-                return $value->required_for == 'All Staff';
+                if ($value->forms->required_for == 'All Staff')
+                    return true;
             });
         }
 
-        return $events;
+        return $events->values();
     }
 
 
@@ -74,7 +74,7 @@ class Helper
         }
 
         // if elementary principal, filter events for principals, all staff and elementary principals
-        if ($user->isElementaryPrincipal()) {
+        elseif ($user->isElementaryPrincipal()) {
 
             $events = $events->filter( function($value) {
                 if ($value->required_for == 'All Staff')
@@ -87,7 +87,7 @@ class Helper
         }
 
         // if secondary principal, filter events for principals, all staff and secondary principals
-        if ($user->isSecondaryPrincipal()) {
+        elseif ($user->isSecondaryPrincipal()) {
 
             $events = $events->filter( function($value, $key) {
                 if ($value->required_for == 'All Staff')
@@ -100,10 +100,11 @@ class Helper
         }
 
         // if not principal, filter events for all staff
-        if ($user->isPrincipal()) {
+        else {
 
             $events = $events->filter( function($value, $key) {
-                return $value->required_for == 'All Staff';
+                if ($value->required_for == 'All Staff')
+                    return true;
             });
         }
 

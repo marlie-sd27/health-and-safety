@@ -20,9 +20,10 @@ class CreateFieldsTable extends Migration
             $table->foreign('sections_id')->references('id')->on('sections')->onDelete('cascade');
             $table->string('label');
             $table->string('name');
+            $table->string('help')->nullable();
             $table->string('type');
             $table->boolean('required');
-            $table->string('options')->nullable();
+            $table->text('options')->nullable();
         });
     }
 

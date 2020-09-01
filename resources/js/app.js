@@ -2,6 +2,12 @@ require('./bootstrap');
 
 $(document).ready(function () {
 
+    $(function (){
+        $('[data-toggle="popover"]').popover({
+            container:'body'
+        });
+    });
+
     // i keeps track of section numbers
     let i = parseInt($("input[name='s_id[]']").last().val()) + 1;
     if ( isNaN(i)) {
@@ -49,6 +55,13 @@ $(document).ready(function () {
 
     // when #addField is clicked, add another field to the section
     $('body').on('click', '#addField', function () {
+
+        $(function (){
+            $('[data-toggle="popover"]').popover({
+                container:'body'
+            });
+        });
+
         let fields_div = $(this).prev();
 
         // get the ID of the section this field is in
@@ -61,8 +74,15 @@ $(document).ready(function () {
             '<div class="container">' +
             '<input type="hidden" name="section_id[]" value="' + section_id + '" />' +
             '<div class="form-group">' +
-            '<label for="label[]">Label</label>' +
+            '<label for="label[]"><span class="required">*</span>Label</label>' +
             '<input class="form-control" type="text" name="label[]" placeholder="Label" required/>' +
+            '</div>' +
+            '<div class="form-group">' +
+            '<label for="help[]">Help Description (optional)</label>' +
+            '<button type="button" class="help" data-container="body" data-toggle="popover" ' +
+            'data-placement="right" data-content="A help description looks just like this! It\'ll be right beside the field and give your users more clarification as to what this field is."><b>?</b>' +
+            '</button>' +
+            '<input class="form-control" type="text" name="help[]" placeholder="Help Description"/>' +
             '</div>' +
             '<div class="form-group">' +
             '<input type="checkbox" name="required[' + j + ']"/>' +
@@ -83,7 +103,10 @@ $(document).ready(function () {
             '</select></div>' +
             '<input type="hidden" name="field_id[]" value="' + j + '"/>' +
             '<div id="options" class="d-none">'+
-            '<label for="options[]">Options (enter each option separated by a comma)</label>' +
+            '<label for="options[]"><span class="required">*</span>Options (enter each option separated by a comma)</label>' +
+            '<button type="button" class="help" data-container="body" data-toggle="popover" ' +
+            'data-placement="right" data-content="For a slider, the options are the min and max values for the slider. Otherwise, it\'s the options for the input field"><b>?</b>' +
+            '</button>' +
             '<input type="text" name="options[]" class="form-control"/>' +
             '</div></div></article>').appendTo(fields_div);
 
@@ -140,6 +163,7 @@ $(document).ready(function () {
     })
 
 
+    // clear search form inputs
     $('body').on('click', '#clear', function() {
 
         $('input').each(function( ) {
@@ -151,4 +175,29 @@ $(document).ready(function () {
         });
 
     })
+
+    // send ajax request to toggle a form's live/retired state
+    $('body').on('click', '#live-toggle', function(event) {
+
+        const form_id = event.target.name;
+        const live = event.target.checked;
+
+        $.ajax({
+                method: 'post',
+                url: "toggle-live",
+                data: {
+                    '_token': $('meta[name="csrf-token"]').attr('content'),
+                    'form': form_id,
+                    'live': live,
+                },
+                dataType: 'JSON'
+        }).done( function(msg) {
+            if(msg !== "success")
+            {
+                alert("Something went wrong. Please reload the page and try again.")
+            }
+        });
+
+    });
+
 });

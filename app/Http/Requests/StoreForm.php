@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\ValidDates;
+use App\Rules\ValidInterval;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreForm extends FormRequest
@@ -18,8 +20,8 @@ class StoreForm extends FormRequest
         return [
             'title' => 'sometimes|required|max:255',
             'description' => 'string|nullable',
-            'first_occurence_at' => 'string|nullable',
-            'interval' => 'string|nullable',
+            'first_occurence_at' => ['string','nullable', new ValidDates(), 'required_with:interval'],
+            'interval' => ['string','nullable', new ValidInterval()],
             'required_for' => 'nullable|in:All Staff,Principals and Vice Principals,Elementary Principals Only,Secondary Principals Only',
             'full_year' => 'boolean',
 
@@ -29,24 +31,28 @@ class StoreForm extends FormRequest
             'section_description.*' => 'string|nullable',
 
             'label' => 'array|nullable',
-            'label.*' => 'required|string|distinct',
+            'label.*' => ['required','string'],
             'type' => 'array|nullable',
             'type.*' => 'in:select,text,textarea,number,radio,checkbox,slider,date,time',
             'required' => 'array|nullable',
             'options' => 'array|nullable',
-            'options.*' => 'string',
+            'options.*' => 'string|nullable',
+            'help' => 'array|nullable',
+            'help.*' => 'string|nullable'
         ];
+
     }
 
 
     // sanitize the user input
     protected function prepareForValidation()
     {
-        // sanitize each section title, section description, label and options
+        // sanitize each section title, section description, label and options and helps
         $section_titles = array();
         $section_descriptions = array();
         $labels = array();
         $options = array();
+        $help = array();
 
         if (isset($this->section_title))
         {
@@ -62,9 +68,9 @@ class StoreForm extends FormRequest
             {
                 $labels[$key] = filter_var($value, FILTER_SANITIZE_STRING);
                 $options[$key] = filter_var($this->options[$key], FILTER_SANITIZE_STRING);
+                $help[$key] = filter_var($this->help[$key], FILTER_SANITIZE_STRING);
             }
         }
-
 
         $this->merge([
             'title' => filter_var($this->form_title, FILTER_SANITIZE_STRING),
@@ -74,11 +80,13 @@ class StoreForm extends FormRequest
             'required_for' => filter_var($this->required_for, FILTER_SANITIZE_STRING),
             'full_year' => isset($this->full_year),
 
+
             'section_title' => $section_titles,
             'section_description' => $section_descriptions,
 
             'label' => $labels,
             'options' => $options,
+            'help' => $help,
         ]);
     }
 }

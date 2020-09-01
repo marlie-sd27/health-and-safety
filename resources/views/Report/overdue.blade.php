@@ -7,7 +7,7 @@
         <article class="container">
             <form method="get" action="{{ route('report.overdue') }}">
                 <label>Search by form:
-                    <select class="form-control text-reset" type="text" placeholder="Search" name='form'
+                    <select class="form-control text-reset" type="text" name='form'
                             aria-label="Search">
                         <option></option>
                         @foreach($links as $link)

@@ -22,6 +22,7 @@ class CreateFormsTable extends Migration
             $table->text('first_occurence_at')->nullable();
             $table->string('required_for')->nullable()->default('All Staff');
             $table->boolean('full_year')->nullable()->default(false);
+            $table->boolean('live')->default('true');
         });
     }
 

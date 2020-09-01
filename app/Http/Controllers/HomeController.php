@@ -97,6 +97,7 @@ class HomeController extends Controller
                         ->get();
                 })
                 ->orderBy('date', 'asc')
+                ->limit(5)
                 ->get();
 
             $viewData['upcomings'] = Helper::filterEvents($viewData['upcomings']);
@@ -113,6 +114,7 @@ class HomeController extends Controller
                         ->get();
                 })
                 ->orderBy('date', 'asc')
+                ->limit(5)
                 ->get();
 
             $viewData['overdues'] = Helper::filterEvents($viewData['overdues']);

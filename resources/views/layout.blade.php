@@ -32,11 +32,11 @@
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <a href="{{ route('dashboard') }}" class="nav-link {{$_SERVER['REQUEST_URI'] == '/' ? ' active' : ''}}">Dashboard</a>
+                    <a href="{{ route('dashboard') }}" class="nav-link {{$_SERVER['REQUEST_URI'] == '/dashboard' ? ' active' : ''}}">Dashboard</a>
                 </li>
                 @if(Auth::user()->isAdmin())
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
+                        <a class="nav-link dropdown-toggle {{ strpos( $_SERVER['REQUEST_URI'], 'forms') != false ? ' active' : ''}}" data-toggle="dropdown" href="#" role="button"
                            aria-haspopup="true" aria-expanded="false">Forms
                         </a>
                         <div class="dropdown-menu dropdown-menu-right">
@@ -46,7 +46,7 @@
                     </li>
 
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
+                        <a class="nav-link dropdown-toggle {{ strpos( $_SERVER['REQUEST_URI'], 'report') != false ? ' active' : ''}}" data-toggle="dropdown" href="#" role="button"
                            aria-haspopup="true" aria-expanded="false">Report
                         </a>
                         <div class="dropdown-menu dropdown-menu-right">
@@ -55,11 +55,17 @@
                             <a href="{{ route('report.upcoming') }}" class="dropdown-item">Upcoming</a>
                         </div>
                     </li>
-
+                    <li class="nav-item">
+                        <a href="{{ route('admins') }}" class="nav-link {{$_SERVER['REQUEST_URI'] == '/admins' ? ' active' : ''}}">Admins</a>
+                    </li>
+                @elseif(Auth::user()->isPrincipal())
+                    <li class="nav-item">
+                        <a href="{{ route('report') }}" class="nav-link {{$_SERVER['REQUEST_URI'] == '/report' ? ' active' : ''}}">Submissions</a>
+                    </li>
 
                 @else
                     <li class="nav-item">
-                        <a href="{{ route('submissions.index') }}" class="nav-link {{$_SERVER['REQUEST_URI'] == '/' ? ' active' : ''}}">My Submissions</a>
+                        <a href="{{ route('submissions.index') }}" class="nav-link {{$_SERVER['REQUEST_URI'] == '/submissions' ? ' active' : ''}}">My Submissions</a>
                     </li>
                 @endif
                 <li class="nav-item">
@@ -108,27 +114,32 @@
 <!-- Page Content -->
     <main role="main" class="container">
         @if(session('error'))
-            <div class="alert alert-danger" role="alert">
+            <div class="alert alert-danger alert-dismissible alert-dismissible fade show" role="alert">
                 <p class="mb-3">{{ session('error') }}</p>
                 @if(session('errorDetail'))
                     <pre class="alert-pre border bg-light p-2"><code>{{ session('errorDetail') }}</code></pre>
                 @endif
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
         @endif
 
         @if ($errors->any())
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <p>{{ $error }}</p>
-                    @endforeach
-                </ul>
+            <div class="alert alert-danger alert-dismissible alert-dismissible fade show" role="alert">
+                <p>Check below to  fix errors in your submission</p>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
         @endif
 
         @if(session()->has('message'))
-            <div class="alert alert-success">
+            <div class="alert alert-success alert-dismissible alert-dismissible fade show" role="alert">
                 {{ session()->get('message') }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
         @endif
 

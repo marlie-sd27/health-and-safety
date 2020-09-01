@@ -30,7 +30,7 @@ class AppServiceProvider extends ServiceProvider
         View::composer('*', function ($view)
         {
             // get all the forms to create links
-            View::share('links', Forms::select('id', 'title')->get());
+            View::share('links', Forms::where('live',true)->select('id', 'title')->get());
 
 
             if (session('error')) {

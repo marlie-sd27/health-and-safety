@@ -7,17 +7,13 @@ use App\Http\Requests\StoreForm;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class Forms extends Model
 {
     protected $fillable = [
-        'title', 'description', 'first_occurence_at', 'interval', 'required_for', 'full_year'
+        'title', 'description', 'first_occurence_at', 'interval', 'required_for', 'full_year', 'live'
     ];
-
-    protected $casts = [
-        'first_occurence_at' => 'array'
-    ];
-
 
 
     // Get the sections for a form
@@ -97,10 +93,11 @@ class Forms extends Model
                 Fields::create([
                     'sections_id' => $section_ids[$request->section_id[$key]],
                     'label' => $request->label[$key],
-                    'name' => $request->label[$key],
+                    'name' => Str::random(),
                     'type' => $request->type[$key],
                     'required' => isset($request->required[$value]),
                     'options' => $request->options[$key],
+                    'help' => $request->help[$key],
                 ]);
             }
         }
@@ -170,5 +167,14 @@ class Forms extends Model
         }
         // otherwise return null
         else return null;
+    }
+
+    public function deleteAllAssociatedEvents()
+    {
+        $events = $this->events;
+        foreach ($events as $event)
+        {
+            Events::destroy($event->id);
+        }
     }
 }

@@ -10,21 +10,11 @@ class SubmissionPolicy
 {
     use HandlesAuthorization;
 
-    /**
-     * Determine whether the user can view any models.
-     *
-     * @param  \App\User  $user
-     * @return mixed
-     */
-    public function viewAny(User $user)
-    {
-        //
-    }
 
-    // user must own the submission or be admin to view
+    // user must own the submission or be admin or principal to view
     public function view(User $user, Submissions $submission)
     {
-        return strcasecmp($submission->email, $user->email) == 0 | $user->isAdmin();
+        return strcasecmp($submission->email, $user->email) == 0 | $user->isAdmin() | $user->isPrincipal();
     }
 
 
@@ -42,27 +32,4 @@ class SubmissionPolicy
         return strcasecmp($submission->email, $user->email) == 0 | $user->isAdmin();
     }
 
-    /**
-     * Determine whether the user can restore the model.
-     *
-     * @param  \App\User  $user
-     * @param  \App\Submissions  $submissions
-     * @return mixed
-     */
-    public function restore(User $user, Submissions $submissions)
-    {
-        //
-    }
-
-    /**
-     * Determine whether the user can permanently delete the model.
-     *
-     * @param  \App\User  $user
-     * @param  \App\Submissions  $submissions
-     * @return mixed
-     */
-    public function forceDelete(User $user, Submissions $submissions)
-    {
-        //
-    }
 }

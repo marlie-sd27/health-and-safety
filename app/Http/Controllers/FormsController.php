@@ -14,7 +14,7 @@ class FormsController extends Controller
     // list all forms
     public function index()
     {
-        return view('Forms/index', ['forms' => Forms::all()]);
+        return view('Forms/index', ['forms' => Forms::all()->sortBy('id')]);
     }
 
 
@@ -67,22 +67,42 @@ class FormsController extends Controller
     public function update(StoreForm $validated, Forms $form)
     {
         DB::transaction(function () use ($validated, $form) {
+
+            $form->deleteAllAssociatedEvents();
+
             $form->update([
                 'title' => $validated['title'],
                 'description' => $validated['description'],
-                'recurrence' => $validated['recurrence'],
+                'first_occurence_at' => $validated['first_occurence_at'],
+                'interval' => $validated['interval'],
                 'required_role' => $validated['required_role'],
-                'full_year' => $validated['full_year']
+                'full_year' => $validated['full_year'],
             ]);
 
             $form->deleteAllSectionsandFields();
-
             $form->createSectionsandFields($validated);
 
             $form->save();
         });
 
+
         return redirect(route('forms.show', ['form' => $form->id]))->with('message','Successfully updated the form!');
+    }
+
+
+    public function toggleLive(Request $request)
+    {
+        if (!is_bool(boolval($request->live)))
+        {
+            return response()->json("Value is not boolean");
+        }
+        $form = Forms::find($request->form);
+        $form->update([
+            'live' => $request->live,
+        ]);
+        $form->save();
+
+        return response()->json("success");
     }
 
 
