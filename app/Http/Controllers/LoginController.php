@@ -90,6 +90,7 @@ class LoginController extends Controller
 
                 // build query to get membership groups
                 $principal = false;
+                $elementary = false;
                 $queryParams = array(
                     '$select' => 'displayName',
                 );
