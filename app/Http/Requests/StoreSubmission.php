@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\ValidSite;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Log;
 
 class StoreSubmission extends FormRequest
 {
@@ -19,7 +21,7 @@ class StoreSubmission extends FormRequest
             'forms_id' => 'exists:forms',
             'events_id' => 'exists:events|nullable',
             'data' => 'string',
-            'site' => 'string',
+            'site' => ['string', new ValidSite()],
         ];
     }
 

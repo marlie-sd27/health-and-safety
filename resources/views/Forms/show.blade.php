@@ -16,44 +16,49 @@
         @endif
         <p style="white-space: pre-wrap;">{{ $form->description }}</p>
     </div>
-    <form method="post" action="{{ route('submissions.store') }}">
+    <form method="post" action="{{ route('submissions.store') }}" enctype="multipart/form-data">
         @csrf
-        <article>
+        <article class="container">
             <input type="hidden" value="{{ $form->id }}" name="form_id"/>
             @if(isset($event))
                 <input type="hidden" value="{{ $event->id }}" name="event_id"/>
             @endif
             <span class="required">*</span><label>School/Site</label>
-            <select name="site" class="form-control">
-                <option>--</option>
-                <option>100 Mile Elementary</option>
-                <option>100 Mile Maintenance</option>
-                <option>150 Mile Elementary</option>
-                <option>Alexis Creek</option>
-                <option>Anahim</option>
-                <option>Big Lake</option>
-                <option>Board Office</option>
-                <option>Cataline</option>
-                <option>Chilcotin Road</option>
-                <option>Dog Creek</option>
-                <option>Forest Grove</option>
-                <option>Horse Lake</option>
-                <option>Horsefly</option>
-                <option>GROW WL</option>
-                <option>LCS-Williams Lake</option>
-                <option>LCS-Columneetza</option>
-                <option>Likely</option>
-                <option>Marie Sharpe</option>
-                <option>Mile 108 Elementary</option>
-                <option>Mountview</option>
-                <option>Maintenance Yard</option>
-                <option>Naughtaneqed</option>
-                <option>Nenqayni</option>
-                <option>Nesika</option>
-                <option>PSO</option>
-                <option>Support Services</option>
-                <option>Tatla Lake</option>
+            <select name="site" class="form-control @error('site') border-danger @enderror">
+                <option @if(old('site') == '--') {{ 'selected' }} @endif>--</option>
+                <option @if(old('site') == '100 Mile Elementary') {{ 'selected' }} @endif>100 Mile Elementary</option>
+                <option @if(old('site') == '100 Mile Maintenance') {{ 'selected' }} @endif>100 Mile Maintenance</option>
+                <option @if(old('site') == '150 Mile Elementary') {{ 'selected' }} @endif>150 Mile Elementary</option>
+                <option @if(old('site') == 'Alexis Creek') {{ 'selected' }} @endif>Alexis Creek</option>
+                <option @if(old('site') == 'Anahim') {{ 'selected' }} @endif>Anahim</option>
+                <option @if(old('site') == 'Big Lake') {{ 'selected' }} @endif>Big Lake</option>
+                <option @if(old('site') == 'Board Office') {{ 'selected' }} @endif>Board Office</option>
+                <option @if(old('site') == 'Cataline') {{ 'selected' }} @endif>Cataline</option>
+                <option @if(old('site') == 'Chilcotin Road') {{ 'selected' }} @endif>Chilcotin Road</option>
+                <option @if(old('site') == 'Dog Creek') {{ 'selected' }} @endif>Dog Creek</option>
+                <option @if(old('site') == 'Forest Grove') {{ 'selected' }} @endif>Forest Grove</option>
+                <option @if(old('site') == 'Horse Lake') {{ 'selected' }} @endif>Horse Lake</option>
+                <option @if(old('site') == 'Horsefly') {{ 'selected' }} @endif>Horsefly</option>
+                <option @if(old('site') == 'GROW WL') {{ 'selected' }} @endif>GROW WL</option>
+                <option @if(old('site') == 'LCS-Williams Lake') {{ 'selected' }} @endif>LCS-Williams Lake</option>
+                <option @if(old('site') == 'LCS-Columneetza') {{ 'selected' }} @endif>LCS-Columneetza</option>
+                <option @if(old('site') == 'Likely') {{ 'selected' }} @endif>Likely</option>
+                <option @if(old('site') == 'Marie Sharpe') {{ 'selected' }} @endif>Marie Sharpe</option>
+                <option @if(old('site') == 'Mile 108 Elementary') {{ 'selected' }} @endif>Mile 108 Elementary</option>
+                <option @if(old('site') == 'Mountview') {{ 'selected' }} @endif>Mountview</option>
+                <option @if(old('site') == 'Maintenance Yard') {{ 'selected' }} @endif>Maintenance Yard</option>
+                <option @if(old('site') == 'Naughtaneqed') {{ 'selected' }} @endif>Naughtaneqed</option>
+                <option @if(old('site') == 'Nenqayni') {{ 'selected' }} @endif>Nenqayni</option>
+                <option @if(old('site') == 'Nesika') {{ 'selected' }} @endif>Nesika</option>
+                <option @if(old('site') == 'PSO') {{ 'selected' }} @endif>PSO</option>
+                <option @if(old('site') == 'Support Services') {{ 'selected' }} @endif>Support Services</option>
+                <option @if(old('site') == 'Tatla Lake') {{ 'selected' }} @endif>Tatla Lake</option>
             </select>
+            <div class="form-group">
+                @error("site")
+                <p class="text-danger">{{ $errors->first("site") }}</p>
+                @enderror
+            </div>
         </article>
         @foreach($form->sections as $s)
             <article>
@@ -173,6 +178,24 @@
                                                        min="{{ $f->options[0] }}"
                                                        max="{{ $f->options[1] }}">{{ $f->options[1] }}
                             <p>Value: <span id="slider_value"></span></p>
+                        </div>
+                        @break
+
+                        @case("file")
+                        <div class="form-group">
+                            <label>{{ $f->label }}</label>
+                            @if($f->help)
+                                <button type="button"
+                                        class="help"
+                                        data-container="body"
+                                        data-toggle="popover"
+                                        data-placement="right"
+                                        data-content="{{ $f->help }}">
+                                    <b>?</b>
+                                </button>
+                            @endif
+                            <input type="{{ $f->type }}" name="{{ $f->name }}"
+                                   {{ $f->required ? 'required' : '' }} class="form-control-file"/>
                         </div>
                         @break
 

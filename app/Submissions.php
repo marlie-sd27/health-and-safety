@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Submissions extends Model
 {
     protected $fillable = [
-        'events_id', 'forms_id', 'site', 'email', 'data'
+        'events_id', 'forms_id', 'site', 'email', 'data', 'files',
     ];
 
 
@@ -36,21 +36,8 @@ class Submissions extends Model
     // convert data string to array
     public function prepareData()
     {
-        // convert http_query to key-value array
-        parse_str($this['data'], $data);
-
-        // replace underscores with spaces in each key-value pair and push pair into new array
-        $parsedData = array();
-        foreach ($data as $key => $value)
-        {
-            // if value is an array (as in case for a checkbox), replace each entry's underscores with spaces
-            $newValue = (is_array($value)) ? str_replace("_", " ", join(", ", array_keys($value))) : str_replace("_", " ", $value);
-            $newKey = str_replace("_", " ", $key);
-
-            $parsedData[$newKey] = $newValue;
-        }
-
-        $this['data'] = $parsedData;
+        $this['data'] = Helper::parseHTTPQuery($this->data);
+        $this['files'] = Helper::parseHTTPQuery($this->files);
     }
 
 

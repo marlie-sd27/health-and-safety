@@ -4,6 +4,7 @@
 namespace App\Helpers;
 
 
+use App\Submissions;
 use Illuminate\Support\Facades\Auth;
 
 class Helper
@@ -109,5 +110,25 @@ class Helper
         }
 
         return $events;
+    }
+
+
+    public static function parseHTTPQuery($input)
+    {
+        // convert http_query to key-value array
+        parse_str($input, $data);
+
+        // replace underscores with spaces in each key-value pair and push pair into new array
+        $parsedData = array();
+        foreach ($data as $key => $value)
+        {
+            // if value is an array (as in case for a checkbox), replace each entry's underscores with spaces
+            $newValue = (is_array($value)) ? str_replace("_", " ", join(", ", array_keys($value))) : str_replace("_", " ", $value);
+            $newKey = str_replace("_", " ", $key);
+
+            $parsedData[$newKey] = $newValue;
+        }
+
+        return $parsedData;
     }
 }

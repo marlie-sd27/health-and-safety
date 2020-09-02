@@ -23,6 +23,7 @@ class CreateSubmissionsTable extends Migration
             $table->string('site')->nullable();
             $table->string('email');
             $table->text('data');
+            $table->text('files')->nullable();
         });
     }
 
