@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Forms;
 use App\Helpers\Helper;
 use App\Http\Requests\StoreSubmission;
 use App\Submissions;
@@ -34,7 +35,8 @@ class SubmissionsController extends Controller
         {
             foreach ($validated->files as $key => $value)
             {
-                $path = $validated->file($key)->storeAs( $validated->forms->title, Auth::user()->name . "_" . Carbon::now());
+                $fileName = $key . "-" . Auth::user()->name . "-" . Carbon::now()->toDateString() . "." . $validated->file($key)->extension();
+                $path = $validated->file($key)->storeAs( Forms::find($validated->form_id)->title, $fileName);
                 $files[$key] = $path;
             }
         }
