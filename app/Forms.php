@@ -42,13 +42,11 @@ class Forms extends Model
     {
         $this['sections'] = $this->sections;
 
-        foreach ($this['sections'] as $section)
-        {
+        foreach ($this['sections'] as $section) {
             $section['fields'] = $section->fields;
 
             // convert string into array on comma delimiter
-            foreach ($section['fields'] as $field)
-            {
+            foreach ($section['fields'] as $field) {
                 $field->options = $field->options !== "" ? explode(',', $field->options) : "";
             }
         }
@@ -67,10 +65,8 @@ class Forms extends Model
         $section_ids = array();
 
         // create each section in the form
-        if (isset($request->section_title))
-        {
-            foreach ($request->section_title as $key => $value)
-            {
+        if (isset($request->section_title)) {
+            foreach ($request->section_title as $key => $value) {
                 $section = Sections::create([
                     'title' => $value,
                     'forms_id' => $this->id,
@@ -86,10 +82,8 @@ class Forms extends Model
 
 
         // create each field in the form
-        if (isset($request->field_id))
-        {
-            foreach ($request->field_id as $key => $value)
-            {
+        if (isset($request->field_id)) {
+            foreach ($request->field_id as $key => $value) {
                 Fields::create([
                     'sections_id' => $section_ids[$request->section_id[$key]],
                     'label' => $request->label[$key],
@@ -111,12 +105,71 @@ class Forms extends Model
     {
         $sections = $this->sections;
 
-        foreach($sections as $section)
-        {
+        foreach ($sections as $section) {
             Fields::destroy($section->fields->modelKeys());
             Sections::destroy($section->id);
         }
     }
+
+
+    public function updateSectionsandFields(StoreForm $request)
+    {
+        // recreate all the sections
+        $old_sections = $this->sections;
+        $section_ids = array();
+
+        if (isset($request->section_title)) {
+            foreach ($request->section_title as $key => $value) {
+                $section = Sections::create([
+                    'title' => $value,
+                    'forms_id' => $this->id,
+                    'description' => $request->section_description[$key],
+                ]);
+
+                // store the newly created section ID in an array
+                // key: ID of the section passed in the request. value: newly created section ID in database
+                // to be used when creating fields associated with the section
+                $section_ids[$request['s_id'][$key]] = $section->id;
+            }
+        }
+
+        // loop through each field in the request and compare to the section's fields
+        foreach ($request->field_id as $key => $value) {
+
+            // search database for field with unique name
+            $field = Fields::firstWhere('name', $request->field_name[$key]);
+
+            // if the field exists, update it
+            if ($field)
+            {
+                $field->update([
+                    'sections_id' => $section_ids[$request->section_id[$key]],
+                    'label' => $request->label[$key],
+                    'type' => $request->type[$key],
+                    'required' => isset($request->required[$value]),
+                    'options' => $request->options[$key],
+                    'help' => $request->help[$key],
+                ]);
+
+                $field->save();
+            } else {
+                // if the field is new, add it to the database
+                Fields::create([
+                    'sections_id' => $section_ids[$request->section_id[$key]],
+                    'label' => $request->label[$key],
+                    'name' => Str::random(),
+                    'type' => $request->type[$key],
+                    'required' => isset($request->required[$value]),
+                    'options' => $request->options[$key],
+                    'help' => $request->help[$key],
+                ]);
+            }
+        }
+
+        // delete all the old sections (deleted fields will also be deleted)
+        Sections::destroy($old_sections->modelKeys());
+    }
+
 
     public function closestDueDate()
     {
@@ -124,7 +177,7 @@ class Forms extends Model
         $overdues = Events::join('forms', 'forms_id', '=', 'forms.id')
             ->where('date', '<', Carbon::now())
             ->where('events.forms_id', '=', $this->id)
-            ->whereNotIn('events.id', function($query) {
+            ->whereNotIn('events.id', function ($query) {
                 $query->select('events_id')
                     ->from('submissions')
                     ->where('email', Auth::user()->email)
@@ -137,12 +190,11 @@ class Forms extends Model
         $overdues = Helper::filterEvents($overdues);
 
 
-
         // get the next closest due date for this event for this user
         $next_due_date = Events::join('forms', 'forms_id', '=', 'forms.id')
             ->where('date', '>=', Carbon::now())
             ->where('events.forms_id', '=', $this->id)
-            ->whereNotIn('events.id', function($query) {
+            ->whereNotIn('events.id', function ($query) {
                 $query->select('events_id')
                     ->from('submissions')
                     ->where('email', Auth::user()->email)
@@ -156,24 +208,19 @@ class Forms extends Model
 
 
         // if there's an overdue event for this form, return it's id
-        if (sizeof($overdues) > 0)
-        {
+        if (sizeof($overdues) > 0) {
             return $overdues->first()->id;
-        }
-        // otherwise, if there's an upcoming due date for it, return the upcoming id
-        else if (sizeof($next_due_date) > 0)
-        {
+        } // otherwise, if there's an upcoming due date for it, return the upcoming id
+        else if (sizeof($next_due_date) > 0) {
             return $next_due_date->first()->id;
-        }
-        // otherwise return null
+        } // otherwise return null
         else return null;
     }
 
     public function deleteAllAssociatedEvents()
     {
         $events = $this->events;
-        foreach ($events as $event)
-        {
+        foreach ($events as $event) {
             Events::destroy($event->id);
         }
     }
