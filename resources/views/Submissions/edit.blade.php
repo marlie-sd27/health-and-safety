@@ -39,6 +39,7 @@
                     <option @if (old('site') == 'Horse Lake' || $submission->site == "Horse Lake") {{ 'selected' }} @endif>Horse Lake</option>
                     <option @if (old('site') == 'Horsefly' || $submission->site == "Horsefly") {{ 'selected' }} @endif>Horsefly</option>
                     <option @if (old('site') == 'GROW WL' || $submission->site == "GROW WL") {{ 'selected' }} @endif>GROW WL</option>
+                    <option @if (old('site') == 'Lac La Hache' || $submission->site == "Lac La Hache") {{ 'selected' }} @endif>Lac La Hache</option>
                     <option @if (old('site') == 'LCS-Williams Lake' || $submission->site == "LCS-Williams Lake") {{ 'selected' }} @endif>LCS-Williams Lake
                     </option>
                     <option @if (old('site') == 'LCS-Columneetza' || $submission->site == "LCS-Columneetza") {{ 'selected' }} @endif>LCS-Columneetza
