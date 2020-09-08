@@ -62,6 +62,29 @@ class Forms extends Model
         // keep track of any errors that exist while submitting the form
         $errors = array();
 
+        $section_ids = $this->createSections($request);
+
+        // create each field in the form
+        if (isset($request->field_id)) {
+            foreach ($request->field_id as $key => $value) {
+                Fields::create([
+                    'sections_id' => $section_ids[$request->section_id[$key]],
+                    'label' => $request->label[$key],
+                    'name' => Str::random(),
+                    'type' => $request->type[$key],
+                    'required' => isset($request->required[$value]),
+                    'options' => $request->options[$key],
+                    'help' => $request->help[$key],
+                ]);
+            }
+        }
+
+        return $errors;
+    }
+
+
+    public function createSections(StoreForm $request)
+    {
         $section_ids = array();
 
         // create each section in the form
@@ -80,35 +103,7 @@ class Forms extends Model
             }
         }
 
-
-        // create each field in the form
-        if (isset($request->field_id)) {
-            foreach ($request->field_id as $key => $value) {
-                Fields::create([
-                    'sections_id' => $section_ids[$request->section_id[$key]],
-                    'label' => $request->label[$key],
-                    'name' => Str::random(),
-                    'type' => $request->type[$key],
-                    'required' => isset($request->required[$value]),
-                    'options' => $request->options[$key],
-                    'help' => $request->help[$key],
-                ]);
-            }
-        }
-
-        return $errors;
-
-    }
-
-
-    public function deleteAllSectionsandFields()
-    {
-        $sections = $this->sections;
-
-        foreach ($sections as $section) {
-            Fields::destroy($section->fields->modelKeys());
-            Sections::destroy($section->id);
-        }
+        return $section_ids;
     }
 
 
@@ -116,53 +111,39 @@ class Forms extends Model
     {
         // recreate all the sections
         $old_sections = $this->sections;
-        $section_ids = array();
-
-        if (isset($request->section_title)) {
-            foreach ($request->section_title as $key => $value) {
-                $section = Sections::create([
-                    'title' => $value,
-                    'forms_id' => $this->id,
-                    'description' => $request->section_description[$key],
-                ]);
-
-                // store the newly created section ID in an array
-                // key: ID of the section passed in the request. value: newly created section ID in database
-                // to be used when creating fields associated with the section
-                $section_ids[$request['s_id'][$key]] = $section->id;
-            }
-        }
+        $section_ids = $this->createSections($request);
 
         // loop through each field in the request and compare to the section's fields
-        foreach ($request->field_id as $key => $value) {
+        if (isset($request->field_id)) {
+            foreach ($request->field_id as $key => $value) {
 
-            // search database for field with unique name
-            $field = Fields::firstWhere('name', $request->field_name[$key]);
+                // search database for field with unique name
+                $field = array_key_exists($key, $request->field_name) ? Fields::where('name', $request->field_name[$key])->firstOrFail() : null;
 
-            // if the field exists, update it
-            if ($field)
-            {
-                $field->update([
-                    'sections_id' => $section_ids[$request->section_id[$key]],
-                    'label' => $request->label[$key],
-                    'type' => $request->type[$key],
-                    'required' => isset($request->required[$value]),
-                    'options' => $request->options[$key],
-                    'help' => $request->help[$key],
-                ]);
+                // if the field exists, update it
+                if ($field) {
+                    $field->update([
+                        'sections_id' => $section_ids[$request->section_id[$key]],
+                        'label' => $request->label[$key],
+                        'type' => $request->type[$key],
+                        'required' => isset($request->required[$value]),
+                        'options' => $request->options[$key],
+                        'help' => $request->help[$key],
+                    ]);
 
-                $field->save();
-            } else {
-                // if the field is new, add it to the database
-                Fields::create([
-                    'sections_id' => $section_ids[$request->section_id[$key]],
-                    'label' => $request->label[$key],
-                    'name' => Str::random(),
-                    'type' => $request->type[$key],
-                    'required' => isset($request->required[$value]),
-                    'options' => $request->options[$key],
-                    'help' => $request->help[$key],
-                ]);
+                    $field->save();
+                } else {
+                    // if the field is new, add it to the database
+                    Fields::create([
+                        'sections_id' => $section_ids[$request->section_id[$key]],
+                        'label' => $request->label[$key],
+                        'name' => Str::random(),
+                        'type' => $request->type[$key],
+                        'required' => isset($request->required[$value]),
+                        'options' => $request->options[$key],
+                        'help' => $request->help[$key],
+                    ]);
+                }
             }
         }
 

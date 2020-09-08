@@ -79,7 +79,6 @@ class FormsController extends Controller
                 'full_year' => $validated['full_year'],
             ]);
 
-//            $form->deleteAllSectionsandFields();
             $form->updateSectionsandFields($validated);
 
             $form->save();
