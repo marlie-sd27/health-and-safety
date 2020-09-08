@@ -150,6 +150,7 @@
                                             <div class="container">
                                                 <input type="hidden" name="section_id[]"
                                                        value="{{ $field->sections_id }}"/>
+                                                <input type='hidden' name="field_name[]" value="{{ $field->name }}"/>
                                                 <div class="form-group">
                                                     <label for="type"><span class="required">*</span>Label</label>
                                                     <input class="form-control @error("label.$loop->index") border-danger @enderror"
