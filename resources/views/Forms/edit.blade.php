@@ -31,7 +31,7 @@
                 <div class="form-group">
                     <label for="form_description">Description</label>
                     <textarea class="form-control @error('form_description') border-danger @enderror"
-                              name="form_description">@if (old('form_description')){{ old('form_description') }}@else {{ $form->description }} @endif</textarea>
+                              name="form_description">@if(old('form_description')){{old('form_description')}}@else{{$form->description}}@endif</textarea>
                     @error('form_description')
                     <p class="help text-danger">{{ $errors->first('form_description') }}</p>
                     @enderror
