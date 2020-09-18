@@ -80,7 +80,7 @@
                                     <b>?</b>
                                 </button>
                             @endif
-                            <select name="data[{{ $f->name }}]"
+                            <select name="data[{{ trim($f->name) }}]"
                                     class="form-control" {{ $f->required ? 'required' : '' }}>
                                 @foreach($f->options as $option)
                                     <option>{{ $option }}</option>
@@ -103,7 +103,7 @@
                                 </button>
                             @endif
                             <textarea class="form-control"
-                                      name="data[{{ $f->name }}]" {{ $f->required ? 'required' : '' }}></textarea>
+                                      name="data[{{ trim($f->name) }}]" {{ $f->required ? 'required' : '' }}></textarea>
                         </div>
                         @break
 
@@ -127,7 +127,7 @@
                             <div>
                                 <label>
                                     <input type="radio" value="{{ $option }}"
-                                           name="data[{{ $f->name }}]" {{ $f->required ? 'required' : '' }}/>
+                                           name="data[{{ trim($f->name) }}]" {{ $f->required ? 'required' : '' }}/>
                                     {{ $option }}
                                 </label>
                             </div>
@@ -153,7 +153,7 @@
                         @foreach($f->options as $option)
                             <div>
                                 <label>
-                                    <input type="checkbox" name="data[{{ $f->name }}][{{ $option }}]"/>
+                                    <input type="checkbox" name="data[{{ trim($f->name) }}][{{ $option }}]"/>
                                     {{ $option }}
                                 </label>
                             </div>
@@ -175,7 +175,7 @@
                                 </button>
                             @endif
                             <br>
-                            {{ $f->options[0] }}<input type="range" id="slider" name="data[{{$f->name}}]"
+                            {{ $f->options[0] }}<input type="range" id="slider" name="data[{{trim($f->name)}}]"
                                                        min="{{ $f->options[0] }}"
                                                        max="{{ $f->options[1] }}">{{ $f->options[1] }}
                             <p>Value: <span id="slider_value"></span></p>
@@ -195,7 +195,7 @@
                                     <b>?</b>
                                 </button>
                             @endif
-                            <input type="{{ $f->type }}" name="{{ $f->name }}"
+                            <input type="{{ $f->type }}" name="{{ trim($f->name) }}"
                                    {{ $f->required ? 'required' : '' }} class="form-control-file"/>
                         </div>
                         @break
@@ -213,7 +213,7 @@
                                     <b>?</b>
                                 </button>
                             @endif
-                            <input type="{{ $f->type }}" name="data[{{ $f->name }}]"
+                            <input type="{{ $f->type }}" name="data[{{ trim($f->name) }}]"
                                    {{ $f->required ? 'required' : '' }} class="form-control"/>
 
                         </div>

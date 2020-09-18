@@ -41,11 +41,11 @@
                     <tr>
                         <td class="w-50">{{ $field->label }}</td>
                         @if($field->type == "file")
-                            @if( isset($submission->files[$field->name]) && Storage::exists($submission->files[$field->name]))
+                            @if( isset($submission->files[trim($field->name)]) && Storage::exists($submission->files[trim($field->name)]))
                             <td class="w-50">
                                 <form method="post" action="/file">
                                     @csrf
-                                    <input type="hidden" name="file" value="{{ $submission->files[$field->name] }}"/>
+                                    <input type="hidden" name="file" value="{{ $submission->files[trim($field->name)] }}"/>
                                     <button type='submit' class="btn btn-primary">Click here to download</button>
                                 </form>
                             </td>
@@ -53,7 +53,7 @@
                                 <td class="w-50">No file available</td>
                             @endif
                         @else
-                            <td class="w-50">{{ $submission->data[$field->name] ?? "" }}</td>
+                            <td class="w-50">{{ $submission->data[trim($field->name)] ?? "" }}</td>
                         @endif
                     </tr>
                 @endforeach

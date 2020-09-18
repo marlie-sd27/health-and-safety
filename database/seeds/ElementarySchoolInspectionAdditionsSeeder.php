@@ -457,8 +457,8 @@ class ElementarySchoolInspectionAdditionsSeeder extends Seeder
 
         DB::table('fields')->insert([
             ['sections_id' => $section,
-                'label' => 'Is storage on top of wall-mounted cupboards limited to lightweight objects i.e. empty boxes? *storage must not be within 18” of ceiling ',
-                'name' => 'Is storage on top of wall-mounted cupboards limited to lightweight objects i.e. empty boxes? *storage must not be within 18” of ceiling ',
+                'label' => 'Is storage on top of wall-mounted cupboards limited to lightweight objects i.e. empty boxes? *storage must not be within 18” of ceiling',
+                'name' => 'Is storage on top of wall-mounted cupboards limited to lightweight objects i.e. empty boxes? *storage must not be within 18” of ceiling',
                 'type' => 'radio',
                 'required' => false,
                 'options' => ' Yes, No, N/A',
@@ -492,15 +492,15 @@ class ElementarySchoolInspectionAdditionsSeeder extends Seeder
 
         $section = DB::table('sections')->insertGetId([
             'forms_id' => 3,
-            'title' => '56. Are storage rooms organized so as not to present a safety hazard? *i.e. tripping hazard ',
+            'title' => '56. Are storage rooms organized so as not to present a safety hazard? *i.e. tripping hazard',
             'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
             'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
         ]);
 
         DB::table('fields')->insert([
             ['sections_id' => $section,
-                'label' => 'Are storage rooms organized so as not to present a safety hazard? *i.e. tripping hazard ',
-                'name' => 'Are storage rooms organized so as not to present a safety hazard? *i.e. tripping hazard ',
+                'label' => 'Are storage rooms organized so as not to present a safety hazard? *i.e. tripping hazard',
+                'name' => 'Are storage rooms organized so as not to present a safety hazard? *i.e. tripping hazard',
                 'type' => 'radio',
                 'required' => false,
                 'options' => ' Yes, No, N/A',
