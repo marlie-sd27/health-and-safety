@@ -4,7 +4,6 @@ namespace App\Http\Requests;
 
 use App\Rules\ValidSite;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Log;
 
 class StoreSubmission extends FormRequest
 {
