@@ -18,13 +18,19 @@
                         on the menu to index forms.</b></p>
                 <div class="form-group">
                     <label for="form_title"><span class="required">*</span>Title</label>
-                    <input class="form-control" type="text" name="form_title" placeholder="Title" required
-                           value="{{ old('form_title') }}">
+                    <input class="form-control @error('title') border-danger @enderror" type="text" name="form_title" placeholder="Title" required
+                           value="{{ old('title') }}">
+                    @error('title')
+                    <p class="text-danger">{{ $errors->first('title') }}</p>
+                    @enderror
                 </div>
                 <div class="form-group">
                     <label for="form_description">Description</label>
-                    <textarea class="form-control" name="form_description"
-                              placeholder="Description">{{ old('form_description') }}</textarea>
+                    <textarea class="form-control @error('description') border-danger @enderror" name="form_description"
+                              placeholder="Description">{{ old('description') }}</textarea>
+                    @error('description')
+                    <p class="text-danger">{{ $errors->first('description') }}</p>
+                    @enderror
                 </div>
             </article>
             <article class="container">
@@ -44,7 +50,7 @@
                        value="{{ old('first_occurence_at') }}">
 
                 @error('first_occurence_at')
-                <p class="help text-danger">{{ $errors->first('first_occurence_at') }}</p>
+                <p class="text-danger">{{ $errors->first('first_occurence_at') }}</p>
                 @enderror
                 <div class="form-group">
                     <label for="interval">Define a recurrence interval for the due dates</label>
@@ -55,7 +61,7 @@
                            placeholder="Define an interval"
                            value="{{ old('interval') }}">
                     @error('interval')
-                    <p class="help text-danger">{{ $errors->first('interval') }}</p>
+                    <p class="text-danger">{{ $errors->first('interval') }}</p>
                     @enderror
                 </div>
                 <div class="form-group">
@@ -67,7 +73,7 @@
                     <p><small><b>Note that due dates will not be scheduled in July or August unless otherwise specified</b>
                         </small></p>
                     @error('full_year')
-                    <p class="help text-danger">{{ $errors->first('full_year') }}</p>
+                    <p class=" text-danger">{{ $errors->first('full_year') }}</p>
                     @enderror
                 </div>
 
@@ -91,7 +97,7 @@
                         </option>
                     </select>
                     @error('required_for')
-                    <p class="help text-danger">{{ $errors->first('required_for') }}</p>
+                    <p class=" text-danger">{{ $errors->first('required_for') }}</p>
                     @enderror
                 </div>
             </article>
