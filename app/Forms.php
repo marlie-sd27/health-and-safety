@@ -117,9 +117,6 @@ class Forms extends Model
 
         // loop through each field in the request and compare to the section's fields
         if (isset($request->field_id)) {
-            $i = sizeof($request->label);
-            Log::debug('Max array ' . $request->label[$i-1]);
-            Log::debug('Size ' . $i);
             foreach ($request->field_id as $key => $value) {
 
                 // search database for field with unique name
@@ -127,7 +124,6 @@ class Forms extends Model
 
                 // if the field exists, update it
                 if ($field) {
-                    Log::debug('Updated field: ' . $request->label[$key]);
                     $field->update([
                         'sections_id' => $section_ids[$request->section_id[$key]],
                         'label' => $request->label[$key],
@@ -139,8 +135,10 @@ class Forms extends Model
 
                     $field->save();
 
+//                    if($field->name == "SVxYJt0kfiUt0hGt")
+//                        break;
+
                 } else {
-                    Log::debug('Created field: ' . $request->label[$key]);
                     // if the field is new, add it to the database
                     Fields::create([
                         'sections_id' => $section_ids[$request->section_id[$key]],

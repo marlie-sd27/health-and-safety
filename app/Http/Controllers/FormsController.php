@@ -81,8 +81,6 @@ class FormsController extends Controller
                 $form->deleteAllFutureEvents();
                 $form->save();
             };
-
-            Log::debug('Got to forms Controller line 84');
             $form->updateSectionsandFields($validated);
 
         });

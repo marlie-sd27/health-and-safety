@@ -28,14 +28,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        // log database queries
-        DB::listen(function ($query) {
-            Log::info([
-                $query->sql,
-                $query->bindings,
-                $query->time
-            ]);
-        });
+        DB::connection()->disableQueryLog();
         // load user info with each view
         View::composer('*', function ($view) {
             // get all the forms to create links
