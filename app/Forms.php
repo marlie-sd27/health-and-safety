@@ -7,6 +7,7 @@ use App\Http\Requests\StoreForm;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 class Forms extends Model
@@ -76,6 +77,7 @@ class Forms extends Model
                     'options' => $request->options[$key],
                     'help' => $request->help[$key],
                 ]);
+
             }
         }
 
@@ -132,6 +134,10 @@ class Forms extends Model
                     ]);
 
                     $field->save();
+
+//                    if($field->name == "SVxYJt0kfiUt0hGt")
+//                        break;
+
                 } else {
                     // if the field is new, add it to the database
                     Fields::create([
@@ -143,6 +149,7 @@ class Forms extends Model
                         'options' => $request->options[$key],
                         'help' => $request->help[$key],
                     ]);
+
                 }
             }
         }
@@ -198,11 +205,13 @@ class Forms extends Model
         else return null;
     }
 
-    public function deleteAllAssociatedEvents()
+    public function deleteAllFutureEvents()
     {
         $events = $this->events;
         foreach ($events as $event) {
-            Events::destroy($event->id);
+            if ($event->date > Carbon::today()) {
+                Events::destroy($event->id);
+            }
         }
     }
 }

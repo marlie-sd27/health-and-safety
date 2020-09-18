@@ -16,19 +16,19 @@ class RespectfulWorkplaceSeeder extends Seeder
         $form = DB::table('forms')->insertGetId([
             'title' => 'Respectful Workplace Training',
             'description' => "We all have the right to work in an environment that is respectful and a responsibility to treat everyone at work with consideration. A respectful workplace: " .
-                "\n\nIs inclusive\nValues diversity\nClearly communicates expectations around behaviour" .
-                "\nPromotes employee health and safety\nProvides resources and training to resolve disputes" .
-                "\nStrives for improvement\nHas open channels of communication" .
-                "\n\nThis course is part of School District #27 efforts towards continually improving our workplaces that align with our Core Operating Values of ".
+                "\r\n\r\nIs inclusive\r\nValues diversity\r\nClearly communicates expectations around behaviour" .
+                "\r\nPromotes employee health and safety\r\nProvides resources and training to resolve disputes" .
+                "\r\nStrives for improvement\r\nHas open channels of communication" .
+                "\r\n\r\nThis course is part of School District #27 efforts towards continually improving our workplaces that align with our Core Operating Values of ".
                 ": Respect - Responsibility - Kindness and Caring - Acceptance." .
-                "\n\nCourse Objectives:" .
-                "\n\n1) Identifying what bullying & harassment is & what it is not." .
-                "\n2) What the law is on this topic and what does our district policy require." .
-                "\n3) Respective Roles & Responsibilities." .
-                "\n4) Reporting procedures.",
+                "\r\n\r\nCourse Objectives:" .
+                "\r\n\r\n1) Identifying what bullying & harassment is & what it is not." .
+                "\r\n2) What the law is on this topic and what does our district policy require." .
+                "\r\n3) Respective Roles & Responsibilities." .
+                "\r\n4) Reporting procedures.",
             'interval' => '1 year',
             'first_occurence_at' => '2020-09-30',
-            'required_for' => 'All Principals and Vice Principals',
+            'required_for' => 'Principals and Vice Principals',
             'full_year' => false,
             'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
             'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
@@ -38,8 +38,8 @@ class RespectfulWorkplaceSeeder extends Seeder
             'forms_id' => $form,
             'title' => '',
             'description' => "Please watch the video What Does Bullying and Harassment Mean for You and Your Workplace?" .
-                " Copy and paste the following link \nhttps://www.youtube.com/watch?v=u7e2c6v1oDs" .
-                "\nFocus on the course objective of \n1a) What bullying and harassment are (at 28 sec) \n1b) What bullying and harassment are not (at 1:46), 2) The law (at 2:09)",
+                " Copy and paste the following link \r\nhttps://www.youtube.com/watch?v=u7e2c6v1oDs" .
+                "\r\nFocus on the course objective of \r\n1a) What bullying and harassment are (at 28 sec) \r\n1b) What bullying and harassment are not (at 1:46), 2) The law (at 2:09)",
             'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
             'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
         ]);
@@ -58,7 +58,7 @@ class RespectfulWorkplaceSeeder extends Seeder
         $section = DB::table('sections')->insertGetId([
             'forms_id' => $form,
             'title' => '',
-            'description' => "Please view the PowerPoint: \nhttps://tinyurl.com/ycm5lgpr \nPlease focus on the course objectives: \n1) Slides 3 - 12 \n2) Slides 14 - 16 \n3) Slides 17 - 19 \n4) Slide 20",
+            'description' => "Please view the PowerPoint: \r\nhttps://tinyurl.com/ycm5lgpr \r\nPlease focus on the course objectives: \r\n1) Slides 3 - 12 \r\n2) Slides 14 - 16 \r\n3) Slides 17 - 19 \r\n4) Slide 20",
             'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
             'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
         ]);

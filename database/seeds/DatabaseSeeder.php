@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             SubmissionsSeeder::class,
             SecondarySchoolInspectionSeeder::class,
             RespectfulWorkplaceSeeder::class,
+            ElementarySchoolInspectionAdditionsSeeder::class,
         ]);
     }
 }

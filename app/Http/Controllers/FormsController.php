@@ -7,6 +7,7 @@ use App\Forms;
 use App\Http\Requests\StoreForm;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class FormsController extends Controller
 {
@@ -68,20 +69,20 @@ class FormsController extends Controller
     {
         DB::transaction(function () use ($validated, $form) {
 
-            $form->deleteAllAssociatedEvents();
+            $form->title = $validated['title'];
+            $form->description = $validated['description'];
+            $form->first_occurence_at = $validated['first_occurence_at'];
+            $form->interval = $validated['interval'];
+            $form->required_for = $validated['required_for'];
+            $form->full_year = $validated['full_year'];
 
-            $form->update([
-                'title' => $validated['title'],
-                'description' => $validated['description'],
-                'first_occurence_at' => $validated['first_occurence_at'],
-                'interval' => $validated['interval'],
-                'required_role' => $validated['required_role'],
-                'full_year' => $validated['full_year'],
-            ]);
-
+            // if the form has any changes, save the changes
+            if($form->isDirty()) {
+                $form->deleteAllFutureEvents();
+                $form->save();
+            };
             $form->updateSectionsandFields($validated);
 
-            $form->save();
         });
 
 
