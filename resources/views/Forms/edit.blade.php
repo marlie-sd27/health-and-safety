@@ -18,14 +18,14 @@
             <article class="container">
                 <div class="form-group">
                     <label for="form_title"><span class="required">*</span>Title</label>
-                    <input class="form-control @error('form_title') border-danger @enderror"
+                    <input class="form-control @error('title') border-danger @enderror"
                            type="text"
                            name="form_title"
                            value="@if (old('form_title')){{ old('form_title') }}@else {{ $form->title }} @endif"
                            required
                     />
-                    @error('form_title')
-                    <p class="help text-danger">{{ $errors->first('form_title') }}</p>
+                    @error('title')
+                    <p class="text-danger">{{ $errors->first('title') }}</p>
                     @enderror
                 </div>
                 <div class="form-group">
@@ -33,7 +33,7 @@
                     <textarea class="form-control @error('form_description') border-danger @enderror"
                               name="form_description">@if(old('form_description')){{old('form_description')}}@else{{$form->description}}@endif</textarea>
                     @error('form_description')
-                    <p class="help text-danger">{{ $errors->first('form_description') }}</p>
+                    <p class="text-danger">{{ $errors->first('form_description') }}</p>
                     @enderror
                 </div>
             </article>
@@ -57,7 +57,7 @@
                            value="@if (old('first_occurence_at')){{ old('first_occurence_at') }}@else{{ $form->first_occurence_at }}@endif">
 
                     @error('first_occurence_at')
-                        <p class="help text-danger">{{ $errors->first('first_occurence_at') }}</p>
+                        <p class=" text-danger">{{ $errors->first('first_occurence_at') }}</p>
                     @enderror
                 </div>
                 <div class="form-group">
@@ -69,7 +69,7 @@
                            placeholder="Define an interval"
                            value="@if (old('interval')){{ old('interval') }}@else {{ $form->interval }} @endif">
                     @error('interval')
-                        <p class="help text-danger">{{ $errors->first('interval') }}</p>
+                        <p class=" text-danger">{{ $errors->first('interval') }}</p>
                     @enderror
                 </div>
                 <div class="form-group">
@@ -78,7 +78,7 @@
                            name="full_year" @if ($form->full_year | is_array(old('full_year'))) checked @endif>
                     <label for="full_year">Include July and August for scheduling?</label>
                     @error('full_year')
-                        <p class="help text-danger">{{ $errors->first('full_year') }}</p>
+                        <p class=" text-danger">{{ $errors->first('full_year') }}</p>
                     @enderror
                     <p><small><b>Note that due dates will not be scheduled in July or August unless otherwise specified</b>
                         </small></p>
@@ -103,7 +103,7 @@
                         </option>
                     </select>
                     @error('required_for')
-                        <p class="help text-danger">{{ $errors->first('required_for') }}</p>
+                        <p class=" text-danger">{{ $errors->first('required_for') }}</p>
                     @enderror
                 </div>
             </article>
@@ -128,7 +128,7 @@
                                            name="section_title[]"
                                            value="@if (old("section_title.$loop->index")){{ old("section_title.$loop->index") }}@else{{ $section->title }} @endif">
                                     @error("section_title.$loop->index")
-                                        <p class="help text-danger">{{ $errors->first("section_title.$loop->index") }}</p>
+                                        <p class=" text-danger">{{ $errors->first("section_title.$loop->index") }}</p>
                                     @enderror
                                 </div>
                                 <div class="form-group">
@@ -136,7 +136,7 @@
                                     <textarea class="form-control @error("section_description.$loop->index") border-danger @enderror"
                                               name="section_description[]">@if (old("section_description[$loop->index]")){{ old("section_description[$loop->index]") }}@else{{ $section->description }}@endif</textarea>
                                     @error("section_description.$loop->index")
-                                        <p class="help text-danger">{{ $errors->first("section_description.$loop->index") }}</p>
+                                        <p class=" text-danger">{{ $errors->first("section_description.$loop->index") }}</p>
                                     @enderror
                                 </div>
                                 <h3>Add fields to your section</h3>
@@ -158,7 +158,7 @@
                                                            name="label[]"
                                                            value="@if (old("label.$loop->index")){{ old("label.$loop->index") }}@else{{ $field->label }}@endif"/>
                                                     @error("label.$loop->index")
-                                                        <p class="help text-danger">{{ $errors->first("label.$loop->index") }}</p>
+                                                        <p class=" text-danger">{{ $errors->first("label.$loop->index") }}</p>
                                                     @enderror
                                                 </div>
                                                 <div class="form-group">
@@ -177,7 +177,7 @@
                                                            placeholder="Help Description"
                                                            value="@if (old("help.$loop->index")){{ old("help.$loop->index") }}@else{{ $field->help }}@endif"/>
                                                     @error("help.$loop->index")
-                                                        <p class="help text-danger">{{ $errors->first("help.$loop->index") }}</p>
+                                                        <p class=" text-danger">{{ $errors->first("help.$loop->index") }}</p>
                                                     @enderror
                                                     </div>
                                                 <div class="form-group">

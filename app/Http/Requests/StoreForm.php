@@ -5,6 +5,7 @@ namespace App\Http\Requests;
 use App\Rules\ValidDates;
 use App\Rules\ValidInterval;
 use Illuminate\Foundation\Http\FormRequest;
+use function GuzzleHttp\Psr7\str;
 
 class StoreForm extends FormRequest
 {
@@ -57,8 +58,8 @@ class StoreForm extends FormRequest
         if (isset($this->section_title))
         {
             foreach ($this->section_title as $key => $value) {
-                $section_titles[$key] = filter_var($value, FILTER_SANITIZE_STRING);
-                $section_descriptions[$key] = filter_var($this->section_description[$key], FILTER_SANITIZE_STRING);
+                $section_titles[$key] = str_replace(['<','>'], " ", $value);
+                $section_descriptions[$key] = str_replace(['<','>'], " ", $this->section_description[$key]);
             }
         }
 
@@ -66,18 +67,18 @@ class StoreForm extends FormRequest
         {
             foreach ($this->label as $key => $value)
             {
-                $labels[$key] = filter_var($value, FILTER_SANITIZE_STRING);
-                $options[$key] = filter_var($this->options[$key], FILTER_SANITIZE_STRING);
-                $help[$key] = filter_var($this->help[$key], FILTER_SANITIZE_STRING);
+                $labels[$key] = str_replace(['<','>'], " ", $value);
+                $options[$key] = str_replace(['<','>'], " ", $this->options[$key]);
+                $help[$key] = str_replace(['<','>'], " ", $this->help[$key]);
             }
         }
 
         $this->merge([
-            'title' => filter_var($this->form_title, FILTER_SANITIZE_STRING),
-            'description' => filter_var($this->form_description, FILTER_SANITIZE_STRING),
-            'interval' => $this->interval == "" ? null : filter_var($this->interval, FILTER_SANITIZE_STRING),
-            'first_occurence_at' => $this->first_occurence_at == "" ? null : filter_var($this->first_occurence_at, FILTER_SANITIZE_STRING),
-            'required_for' => filter_var($this->required_for, FILTER_SANITIZE_STRING),
+            'title' => str_replace(['<','>'], " ", $this->form_title),
+            'description' => str_replace(['<','>'], " ", $this->form_description),
+            'interval' => $this->interval == "" ? null : str_replace(['<','>'], " ", $this->interval),
+            'first_occurence_at' => $this->first_occurence_at == "" ? null : str_replace(['<','>'], " ", $this->first_occurence_at),
+            'required_for' => str_replace(['<','>'], " ", $this->required_for),
             'full_year' => isset($this->full_year),
 
 
