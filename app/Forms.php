@@ -20,7 +20,7 @@ class Forms extends Model
     // Get the sections for a form
     public function sections()
     {
-        return $this->hasMany('App\Sections');
+        return $this->hasMany('App\Sections')->orderBy('created_at', 'asc');
     }
 
 

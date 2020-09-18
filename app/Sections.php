@@ -21,7 +21,7 @@ class Sections extends Model
     // get the fields for this section
     public function fields()
     {
-        return $this->hasMany('App\Fields');
+        return $this->hasMany('App\Fields')->orderBy('created_at', 'asc');
 
     }
 }
