@@ -112,6 +112,9 @@
                 </tr>
             @endforeach
         </table>
+            <div>
+                {{ $submissions->links() }}
+            </div>
     </div>
 
 @endsection
