@@ -34,8 +34,8 @@ class StoreSubmission extends FormRequest
         if (isset($this->data))
         {
             foreach ($this->data as $key => $value) {
-                $cleanedKey = filter_var($key, FILTER_SANITIZE_STRING);
-                $cleanedValue = is_array($value) ? $value : filter_var($value, FILTER_SANITIZE_STRING);
+                $cleanedKey = str_replace(['<','>'], " ", $key);
+                $cleanedValue = is_array($value) ? $value : str_replace(['<','>'], " ", $value);
 
                 $data[$cleanedKey] = $cleanedValue;
             }

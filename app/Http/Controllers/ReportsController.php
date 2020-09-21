@@ -102,6 +102,10 @@ class ReportsController extends Controller
         $list = ReportHelper::generateReport( $user, $site, $form, $date_from, $date_to);
         $list = ReportHelper::prepareData($list)->toArray();
 
+        if(!$list){
+            return redirect()->back()->with('error', 'Nothing to export');
+        }
+
         # add headers for each column in the CSV download
         array_unshift($list, array_keys($list[0]));
 
