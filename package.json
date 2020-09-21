@@ -25,6 +25,7 @@
         "@fullcalendar/daygrid": "^5.1.0",
         "@fullcalendar/interaction": "^5.1.0",
         "@fullcalendar/timegrid": "^5.1.0",
+        "autolinker": "^3.14.1",
         "fullcalendar": "^5.1.0"
     }
 }
