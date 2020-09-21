@@ -1,4 +1,6 @@
 {
     "/js/app.js": "/js/app.js",
+    "/js/autolinker.js": "/js/autolinker.js",
+    "/js/calendar.js": "/js/calendar.js",
     "/css/app.css": "/css/app.css"
 }

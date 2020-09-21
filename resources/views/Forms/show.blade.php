@@ -2,6 +2,8 @@
 
 @section('content')
 
+    <script type="module" src="/js/autolinker.js"></script>
+
     @if(Auth::user()->isAdmin())
         <a href="{{ url()->previous() }}">Back</a>
         <a class="float-right" href="{{ route('forms.edit', ['form' => $form->id]) }}">Edit</a>
@@ -14,7 +16,7 @@
         @if ($form->interval != null)
             <p><small>To be completed every {{ $form->interval }} by <b>{{ $form->required_for }}</b></small></p>
         @endif
-        <p style="white-space: pre-wrap;">{{ $form->description }}</p>
+        <p style="white-space: pre-wrap;" class="autolink">{{ $form->description }}</p>
     </div>
     <form method="post" action="{{ route('submissions.store') }}" enctype="multipart/form-data">
         @csrf
@@ -64,7 +66,7 @@
         @foreach($form->sections as $s)
             <article>
                 <h2>{{ $s->title }}</h2>
-                <p style="white-space: pre-wrap;">{{ $s->description }}</p>
+                <p style="white-space: pre-wrap;" class="autolink">{{ $s->description }}</p>
                 @foreach($s->fields as $f)
                     @switch($f->type)
                         @case("select")
