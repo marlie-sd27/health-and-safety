@@ -31,7 +31,7 @@ class ReportHelper
             })
             ->orderBy('submissions.created_at', 'desc')
             ->select('submissions.*', 'users.name', 'forms.title')
-            ->get();
+            ->paginate(25);
     }
 
 
