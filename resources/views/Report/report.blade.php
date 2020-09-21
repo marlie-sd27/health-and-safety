@@ -39,6 +39,7 @@
                         <option @if ($site == "Horse Lake") {{ 'selected' }} @endif>Horse Lake</option>
                         <option @if ($site == "Horsefly") {{ 'selected' }} @endif>Horsefly</option>
                         <option @if ($site == "GROW WL") {{ 'selected' }} @endif>GROW WL</option>
+                        <option @if($site == 'Lac La Hache') {{ 'selected' }} @endif>Lac La Hache</option>
                         <option @if ($site == "LCS-Williams Lake") {{ 'selected' }} @endif>LCS-Williams Lake</option>
                         <option @if ($site == "LCS-Columneetza") {{ 'selected' }} @endif>LCS-Columneetza</option>
                         <option @if ($site == "Likely") {{ 'selected' }} @endif>Likely</option>
