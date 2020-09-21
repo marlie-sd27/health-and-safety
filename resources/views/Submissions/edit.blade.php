@@ -2,6 +2,8 @@
 
 @section('content')
 
+    <script type="module" src="/js/autolinker.js"></script>
+
     <a href="{{ route('submissions.show', ['submission' => $submission]) }}">Back</a>
     <div class="container">
         <h1>{{ $submission->form->title }}</h1>
