@@ -7,6 +7,7 @@ use App\Http\Requests\StoreForm;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
@@ -120,7 +121,9 @@ class Forms extends Model
             foreach ($request->field_id as $key => $value) {
 
                 // search database for field with unique name
-                $field = array_key_exists($key, $request->field_name) ? Fields::where('name', $request->field_name[$key])->firstOrFail() : null;
+                $field = array_key_exists($key, $request->field_name) ? Fields::where('name', 'like', '%' . $request->field_name[$key] . '%')
+                    ->whereIn('sections_id', $old_sections->modelKeys())
+                    ->firstOrFail() : null;
 
                 // if the field exists, update it
                 if ($field) {
@@ -134,9 +137,6 @@ class Forms extends Model
                     ]);
 
                     $field->save();
-
-//                    if($field->name == "SVxYJt0kfiUt0hGt")
-//                        break;
 
                 } else {
                     // if the field is new, add it to the database
