@@ -26,18 +26,28 @@ Route::middleware(['auth','isadmin'])->group(function ()
     Route::delete('events/{event}', 'EventsController@destroy')->name('events.destroy');
     Route::get('events', 'EventsController@index')->name('events');
 
+    Route::post('training', 'TrainingController@store')->name('training.store');
+    Route::get('training/create', 'TrainingController@create')->name('training.create');
+
+    Route::delete('training/{training}', 'TrainingController@destroy')->name('training.destroy');
+    Route::put('training/{training}', 'TrainingController@update')->name('training.update');
+    Route::get('training/{training}/edit', 'TrainingController@edit')->name('training.edit');
+
 });
 
 
 // authenticate (ensure user is logged in)
 Route::middleware('auth')->group(function () {
 
-    // reporting submissions requires admin or principal designation
+    // reporting submissions/training requires admin or principal designation
     Route::middleware('admin_or_principal')->group(function() {
         Route::get('report', 'ReportsController@report')->name('report');
         Route::get('export', 'ReportsController@export')->name('export');
+        Route::get('training/report', 'TrainingController@report')->name('training.report');
     });
 
+    Route::get('training', 'TrainingController@index')->name('training.index');
+    Route::get('training/{training}', 'TrainingController@show')->name('training.show');
 
     Route::resource('submissions', 'SubmissionsController');
     Route::post('file', 'FileController')->name('file.download');
