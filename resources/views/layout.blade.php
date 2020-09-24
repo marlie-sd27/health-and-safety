@@ -41,18 +41,28 @@
                         </a>
                         <div class="dropdown-menu dropdown-menu-right">
                             <a href="{{route('forms.create')}}" class="dropdown-item">Create</a>
-                            <a href="{{ route('forms.index') }}" class="dropdown-item">Index</a>
+                            <a href="{{ route('forms.index') }}" class="dropdown-item">Manage</a>
                         </div>
                     </li>
 
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle {{ strpos( $_SERVER['REQUEST_URI'], 'report') != false ? ' active' : ''}}" data-toggle="dropdown" href="#" role="button"
-                           aria-haspopup="true" aria-expanded="false">Report
+                           aria-haspopup="true" aria-expanded="false">Submissions
                         </a>
                         <div class="dropdown-menu dropdown-menu-right">
-                            <a href="{{route('report')}}" class="dropdown-item">Submissions</a>
+                            <a href="{{route('report')}}" class="dropdown-item">Report</a>
                             <a href="{{ route('report.overdue') }}" class="dropdown-item">Overdue</a>
                             <a href="{{ route('report.upcoming') }}" class="dropdown-item">Upcoming</a>
+                        </div>
+                    </li>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle {{ strpos( $_SERVER['REQUEST_URI'], 'forms') != false ? ' active' : ''}}" data-toggle="dropdown" href="#" role="button"
+                           aria-haspopup="true" aria-expanded="false">Training
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a href="{{route('training.create')}}" class="dropdown-item">Enter Training</a>
+                            <a href="{{ route('training.report') }}" class="dropdown-item">Report</a>
                         </div>
                     </li>
                     <li class="nav-item">
@@ -62,10 +72,16 @@
                     <li class="nav-item">
                         <a href="{{ route('report') }}" class="nav-link {{$_SERVER['REQUEST_URI'] == '/report' ? ' active' : ''}}">Submissions</a>
                     </li>
+                    <li class="nav-item">
+                        <a href="{{ route('training.report') }}" class="nav-link {{$_SERVER['REQUEST_URI'] == '/training/report' ? ' active' : ''}}">Training</a>
+                    </li>
 
                 @else
                     <li class="nav-item">
                         <a href="{{ route('submissions.index') }}" class="nav-link {{$_SERVER['REQUEST_URI'] == '/submissions' ? ' active' : ''}}">My Submissions</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('training.index') }}" class="nav-link {{$_SERVER['REQUEST_URI'] == '/training' ? ' active' : ''}}">My Training</a>
                     </li>
                 @endif
                 <li class="nav-item">
