@@ -11,7 +11,7 @@ class TrainingController extends Controller
 
     public function index()
     {
-        return view('Training/index', ['trainings' => Training::where('email', Auth::user()->email)->get()]);
+        return view('Training/index', ['trainings' => Training::where('email', Auth::user()->email)->orderBy('expiry_date', 'asc')->get()]);
     }
 
 
@@ -99,7 +99,7 @@ class TrainingController extends Controller
             ->when($expiry_date, function ($query, $expiry_date) {
                 return $query->where('expiry_date', $expiry_date);
             })
-            ->orderBy('course_date', 'desc')
+            ->orderBy('expiry_date', 'asc')
             ->paginate(25);
 
         return view('Training/report', [

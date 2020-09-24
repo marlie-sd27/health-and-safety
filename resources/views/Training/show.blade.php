@@ -20,7 +20,7 @@
             </tr>
             <tr>
                 <th>Expires In</th>
-                <td>TODO</td>
+                <td>{{ Carbon\Carbon::now()->diffInDays($training->expiry_date, false) }} days</td>
             </tr>
             <tr>
                 <th>Course Date</th>
