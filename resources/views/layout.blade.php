@@ -46,18 +46,18 @@
                     </li>
 
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle {{ strpos( $_SERVER['REQUEST_URI'], 'report') != false ? ' active' : ''}}" data-toggle="dropdown" href="#" role="button"
+                        <a class="nav-link dropdown-toggle {{ strpos( $_SERVER['REQUEST_URI'], 'submissions') != false ? ' active' : ''}}" data-toggle="dropdown" href="#" role="button"
                            aria-haspopup="true" aria-expanded="false">Submissions
                         </a>
                         <div class="dropdown-menu dropdown-menu-right">
-                            <a href="{{route('report')}}" class="dropdown-item">Report</a>
-                            <a href="{{ route('report.overdue') }}" class="dropdown-item">Overdue</a>
-                            <a href="{{ route('report.upcoming') }}" class="dropdown-item">Upcoming</a>
+                            <a href="{{route('submissions.report')}}" class="dropdown-item">Report</a>
+                            <a href="{{ route('submissions.overdue') }}" class="dropdown-item">Overdue</a>
+                            <a href="{{ route('submissions.upcoming') }}" class="dropdown-item">Upcoming</a>
                         </div>
                     </li>
 
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle {{ strpos( $_SERVER['REQUEST_URI'], 'forms') != false ? ' active' : ''}}" data-toggle="dropdown" href="#" role="button"
+                        <a class="nav-link dropdown-toggle {{ strpos( $_SERVER['REQUEST_URI'], 'training') != false ? ' active' : ''}}" data-toggle="dropdown" href="#" role="button"
                            aria-haspopup="true" aria-expanded="false">Training
                         </a>
                         <div class="dropdown-menu dropdown-menu-right">
@@ -70,7 +70,7 @@
                     </li>
                 @elseif(Auth::user()->isPrincipal())
                     <li class="nav-item">
-                        <a href="{{ route('report') }}" class="nav-link {{$_SERVER['REQUEST_URI'] == '/report' ? ' active' : ''}}">Submissions</a>
+                        <a href="{{ route('submissions.report') }}" class="nav-link {{$_SERVER['REQUEST_URI'] == '/submissions/report' ? ' active' : ''}}">Submissions</a>
                     </li>
                     <li class="nav-item">
                         <a href="{{ route('training.report') }}" class="nav-link {{$_SERVER['REQUEST_URI'] == '/training/report' ? ' active' : ''}}">Training</a>
