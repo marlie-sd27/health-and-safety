@@ -15,8 +15,8 @@ Route::middleware(['auth','isadmin'])->group(function ()
     Route::resource('forms', 'FormsController')->except('show');
     Route::post('toggle-live', 'FormsController@toggleLive');
 
-    Route::get('report/overdue', 'ReportsController@overdue')->name('report.overdue');
-    Route::get('report/upcoming', 'ReportsController@upcoming')->name('report.upcoming');
+    Route::get('submissions/overdue', 'SubmissionsReportsController@overdue')->name('submissions.overdue');
+    Route::get('submissions/upcoming', 'SubmissionsReportsController@upcoming')->name('submissions.upcoming');
 
     Route::get('admins', 'AdminController@index')->name('admins');
     Route::post('admins', 'AdminController@store')->name('admins.store');
@@ -40,8 +40,8 @@ Route::middleware('auth')->group(function () {
 
     // reporting submissions/training requires admin or principal designation
     Route::middleware('admin_or_principal')->group(function() {
-        Route::get('report', 'ReportsController@report')->name('report');
-        Route::get('export', 'ReportsController@export')->name('export');
+        Route::get('submissions/report', 'SubmissionsReportsController@report')->name('submissions.report');
+        Route::get('submissions/export', 'SubmissionsReportsController@export')->name('submissions.export');
         Route::get('training/report', 'TrainingController@report')->name('training.report');
     });
 

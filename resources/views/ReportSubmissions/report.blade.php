@@ -9,7 +9,7 @@
             </div>
         @endif
         <article class="container">
-            <form method="get" action="{{ route('report') }}">
+            <form method="get" action="{{ route('submissions.report') }}">
                 <label>Search by form:
                     <select class="form-control text-reset" type="text" name='form'
                             aria-label="Search">
@@ -76,7 +76,7 @@
                 <button class="btn btn-dark" type="button" id="clear">Clear Search Fields</button>
 
                 @if($form)
-                    <a href="{{ route('export', ['form'=>$form, 'user'=>$user, 'site'=>$site, 'date_from'=>$date_from, 'date_to'=>$date_to]) }}"
+                    <a href="{{ route('submissions.export', ['form'=>$form, 'user'=>$user, 'site'=>$site, 'date_from'=>$date_from, 'date_to'=>$date_to]) }}"
                        class="btn btn-success">Export</a>
                 @endif
             </form>

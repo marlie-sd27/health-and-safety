@@ -66,8 +66,8 @@
                 <button class="btn btn-primary" type="submit">Search</button>
                 <button class="btn btn-dark" type="button" id="clear">Clear Search Fields</button>
 
-                <a href="{{ route('export', ['course'=>$course, 'user'=>$user, 'site'=>$site, 'expiry_date'=>$expiry_date, 'course_date'=>$course_date]) }}"
-                   class="btn btn-success">Export</a>
+{{--                <a href="{{ route('export', ['course'=>$course, 'user'=>$user, 'site'=>$site, 'expiry_date'=>$expiry_date, 'course_date'=>$course_date]) }}"--}}
+{{--                   class="btn btn-success">Export</a>--}}
             </form>
 
         </article>

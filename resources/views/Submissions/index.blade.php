@@ -1,7 +1,9 @@
 @extends('layout')
 
 @section('content')
-    <div>
+    <a href="{{ url()->previous() }}">Back</a>
+    <div class="container">
+        <h1>My Submissions</h1>
         <table class="table table-bordered table-hover">
             <tr>
                 <th>Form</th>

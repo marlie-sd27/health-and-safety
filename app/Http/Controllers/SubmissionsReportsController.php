@@ -11,7 +11,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
 
-class ReportsController extends Controller
+class SubmissionsReportsController extends Controller
 {
     public function report(Request $request)
     {
