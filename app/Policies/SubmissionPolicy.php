@@ -18,7 +18,6 @@ class SubmissionPolicy
     }
 
 
-
     // user must own the submission to update
     public function update(User $user, Submissions $submission)
     {
@@ -32,4 +31,10 @@ class SubmissionPolicy
         return strcasecmp($submission->email, $user->email) == 0 | $user->isAdmin();
     }
 
+
+    // user be admin or principal to report
+    public function report(User $user)
+    {
+        return $user->isAdmin() | $user->isPrincipal();
+    }
 }

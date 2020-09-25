@@ -17,12 +17,14 @@ class TrainingController extends Controller
 
     public function create()
     {
+        $this->authorize('create', Training::class);
         return view('Training/create');
     }
 
 
     public function store(Request $request)
     {
+        $this->authorize('create', Training::class);
         $validated = $request->validate([
             'course' => 'required|string',
             'description' => 'nullable|string',
@@ -41,17 +43,20 @@ class TrainingController extends Controller
 
     public function show(Training $training)
     {
+        $this->authorize('view', $training);
         return view('Training/show', ['training' => $training]);
     }
 
     public function edit(Training $training)
     {
+        $this->authorize('update', Training::class);
         return view('Training/edit', ['training' => $training]);
     }
 
 
     public function update(Request $request, Training $training)
     {
+        $this->authorize('update', Training::class);
         $validated = $request->validate([
             'course' => 'required|string',
             'description' => 'nullable|string',
@@ -70,6 +75,7 @@ class TrainingController extends Controller
 
     public function destroy(Training $training)
     {
+        $this->authorize('delete', Training::class);
         Training::destroy($training->id);
         return redirect(route('training.report'))
             ->with('message', 'Successfully deleted training!');
@@ -78,6 +84,7 @@ class TrainingController extends Controller
 
     public function report(Request $request)
     {
+        $this->authorize('report', Training::class);
         $user = $request->filled('user') ? $request->user : null;
         $site = $request->filled('site') ? $request->site : null;
         $course = $request->filled('course') ? $request->course : null;

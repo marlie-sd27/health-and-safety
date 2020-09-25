@@ -8,7 +8,6 @@ use App\Http\Requests\StoreSubmission;
 use App\Submissions;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 class SubmissionsController extends Controller

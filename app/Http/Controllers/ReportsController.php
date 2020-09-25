@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Events;
 use App\Helpers\QueryHelper;
 use App\Helpers\ReportHelper;
+use App\Submissions;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -14,6 +15,7 @@ class ReportsController extends Controller
 {
     public function report(Request $request)
     {
+        $this->authorize('report', Submissions::class);
         $user = $request->filled('user') ? $request->user : null;
         $site = $request->filled('site') ? $request->site : null;
         $form = $request->filled('form') ? $request->form : null;
