@@ -24,7 +24,7 @@
                         @endforeach
                     @endforeach
                 </table>
-                <a class="text-right" href="{{ route('report.overdue') }}">See all overdues...</a>
+                <a class="text-right" href="{{ route('submissions.overdue') }}">See all overdues...</a>
             </div>
         </div>
         <div class="row">
@@ -46,7 +46,7 @@
                         </tr>
                     @endforeach
                 </table>
-                <a class="text-right" href="{{ route('report.upcoming') }}">See all upcoming...</a>
+                <a class="text-right" href="{{ route('submissions.upcoming') }}">See all upcoming...</a>
             </div>
         </div>
         <div class="row">
@@ -68,7 +68,7 @@
                         </tr>
                     @endforeach
                 </table>
-                <a class="text-right" href="{{ route('report') }}">See all submissions...</a>
+                <a class="text-right" href="{{ route('submissions.report') }}">See all submissions...</a>
             </div>
         </div>
     </div>
