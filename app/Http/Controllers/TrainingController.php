@@ -25,6 +25,7 @@ class TrainingController extends Controller
     public function store(Request $request)
     {
         $this->authorize('create', Training::class);
+        $request['designated_fa_attendant'] = isset($this->designated_fa_attendant);
         $validated = $request->validate([
             'course' => 'required|string',
             'description' => 'nullable|string',
@@ -32,7 +33,11 @@ class TrainingController extends Controller
             'course_date' => 'required|date',
             'expiry_date' => 'nullable|date',
             'site' => 'nullable|string',
-            'notes' => 'nullable|string'
+            'notes' => 'nullable|string',
+            'designated_fa_attendant' => 'nullable|boolean',
+            'union' => 'nullable|string',
+            'fa_level' => 'nullable|string',
+            'full_part_hours' => 'nullable|string',
         ]);
 
         Training::create($validated);
@@ -57,6 +62,7 @@ class TrainingController extends Controller
     public function update(Request $request, Training $training)
     {
         $this->authorize('update', Training::class);
+        $request['designated_fa_attendant'] = isset($this->designated_fa_attendant);
         $validated = $request->validate([
             'course' => 'required|string',
             'description' => 'nullable|string',
@@ -64,7 +70,11 @@ class TrainingController extends Controller
             'course_date' => 'required|date',
             'expiry_date' => 'nullable|date',
             'site' => 'nullable|string',
-            'notes' => 'nullable|string'
+            'notes' => 'nullable|string',
+            'designated_fa_attendant' => 'nullable|boolean',
+            'union' => 'nullable|string',
+            'fa_level' => 'nullable|string',
+            'full_part_hours' => 'nullable|string',
         ]);
 
         $training->update($validated);

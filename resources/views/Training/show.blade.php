@@ -31,10 +31,26 @@
                 <td>{{ date('M d, Y', strtotime($training->expiry_date)) }}</td>
             </tr>
             <tr>
-                <th>Training Entry Date</th>
-                <td>{{ date('M d, Y @ H:i a', strtotime($training->created_at)) }}</td>
+                <th>Designated First Aid Attendant?</th>
+                <td>{{ $training->designated_fa_attendant }}</td>
             </tr>
             <tr>
+                <th>Union</th>
+                <td>{{ $training->union }}</td>
+            </tr>
+            <tr>
+                <th>Level of First Aid</th>
+                <td>{{ $training->fa_level }}</td>
+            </tr>
+            <tr>
+                <th>Full/Part Time/Hours</th>
+                <td>{{ $training->full_part_hours }}</td>
+            </tr>
+            <tr>
+            <tr>
+            <th>Training Entry Date</th>
+            <td>{{ date('M d, Y @ H:i a', strtotime($training->created_at)) }}</td>
+            </tr>
                 <th>Notes</th>
                 <td>{{ $training->notes }}</td>
             </tr>

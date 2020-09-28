@@ -23,6 +23,10 @@ class CreateTrainingsTable extends Migration
             $table->date('course_date');
             $table->date('expiry_date')->nullable();
             $table->string('site')->nullable();
+            $table->boolean('designated_fa_attendant')->default('false');
+            $table->string('union')->nullable();
+            $table->string('fa_level')->nullable();
+            $table->string('full_part_hours')->nullable();
         });
     }
 
