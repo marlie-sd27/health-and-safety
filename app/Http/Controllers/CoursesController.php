@@ -9,24 +9,30 @@ class CoursesController extends Controller
 {
     public function index()
     {
-        //
+        return view('Courses/manage', ['courses' => Courses::all()->sortBy('course')]);
     }
 
 
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'course' => 'string|required'
+        ]);
+
+        Courses::create($validated);
+        return redirect()->route('courses');
     }
 
 
-    public function update(Request $request, courses $courses)
+    public function update(Request $request, Courses $Courses)
     {
-        //
+        return redirect()->route('courses');
     }
 
 
-    public function destroy(courses $courses)
+    public function destroy(Courses $course)
     {
-        //
+        Courses::destroy($course->id);
+        return redirect()->route('courses');
     }
 }
