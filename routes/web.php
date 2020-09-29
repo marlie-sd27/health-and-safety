@@ -38,15 +38,15 @@ Route::middleware(['auth','isadmin'])->group(function ()
 
     // managing courses list
     Route::get('courses', 'CoursesController@index')->name('courses');
-    Route::post('course', 'CoursesController@store')->name('course.store');
-    Route::put('course/{course}', 'CoursesController@update')->name('course.update');
-    Route::delete('course/{course}', 'CoursesController@destroy')->name('course.destroy');
+    Route::post('course', 'CoursesController@store')->name('courses.store');
+    Route::put('course/{course}', 'CoursesController@update')->name('courses.update');
+    Route::delete('course/{course}', 'CoursesController@destroy')->name('courses.destroy');
 
     // managing sites list
     Route::get('sites', 'sitesController@index')->name('sites');
-    Route::post('site', 'SitesController@store')->name('site.store');
-    Route::put('site/{site}', 'SitesController@update')->name('site.update');
-    Route::delete('site/{site}', 'SitesController@destroy')->name('site.destroy');
+    Route::post('site', 'SitesController@store')->name('sites.store');
+    Route::put('site/{site}', 'SitesController@update')->name('sites.update');
+    Route::delete('site/{site}', 'SitesController@destroy')->name('sites.destroy');
 
 });
 

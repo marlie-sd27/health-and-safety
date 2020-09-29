@@ -116,7 +116,7 @@
 
 <div class="wrapper">
     <!-- Sidebar -->
-        <nav id="sidebar">
+        <nav id="sidebar" class="position-fixed">
             <ul class="list-unstyled components">
                 <br/>
                 <p>Links to Forms</p>
@@ -128,7 +128,7 @@
             </ul>
         </nav>
 <!-- Page Content -->
-    <main role="main" class="container">
+    <main role="main" class="container" id="main">
         @if(session('error'))
             <div class="alert alert-danger alert-dismissible alert-dismissible fade show" role="alert">
                 <p class="mb-3">{{ session('error') }}</p>

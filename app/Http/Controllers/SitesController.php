@@ -10,24 +10,30 @@ class SitesController extends Controller
 
     public function index()
     {
-        //
+        return view('Sites/manage', ['sites' => Sites::all()->sortBy('site')]);
     }
 
 
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'site' => 'string|required'
+        ]);
+
+        Sites::create($validated);
+        return redirect()->route('sites');
     }
 
 
-    public function update(Request $request, sites $sites)
+    public function update(Request $request, Sites $sites)
     {
-        //
+        return redirect()->route('sites');
     }
 
 
-    public function destroy(sites $sites)
+    public function destroy(Sites $site)
     {
-        //
+        Sites::destroy($site->id);
+        return redirect()->route('sites');
     }
 }
