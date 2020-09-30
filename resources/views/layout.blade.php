@@ -65,8 +65,15 @@
                             <a href="{{ route('training.report') }}" class="dropdown-item">Report</a>
                         </div>
                     </li>
-                    <li class="nav-item">
-                        <a href="{{ route('admins') }}" class="nav-link {{$_SERVER['REQUEST_URI'] == '/admins' ? ' active' : ''}}">Admins</a>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
+                           aria-haspopup="true" aria-expanded="false">Manage
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a href="{{route('admins')}}" class="dropdown-item">Admins</a>
+                            <a href="{{ route('sites') }}" class="dropdown-item">Sites</a>
+                            <a href="{{ route('courses') }}" class="dropdown-item">Courses</a>
+                        </div>
                     </li>
                 @elseif(Auth::user()->isPrincipal())
                     <li class="nav-item">

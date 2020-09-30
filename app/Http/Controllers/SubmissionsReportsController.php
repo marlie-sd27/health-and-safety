@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Events;
 use App\Helpers\QueryHelper;
 use App\Helpers\ReportHelper;
+use App\Sites;
 use App\Submissions;
 use App\User;
 use Carbon\Carbon;
@@ -30,7 +31,8 @@ class SubmissionsReportsController extends Controller
             'site' => $site,
             'form' => $form,
             'date_from' => $date_from,
-            'date_to' => $date_to
+            'date_to' => $date_to,
+            'sites' => Sites::all()->sortBy('site'),
         ]);
     }
 

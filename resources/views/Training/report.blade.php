@@ -6,45 +6,19 @@
         <article class="container">
             <form method="get" action="{{ route('training.report') }}">
                 <label>Search by course:
-                    <input class="form-control text-reset" type="text" name='course'
-                           value="{{ $course ?? ""}}"
-                           aria-label="Search">
+                    <select class="form-control text-reset" name='course'>
+                        <option @if ($course == "") {{ 'selected' }} @endif></option>
+                        @foreach($courses as $_course)
+                            <option @if ($course == $_course->course) {{ 'selected' }} @endif>{{ $_course->course }}</option>
+                        @endforeach
+                    </select>
                 </label>
                 <label>Search by site:
-                    <select class="form-control text-reset" type="text" name='site'>
+                    <select class="form-control text-reset" name='site'>
                         <option @if ($site == "") {{ 'selected' }} @endif></option>
-                        <option @if ($site == "100 Mile Elementary") {{ 'selected' }} @endif>100 Mile Elementary
-                        </option>
-                        <option @if ($site == "100 Mile Maintenance") {{ 'selected' }} @endif>100 Mile Maintenance
-                        </option>
-                        <option @if ($site == "150 Mile Elementary") {{ 'selected' }} @endif>150 Mile Elementary
-                        </option>
-                        <option @if ($site == "Alexis Creek") {{ 'selected' }} @endif>Alexis Creek</option>
-                        <option @if ($site == "Anahim") {{ 'selected' }} @endif>Anahim</option>
-                        <option @if ($site == "Big Lake") {{ 'selected' }} @endif>Big Lake</option>
-                        <option @if ($site == "Board Office") {{ 'selected' }} @endif>Board Office</option>
-                        <option @if ($site == "Cataline") {{ 'selected' }} @endif>Cataline</option>
-                        <option @if ($site == "Chilcotin Road") {{ 'selected' }} @endif>Chilcotin Road</option>
-                        <option @if ($site == "Dog Creek") {{ 'selected' }} @endif>Dog Creek</option>
-                        <option @if ($site == "Forest Grove") {{ 'selected' }} @endif>Forest Grove</option>
-                        <option @if ($site == "Horse Lake") {{ 'selected' }} @endif>Horse Lake</option>
-                        <option @if ($site == "Horsefly") {{ 'selected' }} @endif>Horsefly</option>
-                        <option @if ($site == "GROW WL") {{ 'selected' }} @endif>GROW WL</option>
-                        <option @if ($site == 'Lac La Hache') {{ 'selected' }} @endif>Lac La Hache</option>
-                        <option @if ($site == "LCS-Williams Lake") {{ 'selected' }} @endif>LCS-Williams Lake</option>
-                        <option @if ($site == "LCS-Columneetza") {{ 'selected' }} @endif>LCS-Columneetza</option>
-                        <option @if ($site == "Likely") {{ 'selected' }} @endif>Likely</option>
-                        <option @if ($site == "Marie Sharpe") {{ 'selected' }} @endif>Marie Sharpe</option>
-                        <option @if ($site == "Mile 108 Elementary") {{ 'selected' }} @endif>Mile 108 Elementary
-                        </option>
-                        <option @if ($site == "Mountview") {{ 'selected' }} @endif>Mountview</option>
-                        <option @if ($site == "Maintenance Yard") {{ 'selected' }} @endif>Maintenance Yard</option>
-                        <option @if ($site == "Naughtaneqed") {{ 'selected' }} @endif>Naughtaneqed</option>
-                        <option @if ($site == "Nenqayni") {{ 'selected' }} @endif>Nenqayni</option>
-                        <option @if ($site == "Nesika") {{ 'selected' }} @endif>Nesika</option>
-                        <option @if ($site == "PSO") {{ 'selected' }} @endif>PSO</option>
-                        <option @if ($site == "Support Services") {{ 'selected' }} @endif>Support Services</option>
-                        <option @if ($site == "Tatla Lake") {{ 'selected' }} @endif>Tatla Lake</option>
+                        @foreach($sites as $_site)
+                            <option @if ($site == $_site->site) {{ 'selected' }} @endif>{{$_site->site}}</option>
+                        @endforeach
                     </select>
                 </label>
                 <label>Search by email:
@@ -65,9 +39,6 @@
 
                 <button class="btn btn-primary" type="submit">Search</button>
                 <button class="btn btn-dark" type="button" id="clear">Clear Search Fields</button>
-
-{{--                <a href="{{ route('export', ['course'=>$course, 'user'=>$user, 'site'=>$site, 'expiry_date'=>$expiry_date, 'course_date'=>$course_date]) }}"--}}
-{{--                   class="btn btn-success">Export</a>--}}
             </form>
 
         </article>

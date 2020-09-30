@@ -27,35 +27,9 @@
             @endif
             <span class="required">*</span><label>School/Site</label>
             <select name="site" class="form-control @error('site') border-danger @enderror">
-                <option @if(old('site') == '--') {{ 'selected' }} @endif>--</option>
-                <option @if(old('site') == '100 Mile Elementary') {{ 'selected' }} @endif>100 Mile Elementary</option>
-                <option @if(old('site') == '100 Mile Maintenance') {{ 'selected' }} @endif>100 Mile Maintenance</option>
-                <option @if(old('site') == '150 Mile Elementary') {{ 'selected' }} @endif>150 Mile Elementary</option>
-                <option @if(old('site') == 'Alexis Creek') {{ 'selected' }} @endif>Alexis Creek</option>
-                <option @if(old('site') == 'Anahim') {{ 'selected' }} @endif>Anahim</option>
-                <option @if(old('site') == 'Big Lake') {{ 'selected' }} @endif>Big Lake</option>
-                <option @if(old('site') == 'Board Office') {{ 'selected' }} @endif>Board Office</option>
-                <option @if(old('site') == 'Cataline') {{ 'selected' }} @endif>Cataline</option>
-                <option @if(old('site') == 'Chilcotin Road') {{ 'selected' }} @endif>Chilcotin Road</option>
-                <option @if(old('site') == 'Dog Creek') {{ 'selected' }} @endif>Dog Creek</option>
-                <option @if(old('site') == 'Forest Grove') {{ 'selected' }} @endif>Forest Grove</option>
-                <option @if(old('site') == 'Horse Lake') {{ 'selected' }} @endif>Horse Lake</option>
-                <option @if(old('site') == 'Horsefly') {{ 'selected' }} @endif>Horsefly</option>
-                <option @if(old('site') == 'GROW WL') {{ 'selected' }} @endif>GROW WL</option>
-                <option @if(old('site') == 'Lac La Hache') {{ 'selected' }} @endif>Lac La Hache</option>
-                <option @if(old('site') == 'LCS-Williams Lake') {{ 'selected' }} @endif>LCS-Williams Lake</option>
-                <option @if(old('site') == 'LCS-Columneetza') {{ 'selected' }} @endif>LCS-Columneetza</option>
-                <option @if(old('site') == 'Likely') {{ 'selected' }} @endif>Likely</option>
-                <option @if(old('site') == 'Marie Sharpe') {{ 'selected' }} @endif>Marie Sharpe</option>
-                <option @if(old('site') == 'Mile 108 Elementary') {{ 'selected' }} @endif>Mile 108 Elementary</option>
-                <option @if(old('site') == 'Mountview') {{ 'selected' }} @endif>Mountview</option>
-                <option @if(old('site') == 'Maintenance Yard') {{ 'selected' }} @endif>Maintenance Yard</option>
-                <option @if(old('site') == 'Naughtaneqed') {{ 'selected' }} @endif>Naughtaneqed</option>
-                <option @if(old('site') == 'Nenqayni') {{ 'selected' }} @endif>Nenqayni</option>
-                <option @if(old('site') == 'Nesika') {{ 'selected' }} @endif>Nesika</option>
-                <option @if(old('site') == 'PSO') {{ 'selected' }} @endif>PSO</option>
-                <option @if(old('site') == 'Support Services') {{ 'selected' }} @endif>Support Services</option>
-                <option @if(old('site') == 'Tatla Lake') {{ 'selected' }} @endif>Tatla Lake</option>
+                @foreach($sites as $site)
+                    <option @if(old('site') == $site->site) {{ 'selected' }} @endif>{{ $site->site}}</option>
+                @endforeach
             </select>
             <div class="form-group">
                 @error("site")

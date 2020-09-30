@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Courses;
+use App\Sites;
 use App\Training;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -18,7 +20,10 @@ class TrainingController extends Controller
     public function create()
     {
         $this->authorize('create', Training::class);
-        return view('Training/create');
+        return view('Training/create', [
+            'sites' => Sites::all()->sortBy('site'),
+            'courses' => Courses::all()->sortBy('course'),
+        ]);
     }
 
 
@@ -125,7 +130,9 @@ class TrainingController extends Controller
             'site' => $site,
             'course' => $course,
             'course_date' => $course_date,
-            'expiry_date' => $expiry_date
+            'expiry_date' => $expiry_date,
+            'sites' => Sites::all()->sortBy('site'),
+            'courses' => Courses::all()->sortBy('course'),
         ]);
     }
 }
