@@ -200,11 +200,9 @@
 
         <hr>
 
-        @if(!Auth::user()->isAdmin())
-            <div class="container align-content-center">
-                <button class="btn btn-block btn-lg btn-success" type="submit">Submit</button>
-                <button class="btn btn-block btn-lg btn-secondary" type="reset">Reset</button>
-            </div>
-        @endif
+        <div class="container align-content-center">
+            <button class="btn btn-block btn-lg btn-success" type="submit">Submit</button>
+            <button class="btn btn-block btn-lg btn-secondary" type="reset">Reset</button>
+        </div>
     </form>
 @endsection
