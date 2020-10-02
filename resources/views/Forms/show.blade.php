@@ -4,7 +4,7 @@
 
     <script type="module" src="/js/autolinker.js"></script>
 
-    @if(Auth::user()->isAdmin())
+    @if($admin)
         <a href="{{ url()->previous() }}">Back</a>
         <a class="float-right" href="{{ route('forms.edit', ['form' => $form->id]) }}">Edit</a>
     @endif

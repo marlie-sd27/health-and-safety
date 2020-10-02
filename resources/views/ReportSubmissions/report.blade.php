@@ -71,7 +71,7 @@
                     <td>{{ $submission->users->name }}</td>
                     <td>{{ date('M d, Y @ H:i a', strtotime($submission->created_at)) }}</td>
                     <td><a href="{{ route('submissions.show', ['submission' => $submission]) }}">View</a></td>
-                    @if(Auth::user()->isAdmin())
+                    @if($admin)
                         <td>
                             <form method="post" class="delete_form"
                                   action="{{route('submissions.destroy', $submission->id)}}">

@@ -19,5 +19,9 @@
             <th>(Vice) Principal</th>
             <td>{{ $principal ? 'true' : 'false' }}</td>
         </tr>
+        <tr>
+            <th>Reporting Access</th>
+            <td>{{ $report_access ? 'true' : 'false' }}</td>
+        </tr>
     </table>
 @endsection

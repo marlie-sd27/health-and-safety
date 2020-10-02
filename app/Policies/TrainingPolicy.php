@@ -14,7 +14,7 @@ class TrainingPolicy
     // user must own the training or be admin or principal to view
     public function view(User $user, Training $training)
     {
-        return strcasecmp($training->email, $user->email) == 0 | $user->isAdmin() | $user->isPrincipal();
+        return strcasecmp($training->email, $user->email) == 0 | $user->isAdmin() | $user->isPrincipal() | $user->isReporter();
     }
 
 
@@ -41,7 +41,6 @@ class TrainingPolicy
     // user must be admin or principal to report
     public function report(User $user)
     {
-        Log::debug("Hit here");
-        return $user->isAdmin() | $user->isPrincipal();
+        return $user->isAdmin() | $user->isPrincipal() | $user->isReporter();
     }
 }

@@ -34,7 +34,7 @@
                 <li class="nav-item">
                     <a href="{{ route('dashboard') }}" class="nav-link {{$_SERVER['REQUEST_URI'] == '/dashboard' ? ' active' : ''}}">Dashboard</a>
                 </li>
-                @if(Auth::user()->isAdmin())
+                @if($admin)
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle {{ strpos( $_SERVER['REQUEST_URI'], 'forms') != false ? ' active' : ''}}" data-toggle="dropdown" href="#" role="button"
                            aria-haspopup="true" aria-expanded="false">Forms
@@ -75,7 +75,7 @@
                             <a href="{{ route('courses') }}" class="dropdown-item">Courses</a>
                         </div>
                     </li>
-                @elseif(Auth::user()->isPrincipal())
+                @elseif($principal | $report_access)
                     <li class="nav-item">
                         <a href="{{ route('submissions.report') }}" class="nav-link {{$_SERVER['REQUEST_URI'] == '/submissions/report' ? ' active' : ''}}">Submissions</a>
                     </li>

@@ -51,7 +51,7 @@
                 <th>Course Date</th>
                 <th>Expiry Date</th>
                 <th>View</th>
-                @if(Auth::user()->isAdmin())
+                @if($admin)
                     <th>Delete</th>@endif
             </tr>
 
@@ -64,7 +64,7 @@
                     <td>{{ date('M d, Y', strtotime($training->course_date)) }}</td>
                     <td>{{ date('M d, Y', strtotime($training->expiry_date)) }}</td>
                     <td><a href="{{ route('training.show', ['training' => $training]) }}">View</a></td>
-                    @if(Auth::user()->isAdmin())
+                    @if($admin)
                         <td>
                             <form method="post" class="delete_form"
                                   action="{{route('training.destroy', $training->id)}}">

@@ -3,7 +3,7 @@
 @section('content')
 
     <a href="{{ url()->previous() }}">Back</a>
-    @if(Auth::user()->isAdmin())
+    @if($admin)
         <a class="float-right" href="{{ route('training.edit', ['training' => $training->id]) }}">Edit</a>
     @endcan
     <div class="container">

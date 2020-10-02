@@ -14,7 +14,7 @@ class SubmissionPolicy
     // user must own the submission or be admin or principal to view
     public function view(User $user, Submissions $submission)
     {
-        return strcasecmp($submission->email, $user->email) == 0 | $user->isAdmin() | $user->isPrincipal();
+        return strcasecmp($submission->email, $user->email) == 0 | $user->isAdmin() | $user->isPrincipal() | $user->isReporter();
     }
 
 
@@ -35,6 +35,6 @@ class SubmissionPolicy
     // user be admin or principal to report
     public function report(User $user)
     {
-        return $user->isAdmin() | $user->isPrincipal();
+        return $user->isAdmin() | $user->isPrincipal() | $user->isReporter();
     }
 }

@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Support\Facades\Auth;
 
-class IsAdminOrPrincipal
+class ReportAccess
 {
     /**
      * Handle an incoming request.
@@ -16,7 +16,7 @@ class IsAdminOrPrincipal
      */
     public function handle($request, Closure $next)
     {
-        if (Auth::user()->isAdmin() | Auth::user()->isPrincipal())
+        if (Auth::user()->isAdmin() | Auth::user()->isPrincipal() | Auth::user()->isReporter())
         {
             return $next($request);
         }

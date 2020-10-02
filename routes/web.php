@@ -25,6 +25,12 @@ Route::middleware(['auth','isadmin'])->group(function ()
     Route::post('admins', 'AdminController@store')->name('admins.store');
     Route::delete('admins/{admin}', 'AdminController@destroy')->name('admins.destroy');
 
+    // managing users with report access (who aren't principals)
+    Route::get('reporters', 'ReportAccessController@index')->name('reporters');
+    Route::post('reporters', 'ReportAccessController@store')->name('reporters.store');
+    Route::put('reporter/{user}', 'ReportAccessController@update')->name('reporters.update');
+    Route::delete('reporter/{user}', 'ReportAccessController@destroy')->name('reporters.destroy');
+
     // events
     Route::delete('events/{event}', 'EventsController@destroy')->name('events.destroy');
     Route::get('events', 'EventsController@index')->name('events');
@@ -55,7 +61,7 @@ Route::middleware(['auth','isadmin'])->group(function ()
 Route::middleware('auth')->group(function () {
 
     // reporting submissions/training requires admin or principal designation
-    Route::middleware('admin_or_principal')->group(function() {
+    Route::middleware('reporting_access')->group(function() {
         Route::get('submissions/report', 'SubmissionsReportsController@report')->name('submissions.report');
         Route::get('submissions/export', 'SubmissionsReportsController@export')->name('submissions.export');
         Route::get('training/report', 'TrainingController@report')->name('training.report');
