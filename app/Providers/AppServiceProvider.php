@@ -45,6 +45,7 @@ class AppServiceProvider extends ServiceProvider
 
             if (Auth::check()) {
                 View::share('admin', Auth::user()->isAdmin());
+                View::share('report_access', Auth::user()->isReporter());
                 View::share('principal', Auth::user()->isPrincipal());
                 View::share('userName', Auth::user()->name);
                 View::share('userEmail', Auth::user()->email);

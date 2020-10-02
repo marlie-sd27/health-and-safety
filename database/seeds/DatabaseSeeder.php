@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             SecondarySchoolInspectionSeeder::class,
             RespectfulWorkplaceSeeder::class,
             ElementarySchoolInspectionAdditionsSeeder::class,
+            SitesSeeder::class,
         ]);
     }
 }

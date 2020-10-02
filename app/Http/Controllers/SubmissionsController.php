@@ -5,10 +5,10 @@ namespace App\Http\Controllers;
 use App\Forms;
 use App\Helpers\Helper;
 use App\Http\Requests\StoreSubmission;
+use App\Sites;
 use App\Submissions;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 class SubmissionsController extends Controller
@@ -67,7 +67,10 @@ class SubmissionsController extends Controller
     public function edit(Submissions $submission)
     {
         $this->authorize('update', $submission);
-        return view('Submissions/edit', ['submission' => $submission->prepareSubmission()]);
+        return view('Submissions/edit', [
+            'submission' => $submission->prepareSubmission(),
+            'sites' => Sites::all()->sortBy('site'),
+        ]);
     }
 
 

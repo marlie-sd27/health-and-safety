@@ -5,7 +5,7 @@
     <div class="container">
     <h1>Overdue Submissions</h1>
         <article class="container">
-            <form method="get" action="{{ route('report.overdue') }}">
+            <form method="get" action="{{ route('submissions.overdue') }}">
                 <label>Search by form:
                     <select class="form-control text-reset" type="text" name='form'
                             aria-label="Search">

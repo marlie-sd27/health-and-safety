@@ -5,15 +5,18 @@ namespace App\Http\Controllers;
 use App\Events;
 use App\Helpers\QueryHelper;
 use App\Helpers\ReportHelper;
+use App\Sites;
+use App\Submissions;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
 
-class ReportsController extends Controller
+class SubmissionsReportsController extends Controller
 {
     public function report(Request $request)
     {
+        $this->authorize('report', Submissions::class);
         $user = $request->filled('user') ? $request->user : null;
         $site = $request->filled('site') ? $request->site : null;
         $form = $request->filled('form') ? $request->form : null;
@@ -22,13 +25,14 @@ class ReportsController extends Controller
 
        $submissions = ReportHelper::generateReport($user, $site, $form, $date_from, $date_to);
 
-        return view('Report/report', [
+        return view('ReportSubmissions/report', [
             'submissions' => $submissions,
             'user' => $user,
             'site' => $site,
             'form' => $form,
             'date_from' => $date_from,
-            'date_to' => $date_to
+            'date_to' => $date_to,
+            'sites' => Sites::all()->sortBy('site'),
         ]);
     }
 
@@ -53,7 +57,7 @@ class ReportsController extends Controller
 
         $overdues = ReportHelper::filterOverdues($overdues, $user, $form, $date_from, $date_to);
 
-        return view('Report/overdue', [
+        return view('ReportSubmissions/overdue', [
             'overdues' => $overdues,
             'user' => $user,
             'form' => $form,
@@ -72,7 +76,7 @@ class ReportsController extends Controller
             ->orderBy('date', 'asc')
             ->get();
 
-        return view('Report/upcoming', ['upcomings' => $upcomings]);
+        return view('ReportSubmissions/upcoming', ['upcomings' => $upcomings]);
     }
 
 
@@ -101,6 +105,10 @@ class ReportsController extends Controller
 
         $list = ReportHelper::generateReport( $user, $site, $form, $date_from, $date_to);
         $list = ReportHelper::prepareData($list)->toArray();
+
+        if(!$list){
+            return redirect()->back()->with('error', 'Nothing to export');
+        }
 
         # add headers for each column in the CSV download
         array_unshift($list, array_keys($list[0]));

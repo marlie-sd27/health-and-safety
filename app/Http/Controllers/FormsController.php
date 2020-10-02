@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Events;
 use App\Forms;
 use App\Http\Requests\StoreForm;
+use App\Sites;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -53,7 +54,11 @@ class FormsController extends Controller
 
         $event_id = $request->filled('event') ? $request->event : $form->closestDueDate();
 
-        return (view('Forms/show', ['form' => $form->fullForm(), 'event' => Events::find($event_id) ]));
+        return (view('Forms/show', [
+            'form' => $form->fullForm(),
+            'event' => Events::find($event_id),
+            'sites' => Sites::all()->sortBy('site'),
+            ]));
     }
 
 
@@ -81,9 +86,9 @@ class FormsController extends Controller
                 $form->deleteAllFutureEvents();
                 $form->save();
             };
-            $form->updateSectionsandFields($validated);
 
-        });
+            $form->updateSectionsandFields($validated);
+        }, 3);
 
 
         return redirect(route('forms.show', ['form' => $form->id]))->with('message','Successfully updated the form!');
