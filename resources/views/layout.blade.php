@@ -87,9 +87,9 @@
                     <li class="nav-item">
                         <a href="{{ route('submissions.index') }}" class="nav-link {{$_SERVER['REQUEST_URI'] == '/submissions' ? ' active' : ''}}">My Submissions</a>
                     </li>
-                    <li class="nav-item">
-                        <a href="{{ route('training.index') }}" class="nav-link {{$_SERVER['REQUEST_URI'] == '/training' ? ' active' : ''}}">My Training</a>
-                    </li>
+{{--                    <li class="nav-item">--}}
+{{--                        <a href="{{ route('training.index') }}" class="nav-link {{$_SERVER['REQUEST_URI'] == '/training' ? ' active' : ''}}">My Training</a>--}}
+{{--                    </li>--}}
                 @endif
                 <li class="nav-item">
                     <a href="{{ route('calendar') }}" class="nav-link {{$_SERVER['REQUEST_URI'] == '/calendar' ? ' active' : ''}}">Calendar</a>
