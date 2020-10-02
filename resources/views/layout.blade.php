@@ -71,6 +71,7 @@
                         </a>
                         <div class="dropdown-menu dropdown-menu-right">
                             <a href="{{route('admins')}}" class="dropdown-item">Admins</a>
+                            <a href="{{ route('reporters') }}" class="dropdown-item">Reporting Privileges</a>
                             <a href="{{ route('sites') }}" class="dropdown-item">Sites</a>
                             <a href="{{ route('courses') }}" class="dropdown-item">Courses</a>
                         </div>

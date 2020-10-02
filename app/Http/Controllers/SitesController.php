@@ -10,7 +10,7 @@ class SitesController extends Controller
 
     public function index()
     {
-        return view('Sites/manage', ['sites' => Sites::all()->sortBy('site')]);
+        return view('Manage/sites', ['sites' => Sites::all()->sortBy('site')]);
     }
 
 

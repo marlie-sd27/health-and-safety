@@ -9,7 +9,7 @@ class CoursesController extends Controller
 {
     public function index()
     {
-        return view('Courses/manage', ['courses' => Courses::all()->sortBy('course')]);
+        return view('Manage/courses', ['courses' => Courses::all()->sortBy('course')]);
     }
 
 
