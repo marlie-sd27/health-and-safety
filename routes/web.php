@@ -49,7 +49,7 @@ Route::middleware(['auth','isadmin'])->group(function ()
     Route::delete('course/{course}', 'CoursesController@destroy')->name('courses.destroy');
 
     // managing sites list
-    Route::get('sites', 'sitesController@index')->name('sites');
+    Route::get('sites', 'SitesController@index')->name('sites');
     Route::post('site', 'SitesController@store')->name('sites.store');
     Route::put('site/{site}', 'SitesController@update')->name('sites.update');
     Route::delete('site/{site}', 'SitesController@destroy')->name('sites.destroy');
