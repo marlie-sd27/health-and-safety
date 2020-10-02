@@ -11,44 +11,11 @@
             <p>Update training for an employee here. </p>
             <span class="required">*</span><label>School/Site</label>
             <select name="site" class="form-control @error('site') border-danger @enderror">
-                <option @if (old('site') == '--' || $training->site == "") {{ 'selected' }} @endif>--</option>
-                <option @if ( old('site') == '100 Mile Elementary' || $training->site == "100 Mile Elementary") {{ 'selected' }} @endif>100 Mile Elementary
-                </option>
-                <option @if (old('site') == '100 Mile Maintenance' || $training->site == "100 Mile Maintenance") {{ 'selected' }} @endif>100 Mile
-                    Maintenance
-                </option>
-                <option @if (old('site') == '150 Mile Elementary' || $training->site == "150 Mile Elementary") {{ 'selected' }} @endif>150 Mile Elementary
-                </option>
-                <option @if (old('site') == 'Alexis Creek' || $training->site == "Alexis Creek") {{ 'selected' }} @endif>Alexis Creek</option>
-                <option @if (old('site') == 'Anahim' || $training->site == "Anahim") {{ 'selected' }} @endif>Anahim</option>
-                <option @if (old('site') == 'Big Lake' || $training->site == "Big Lake") {{ 'selected' }} @endif>Big Lake</option>
-                <option @if (old('site') == 'Board Office' || $training->site == "Board Office") {{ 'selected' }} @endif>Board Office</option>
-                <option @if (old('site') == 'Cataline' || $training->site == "Cataline") {{ 'selected' }} @endif>Cataline</option>
-                <option @if (old('site') == 'Chilcotin Road' || $training->site == "Chilcotin Road") {{ 'selected' }} @endif>Chilcotin Road</option>
-                <option @if (old('site') == 'Dog Creek' || $training->site == "Dog Creek") {{ 'selected' }} @endif>Dog Creek</option>
-                <option @if (old('site') == 'Forest Grove' || $training->site == "Forest Grove") {{ 'selected' }} @endif>Forest Grove</option>
-                <option @if (old('site') == 'Horse Lake' || $training->site == "Horse Lake") {{ 'selected' }} @endif>Horse Lake</option>
-                <option @if (old('site') == 'Horsefly' || $training->site == "Horsefly") {{ 'selected' }} @endif>Horsefly</option>
-                <option @if (old('site') == 'GROW WL' || $training->site == "GROW WL") {{ 'selected' }} @endif>GROW WL</option>
-                <option @if (old('site') == 'Lac La Hache' || $training->site == "Lac La Hache") {{ 'selected' }} @endif>Lac La Hache</option>
-                <option @if (old('site') == 'LCS-Williams Lake' || $training->site == "LCS-Williams Lake") {{ 'selected' }} @endif>LCS-Williams Lake
-                </option>
-                <option @if (old('site') == 'LCS-Columneetza' || $training->site == "LCS-Columneetza") {{ 'selected' }} @endif>LCS-Columneetza
-                </option>
-                <option @if (old('site') == 'Likely' || $training->site == "Likely") {{ 'selected' }} @endif>Likely</option>
-                <option @if (old('site') == 'Marie Sharpe' || $training->site == "Marie Sharpe") {{ 'selected' }} @endif>Marie Sharpe</option>
-                <option @if (old('site') == 'Mile 108 Elementary' || $training->site == "Mile 108 Elementary") {{ 'selected' }} @endif>Mile 108 Elementary
-                </option>
-                <option @if (old('site') == 'Mountview' || $training->site == "Mountview") {{ 'selected' }} @endif>Mountview</option>
-                <option @if (old('site') == 'Maintenance Yard' || $training->site == "Maintenance Yard") {{ 'selected' }} @endif>Maintenance Yard
-                </option>
-                <option @if (old('site') == 'Naughtaneqed' || $training->site == "Naughtaneqed") {{ 'selected' }} @endif>Naughtaneqed</option>
-                <option @if (old('site') == 'Nenqayni' || $training->site == "Nenqayni") {{ 'selected' }} @endif>Nenqayni</option>
-                <option @if (old('site') == 'Nesika' || $training->site == "Nesika") {{ 'selected' }} @endif>Nesika</option>
-                <option @if (old('site') == 'PSO' || $training->site == "PSO") {{ 'selected' }} @endif>PSO</option>
-                <option @if (old('site') == 'Support Services' || $training->site == "Support Services") {{ 'selected' }} @endif>Support Services
-                </option>
-                <option @if (old('site') == 'Tatla Lake' || $training->site == "Tatla Lake") {{ 'selected' }} @endif>Tatla Lake</option>
+                <option @if (old('site') == '' || $training->site == "") {{ 'selected' }} @endif></option>
+                @foreach($sites as $site)
+                    <option @if ( old('site') == $site->site || $training->site == $site->site) {{ 'selected' }} @endif>
+                        {{$site->site}}</option>
+                @endforeach
             </select>
             <div class="form-group">
                 @error("site")
@@ -57,8 +24,13 @@
             </div>
             <div class="form-group">
                 <label for="course"><span class="required">*</span>Course</label>
-                <input class="form-control @error('course') border-danger @enderror" type="text" name="course" placeholder="Course" required
-                       value="{{ old('course') ?? $training->course}}">
+                <select name="course" class="form-control @error('course') border-danger @enderror">
+                    <option @if (old('course') == '' || $training->course == "") {{ 'selected' }} @endif></option>
+                    @foreach($courses as $course)
+                        <option @if ( old('course') == $course->course || $training->course == $course->course) {{ 'selected' }} @endif>
+                            {{$course->course}}</option>
+                    @endforeach
+                </select>
                 @error('course')
                 <p class="text-danger">{{ $errors->first('course') }}</p>
                 @enderror
@@ -108,7 +80,7 @@
                 <input type="checkbox"
                        class=" @error('designated_fa_attendant') border-danger @enderror"
                        name="designated_fa_attendant"
-                       @if (old('designated_fa_attendant') || $training->designated_fa_attendant) checked @endif/>
+                       @if (is_array(old('designated_fa_attendant')) || $training->designated_fa_attendant ) checked @endif/>
                 <label for="designated_fa_attendant">Designated First Aid Attendant?</label>
                 @error('designated_fa_attendant')
                 <p class="text-danger">{{ $errors->first('designated_fa_attendant') }}</p>

@@ -22,6 +22,7 @@ class CreateTrainingsTable extends Migration
             $table->text('notes')->nullable();
             $table->date('course_date');
             $table->date('expiry_date')->nullable();
+            $table->date('inspection_date')->nullable();
             $table->string('site')->nullable();
             $table->boolean('designated_fa_attendant')->default('false');
             $table->string('union')->nullable();

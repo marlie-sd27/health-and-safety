@@ -31,8 +31,12 @@
                 <td>{{ date('M d, Y', strtotime($training->expiry_date)) }}</td>
             </tr>
             <tr>
+                <th>Inspection Date</th>
+                <td>{{ date('M d, Y', strtotime($training->inspection_date)) }}</td>
+            </tr>
+            <tr>
                 <th>Designated First Aid Attendant?</th>
-                <td>{{ $training->designated_fa_attendant }}</td>
+                <td>{{ $training->designated_fa_attendant ? "True" : "False" }}</td>
             </tr>
             <tr>
                 <th>Union</th>
