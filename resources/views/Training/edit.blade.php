@@ -98,7 +98,7 @@
                 <p class="text-danger">{{ $errors->first('union') }}</p>
                 @enderror
             </div>
-            <label>Level of First Aid</label>
+            <label>Level of First Aid Required by WorkSafe at this site</label>
             <select name="fa_level" class="form-control @error('fa_level') border-danger @enderror">
                 <option @if(old('fa_level') == '' || $training->fa_level == '') {{ 'selected' }} @endif></option>
                 <option @if(old('fa_level') == 'Level 1' || $training->fa_level == 'Level 1') {{ 'selected' }} @endif>Level 1</option>

@@ -20,19 +20,19 @@
             </tr>
             <tr>
                 <th>Expires In</th>
-                <td>{{ Carbon\Carbon::now()->diffInDays($training->expiry_date, false) }} days</td>
+                <td>{{ $training->expiry_date ? Carbon\Carbon::now()->diffInDays($training->expiry_date, false) . "days" : "N/A"}}</td>
             </tr>
             <tr>
                 <th>Course Date</th>
-                <td>{{ date('M d, Y', strtotime($training->course_date)) }}</td>
+                <td>{{ $training->course_date ? date('M d, Y', strtotime($training->course_date)) : ""}}</td>
             </tr>
             <tr>
                 <th>Expiry Date</th>
-                <td>{{ date('M d, Y', strtotime($training->expiry_date)) }}</td>
+                <td>{{ $training->expiry_date ? date('M d, Y', strtotime($training->expiry_date)) : ""}}</td>
             </tr>
             <tr>
                 <th>Inspection Date</th>
-                <td>{{ date('M d, Y', strtotime($training->inspection_date)) }}</td>
+                <td>{{ $training->inspection_date ? date('M d, Y', strtotime($training->inspection_date)) : "" }}</td>
             </tr>
             <tr>
                 <th>Designated First Aid Attendant?</th>
@@ -43,7 +43,7 @@
                 <td>{{ $training->union }}</td>
             </tr>
             <tr>
-                <th>Level of First Aid</th>
+                <th>Level of First Aid Required by WorkSafe at this site</th>
                 <td>{{ $training->fa_level }}</td>
             </tr>
             <tr>

@@ -23,7 +23,7 @@
                 </label>
                 <label>Search by email:
                     <input class="form-control" type="text" placeholder="Search" name='email'
-                           value="{{ $user ?? ""}}"
+                           value="{{ $email ?? ""}}"
                            aria-label="Search"/>
                 </label>
                 <label>Search by course date:
@@ -80,7 +80,13 @@
             @endforeach
         </table>
         <div>
-            {{ $trainings->links() }}
+            {{ $trainings->appends([
+            'trainings' => $trainings,
+            'email' => $email,
+            'site' => $site,
+            'course' => $course,
+            'course_date' => $course_date,
+            'expiry_date' => $expiry_date,])->links() }}
         </div>
     </div>
 @endsection
