@@ -85,7 +85,7 @@
             @endforeach
         </table>
             <div>
-                {{ $submissions->links() }}
+                {{ $submissions->appends(['form'=>$form, 'user'=>$user, 'site'=>$site, 'date_from'=>$date_from, 'date_to'=>$date_to])->links() }}
             </div>
     </div>
 

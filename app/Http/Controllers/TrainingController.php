@@ -106,14 +106,14 @@ class TrainingController extends Controller
     public function report(Request $request)
     {
         $this->authorize('report', Training::class);
-        $user = $request->filled('user') ? $request->user : null;
+        $email = $request->filled('email') ? $request->user : null;
         $site = $request->filled('site') ? $request->site : null;
         $course = $request->filled('course') ? $request->course : null;
         $course_date = $request->filled('course_date') ? $request->course_date : null;
         $expiry_date = $request->filled('expiry_date') ? $request->expiry_date : null;
 
-        $trainings = Training::when($user, function ($query, $user) {
-                return $query->where('email', 'like', '%' . $user . '%');
+        $trainings = Training::when($email, function ($query, $email) {
+                return $query->where('email', 'like', '%' . $email . '%');
             })
             ->when($site, function ($query, $site) {
                 return $query->where('site', 'like', '%' . $site . '%');
@@ -132,7 +132,7 @@ class TrainingController extends Controller
 
         return view('Training/report', [
             'trainings' => $trainings,
-            'user' => $user,
+            'email' => $email,
             'site' => $site,
             'course' => $course,
             'course_date' => $course_date,
