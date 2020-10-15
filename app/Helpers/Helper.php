@@ -116,7 +116,7 @@ class Helper
     public static function parseHTTPQuery($input)
     {
         // convert http_query to key-value array
-        $input = str_replace(".", ";;;", $input);
+        $input = str_replace(".", ";;;", $input); // conserving dots
         parse_str( $input, $array);
 
         // replace underscores with spaces in each key-value pair and push pair into new array
@@ -127,7 +127,7 @@ class Helper
             $newValue = (is_array($value)) ? trim(str_replace("_", " ", join(", ", array_keys($value)))) : trim(str_replace("_", " ", $value));
             $newKey = trim(str_replace("_", " ", $key));
 
-            $parsedData[str_replace(";;;", ".", $newKey)] = str_replace(";;;", ".", $newValue);
+            $parsedData[str_replace(";;;", ".", $newKey)] = str_replace(";;;", ".", $newValue); // reinstating dots
         }
 
         return $parsedData;

@@ -12,19 +12,47 @@ Route::get('/signout', 'LoginController@signout')->name('signout');
 // Admin routes
 Route::middleware(['auth','isadmin'])->group(function ()
 {
+    //forms
     Route::resource('forms', 'FormsController')->except('show');
     Route::post('toggle-live', 'FormsController@toggleLive');
 
-    Route::get('report', 'ReportsController@report')->name('report');
-    Route::get('report/overdue', 'ReportsController@overdue')->name('report.overdue');
-    Route::get('report/upcoming', 'ReportsController@upcoming')->name('report.upcoming');
+    //submission reporting
+    Route::get('submissions/overdue', 'SubmissionsReportsController@overdue')->name('submissions.overdue');
+    Route::get('submissions/upcoming', 'SubmissionsReportsController@upcoming')->name('submissions.upcoming');
 
+    // manage admins
     Route::get('admins', 'AdminController@index')->name('admins');
     Route::post('admins', 'AdminController@store')->name('admins.store');
     Route::delete('admins/{admin}', 'AdminController@destroy')->name('admins.destroy');
 
+    // managing users with report access (who aren't principals)
+    Route::get('reporters', 'ReportAccessController@index')->name('reporters');
+    Route::post('reporters', 'ReportAccessController@store')->name('reporters.store');
+    Route::put('reporter/{user}', 'ReportAccessController@update')->name('reporters.update');
+    Route::delete('reporter/{user}', 'ReportAccessController@destroy')->name('reporters.destroy');
+
+    // events
     Route::delete('events/{event}', 'EventsController@destroy')->name('events.destroy');
     Route::get('events', 'EventsController@index')->name('events');
+
+    // training
+    Route::post('training', 'TrainingController@store')->name('training.store');
+    Route::get('training/create', 'TrainingController@create')->name('training.create');
+    Route::delete('training/{training}', 'TrainingController@destroy')->name('training.destroy');
+    Route::put('training/{training}', 'TrainingController@update')->name('training.update');
+    Route::get('training/{training}/edit', 'TrainingController@edit')->name('training.edit');
+
+    // managing courses list
+    Route::get('courses', 'CoursesController@index')->name('courses');
+    Route::post('course', 'CoursesController@store')->name('courses.store');
+    Route::put('course/{course}', 'CoursesController@update')->name('courses.update');
+    Route::delete('course/{course}', 'CoursesController@destroy')->name('courses.destroy');
+
+    // managing sites list
+    Route::get('sites', 'SitesController@index')->name('sites');
+    Route::post('site', 'SitesController@store')->name('sites.store');
+    Route::put('site/{site}', 'SitesController@update')->name('sites.update');
+    Route::delete('site/{site}', 'SitesController@destroy')->name('sites.destroy');
 
 });
 
@@ -32,12 +60,15 @@ Route::middleware(['auth','isadmin'])->group(function ()
 // authenticate (ensure user is logged in)
 Route::middleware('auth')->group(function () {
 
-    // reporting submissions requires admin or principal designation
-    Route::middleware('admin_or_principal')->group(function() {
-        Route::get('report', 'ReportsController@report')->name('report');
-        Route::get('export', 'ReportsController@export')->name('export');
+    // reporting submissions/training requires admin or principal designation
+    Route::middleware('reporting_access')->group(function() {
+        Route::get('submissions/report', 'SubmissionsReportsController@report')->name('submissions.report');
+        Route::get('submissions/export', 'SubmissionsReportsController@export')->name('submissions.export');
+        Route::get('training/report', 'TrainingController@report')->name('training.report');
     });
 
+    Route::get('training', 'TrainingController@index')->name('training.index');
+    Route::get('training/{training}', 'TrainingController@show')->name('training.show');
 
     Route::resource('submissions', 'SubmissionsController');
     Route::post('file', 'FileController')->name('file.download');

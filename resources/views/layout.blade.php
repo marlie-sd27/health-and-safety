@@ -34,39 +34,63 @@
                 <li class="nav-item">
                     <a href="{{ route('dashboard') }}" class="nav-link {{$_SERVER['REQUEST_URI'] == '/dashboard' ? ' active' : ''}}">Dashboard</a>
                 </li>
-                @if(Auth::user()->isAdmin())
+                @if($admin)
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle {{ strpos( $_SERVER['REQUEST_URI'], 'forms') != false ? ' active' : ''}}" data-toggle="dropdown" href="#" role="button"
                            aria-haspopup="true" aria-expanded="false">Forms
                         </a>
                         <div class="dropdown-menu dropdown-menu-right">
                             <a href="{{route('forms.create')}}" class="dropdown-item">Create</a>
-                            <a href="{{ route('forms.index') }}" class="dropdown-item">Index</a>
+                            <a href="{{ route('forms.index') }}" class="dropdown-item">Manage</a>
                         </div>
                     </li>
 
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle {{ strpos( $_SERVER['REQUEST_URI'], 'report') != false ? ' active' : ''}}" data-toggle="dropdown" href="#" role="button"
-                           aria-haspopup="true" aria-expanded="false">Report
+                        <a class="nav-link dropdown-toggle {{ strpos( $_SERVER['REQUEST_URI'], 'submissions') != false ? ' active' : ''}}" data-toggle="dropdown" href="#" role="button"
+                           aria-haspopup="true" aria-expanded="false">Submissions
                         </a>
                         <div class="dropdown-menu dropdown-menu-right">
-                            <a href="{{route('report')}}" class="dropdown-item">Submissions</a>
-                            <a href="{{ route('report.overdue') }}" class="dropdown-item">Overdue</a>
-                            <a href="{{ route('report.upcoming') }}" class="dropdown-item">Upcoming</a>
+                            <a href="{{route('submissions.report')}}" class="dropdown-item">Report</a>
+                            <a href="{{ route('submissions.overdue') }}" class="dropdown-item">Overdue</a>
+                            <a href="{{ route('submissions.upcoming') }}" class="dropdown-item">Upcoming</a>
                         </div>
                     </li>
-                    <li class="nav-item">
-                        <a href="{{ route('admins') }}" class="nav-link {{$_SERVER['REQUEST_URI'] == '/admins' ? ' active' : ''}}">Admins</a>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle {{ strpos( $_SERVER['REQUEST_URI'], 'training') != false ? ' active' : ''}}" data-toggle="dropdown" href="#" role="button"
+                           aria-haspopup="true" aria-expanded="false">Training
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a href="{{route('training.create')}}" class="dropdown-item">Enter Training</a>
+                            <a href="{{ route('training.report') }}" class="dropdown-item">Report</a>
+                        </div>
                     </li>
-                @elseif(Auth::user()->isPrincipal())
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
+                           aria-haspopup="true" aria-expanded="false">Manage
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a href="{{route('admins')}}" class="dropdown-item">Admins</a>
+                            <a href="{{ route('reporters') }}" class="dropdown-item">Reporting Privileges</a>
+                            <a href="{{ route('sites') }}" class="dropdown-item">Sites</a>
+                            <a href="{{ route('courses') }}" class="dropdown-item">Courses</a>
+                        </div>
+                    </li>
+                @elseif($principal | $report_access)
                     <li class="nav-item">
-                        <a href="{{ route('report') }}" class="nav-link {{$_SERVER['REQUEST_URI'] == '/report' ? ' active' : ''}}">Submissions</a>
+                        <a href="{{ route('submissions.report') }}" class="nav-link {{$_SERVER['REQUEST_URI'] == '/submissions/report' ? ' active' : ''}}">Submissions</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('training.report') }}" class="nav-link {{$_SERVER['REQUEST_URI'] == '/training/report' ? ' active' : ''}}">Training</a>
                     </li>
 
                 @else
                     <li class="nav-item">
                         <a href="{{ route('submissions.index') }}" class="nav-link {{$_SERVER['REQUEST_URI'] == '/submissions' ? ' active' : ''}}">My Submissions</a>
                     </li>
+{{--                    <li class="nav-item">--}}
+{{--                        <a href="{{ route('training.index') }}" class="nav-link {{$_SERVER['REQUEST_URI'] == '/training' ? ' active' : ''}}">My Training</a>--}}
+{{--                    </li>--}}
                 @endif
                 <li class="nav-item">
                     <a href="{{ route('calendar') }}" class="nav-link {{$_SERVER['REQUEST_URI'] == '/calendar' ? ' active' : ''}}">Calendar</a>
@@ -100,7 +124,7 @@
 
 <div class="wrapper">
     <!-- Sidebar -->
-        <nav id="sidebar">
+        <nav id="sidebar" class="position-fixed">
             <ul class="list-unstyled components">
                 <br/>
                 <p>Links to Forms</p>
@@ -112,7 +136,7 @@
             </ul>
         </nav>
 <!-- Page Content -->
-    <main role="main" class="container">
+    <main role="main" class="container" id="main">
         @if(session('error'))
             <div class="alert alert-danger alert-dismissible alert-dismissible fade show" role="alert">
                 <p class="mb-3">{{ session('error') }}</p>

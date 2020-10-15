@@ -22,44 +22,10 @@
         <article class="container">
                 <label><span class="required">*</span>School/Site</label>
                 <select name="site" class="form-control @error('site') border-danger @enderror">
-                    <option @if (old('site') == '--' || $submission->site == "") {{ 'selected' }} @endif>--</option>
-                    <option @if ( old('site') == '100 Mile Elementary' || $submission->site == "100 Mile Elementary") {{ 'selected' }} @endif>100 Mile Elementary
-                    </option>
-                    <option @if (old('site') == '100 Mile Maintenance' || $submission->site == "100 Mile Maintenance") {{ 'selected' }} @endif>100 Mile
-                        Maintenance
-                    </option>
-                    <option @if (old('site') == '150 Mile Elementary' || $submission->site == "150 Mile Elementary") {{ 'selected' }} @endif>150 Mile Elementary
-                    </option>
-                    <option @if (old('site') == 'Alexis Creek' || $submission->site == "Alexis Creek") {{ 'selected' }} @endif>Alexis Creek</option>
-                    <option @if (old('site') == 'Anahim' || $submission->site == "Anahim") {{ 'selected' }} @endif>Anahim</option>
-                    <option @if (old('site') == 'Big Lake' || $submission->site == "Big Lake") {{ 'selected' }} @endif>Big Lake</option>
-                    <option @if (old('site') == 'Board Office' || $submission->site == "Board Office") {{ 'selected' }} @endif>Board Office</option>
-                    <option @if (old('site') == 'Cataline' || $submission->site == "Cataline") {{ 'selected' }} @endif>Cataline</option>
-                    <option @if (old('site') == 'Chilcotin Road' || $submission->site == "Chilcotin Road") {{ 'selected' }} @endif>Chilcotin Road</option>
-                    <option @if (old('site') == 'Dog Creek' || $submission->site == "Dog Creek") {{ 'selected' }} @endif>Dog Creek</option>
-                    <option @if (old('site') == 'Forest Grove' || $submission->site == "Forest Grove") {{ 'selected' }} @endif>Forest Grove</option>
-                    <option @if (old('site') == 'Horse Lake' || $submission->site == "Horse Lake") {{ 'selected' }} @endif>Horse Lake</option>
-                    <option @if (old('site') == 'Horsefly' || $submission->site == "Horsefly") {{ 'selected' }} @endif>Horsefly</option>
-                    <option @if (old('site') == 'GROW WL' || $submission->site == "GROW WL") {{ 'selected' }} @endif>GROW WL</option>
-                    <option @if (old('site') == 'Lac La Hache' || $submission->site == "Lac La Hache") {{ 'selected' }} @endif>Lac La Hache</option>
-                    <option @if (old('site') == 'LCS-Williams Lake' || $submission->site == "LCS-Williams Lake") {{ 'selected' }} @endif>LCS-Williams Lake
-                    </option>
-                    <option @if (old('site') == 'LCS-Columneetza' || $submission->site == "LCS-Columneetza") {{ 'selected' }} @endif>LCS-Columneetza
-                    </option>
-                    <option @if (old('site') == 'Likely' || $submission->site == "Likely") {{ 'selected' }} @endif>Likely</option>
-                    <option @if (old('site') == 'Marie Sharpe' || $submission->site == "Marie Sharpe") {{ 'selected' }} @endif>Marie Sharpe</option>
-                    <option @if (old('site') == 'Mile 108 Elementary' || $submission->site == "Mile 108 Elementary") {{ 'selected' }} @endif>Mile 108 Elementary
-                    </option>
-                    <option @if (old('site') == 'Mountview' || $submission->site == "Mountview") {{ 'selected' }} @endif>Mountview</option>
-                    <option @if (old('site') == 'Maintenance Yard' || $submission->site == "Maintenance Yard") {{ 'selected' }} @endif>Maintenance Yard
-                    </option>
-                    <option @if (old('site') == 'Naughtaneqed' || $submission->site == "Naughtaneqed") {{ 'selected' }} @endif>Naughtaneqed</option>
-                    <option @if (old('site') == 'Nenqayni' || $submission->site == "Nenqayni") {{ 'selected' }} @endif>Nenqayni</option>
-                    <option @if (old('site') == 'Nesika' || $submission->site == "Nesika") {{ 'selected' }} @endif>Nesika</option>
-                    <option @if (old('site') == 'PSO' || $submission->site == "PSO") {{ 'selected' }} @endif>PSO</option>
-                    <option @if (old('site') == 'Support Services' || $submission->site == "Support Services") {{ 'selected' }} @endif>Support Services
-                    </option>
-                    <option @if (old('site') == 'Tatla Lake' || $submission->site == "Tatla Lake") {{ 'selected' }} @endif>Tatla Lake</option>
+                    @foreach($sites as $site)
+                        <option @if (old('site') == $site->site || $submission->site == $site->site) {{ 'selected' }} @endif>
+                            {{$site->site}}</option>
+                    @endforeach
                 </select>
             <div class="form-group">
                 @error("site")
@@ -87,10 +53,10 @@
                                         <b>?</b>
                                     </button>
                                 @endif
-                                <select name="data[{{ trim(trim(trim($f->name))) }}]"
+                                <select name="data[{{ trim($f->name) }}]"
                                         class="form-control" {{ $f->required ? 'required' : '' }}>
                                     @foreach($f->options as $option)
-                                        <option @if ($submission->data[trim(trim(trim($f->name)))] == "$option") {{ 'selected' }} @endif>{{ $option }}</option>
+                                        <option @if ($submission->data[trim($f->name)] == "$option") {{ 'selected' }} @endif>{{ $option }}</option>
                                     @endforeach
                                 </select>
                             </label>
@@ -110,7 +76,7 @@
                                     <b>?</b>
                                 </button>
                             @endif
-                            <textarea class="form-control" name="data[{{ trim(trim(trim($f->name))) }}]"
+                            <textarea class="form-control" name="data[{{ trim($f->name) }}]"
                                       placeholder="{{ $f->label }}" {{ $f->required ? 'required' : '' }}>{{ $submission->data[trim(trim(trim($f->name)))] ?? ""}}</textarea>
 
                         </div>

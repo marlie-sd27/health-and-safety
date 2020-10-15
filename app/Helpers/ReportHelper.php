@@ -7,6 +7,7 @@ use App\Fields;
 use App\Forms;
 use Illuminate\Http\Request;
 use App\Submissions;
+use Illuminate\Support\Facades\Log;
 
 class ReportHelper
 {
@@ -99,7 +100,11 @@ class ReportHelper
 
             foreach($submission->data as $key => $value)
             {
-                $export[Fields::where('name', $key)->first()->label] = $value;
+                $field = Fields::where('name', 'like', '%' . $key . '%')->first();
+                if($field)
+                {
+                    $export[$field->label] = $value;
+                }
             }
 
             return $export;

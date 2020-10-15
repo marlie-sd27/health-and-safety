@@ -6,7 +6,6 @@ use App\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 use League\OAuth2\Client\Provider\GenericProvider;
 use Microsoft\Graph\Graph;
 use Microsoft\Graph\Model;
@@ -100,6 +99,7 @@ class LoginController extends Controller
                     ->setReturnType(Model\Group::class)
                     ->execute();
 
+                // determine if user is in principal group
                 foreach($groups as $group)
                 {
                     if ($group->getdisplayName() == "All Principals and Vice Principals")
@@ -111,6 +111,7 @@ class LoginController extends Controller
                         $elementary = true;
                     }
                 }
+
 
                 // search to see if user already exists
                 $localUser = User::where('email', strtolower($user->getMail()))->first();
