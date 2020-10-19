@@ -79,10 +79,15 @@ class LoginController extends Controller
                 $tokenCache = new TokenCache();
                 $tokenCache->storeTokens($accessToken);
 
+                // build query to get user data
                 $graph = new Graph();
                 $graph->setAccessToken($accessToken->getToken());
+                $queryParams = array(
+                    '$select' => 'displayName,mail,jobTitle,department'
+                );
+                $getMeUrl = '/me?'.http_build_query($queryParams);
 
-                $user = $graph->createRequest('GET', '/me')
+                $user = $graph->createRequest('GET', $getMeUrl)
                     ->setReturnType(Model\User::class)
                     ->execute();
 
@@ -93,9 +98,9 @@ class LoginController extends Controller
                 $queryParams = array(
                     '$select' => 'displayName',
                 );
-                $getEventsUrl = '/me/memberOf?'.http_build_query($queryParams);
+                $getGroupsUrl = '/me/memberOf?'.http_build_query($queryParams);
 
-                $groups = $graph->createRequest('GET', $getEventsUrl)
+                $groups = $graph->createRequest('GET', $getGroupsUrl)
                     ->setReturnType(Model\Group::class)
                     ->execute();
 
@@ -126,6 +131,8 @@ class LoginController extends Controller
                         'principal' => $principal,
                         'elementary_principal' => $elementary,
                         'last_login' => Carbon::now()->format('Y-m-d H:i:s'),
+                        'position' => $user->getJobTitle(),
+                        'department' => $user->getDepartment(),
                     ]);
 
                     // otherwise update the principal status and last login timestamp
@@ -134,6 +141,8 @@ class LoginController extends Controller
                         'principal' => $principal,
                         'elementary_principal' => $elementary,
                         'last_login' => Carbon::now()->format('Y-m-d H:i:s'),
+                        'position' => $user->getJobTitle(),
+                        'department' => $user->getDepartment(),
                     ]);
                     $localUser->save();
                 }

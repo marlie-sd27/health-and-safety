@@ -4,10 +4,7 @@
 namespace App\Helpers;
 
 use App\Fields;
-use App\Forms;
-use Illuminate\Http\Request;
 use App\Submissions;
-use Illuminate\Support\Facades\Log;
 
 class ReportHelper
 {
@@ -16,7 +13,8 @@ class ReportHelper
         return Submissions::join('forms', 'forms_id', '=', 'forms.id')
             ->join('users', 'submissions.email', '=', 'users.email')
             ->when($user, function ($query, $user) {
-                return $query->where('users.name', 'like', '%' . $user . '%');
+                return $query->where('users.name', 'like', '%' . $user . '%')
+                    ->orWhere('users.email', 'like', '%'.$user.'%');;
             })
             ->when($site, function ($query, $site) {
                 return $query->where('site', 'like', '%' . $site . '%');
