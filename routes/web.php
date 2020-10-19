@@ -56,6 +56,9 @@ Route::middleware(['auth','isadmin'])->group(function ()
     Route::post('site', 'SitesController@store')->name('sites.store');
     Route::delete('site/{site}', 'SitesController@destroy')->name('sites.destroy');
 
+    // get users for a site
+    Route::get('retrieve', 'UserController@retrieveUsersBySite')->name('retrieve');
+
 });
 
 
