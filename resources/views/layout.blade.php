@@ -70,6 +70,7 @@
                            aria-haspopup="true" aria-expanded="false">Manage
                         </a>
                         <div class="dropdown-menu dropdown-menu-right">
+                            <a href="{{ route('users') }}" class="dropdown-item">Users</a>
                             <a href="{{route('admins')}}" class="dropdown-item">Admins</a>
                             <a href="{{ route('reporters') }}" class="dropdown-item">Reporting Privileges</a>
                             <a href="{{ route('sites') }}" class="dropdown-item">Sites</a>

@@ -20,6 +20,11 @@ Route::middleware(['auth','isadmin'])->group(function ()
     Route::get('submissions/overdue', 'SubmissionsReportsController@overdue')->name('submissions.overdue');
     Route::get('submissions/upcoming', 'SubmissionsReportsController@upcoming')->name('submissions.upcoming');
 
+    // manage users
+    Route::get('users', 'UserController@index')->name('users');
+    Route::post('users', 'UserController@store')->name('users.store');
+    Route::delete('users/{user}', 'UserController@destroy')->name('users.destroy');
+
     // manage admins
     Route::get('admins', 'AdminController@index')->name('admins');
     Route::post('admins', 'AdminController@store')->name('admins.store');
@@ -28,7 +33,6 @@ Route::middleware(['auth','isadmin'])->group(function ()
     // managing users with report access (who aren't principals)
     Route::get('reporters', 'ReportAccessController@index')->name('reporters');
     Route::post('reporters', 'ReportAccessController@store')->name('reporters.store');
-    Route::put('reporter/{user}', 'ReportAccessController@update')->name('reporters.update');
     Route::delete('reporter/{user}', 'ReportAccessController@destroy')->name('reporters.destroy');
 
     // events
@@ -45,13 +49,11 @@ Route::middleware(['auth','isadmin'])->group(function ()
     // managing courses list
     Route::get('courses', 'CoursesController@index')->name('courses');
     Route::post('course', 'CoursesController@store')->name('courses.store');
-    Route::put('course/{course}', 'CoursesController@update')->name('courses.update');
     Route::delete('course/{course}', 'CoursesController@destroy')->name('courses.destroy');
 
     // managing sites list
     Route::get('sites', 'SitesController@index')->name('sites');
     Route::post('site', 'SitesController@store')->name('sites.store');
-    Route::put('site/{site}', 'SitesController@update')->name('sites.update');
     Route::delete('site/{site}', 'SitesController@destroy')->name('sites.destroy');
 
 });
