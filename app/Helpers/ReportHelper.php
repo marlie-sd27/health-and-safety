@@ -17,7 +17,7 @@ class ReportHelper
                     ->orWhere('users.email', 'like', '%'.$user.'%');;
             })
             ->when($site, function ($query, $site) {
-                return $query->where('site', 'like', '%' . $site . '%');
+                return $query->where('submissions.site', 'like', '%' . $site . '%');
             })
             ->when($form, function ($query, $form) {
                 return $query->where('title', 'like', '%' . $form . '%');
