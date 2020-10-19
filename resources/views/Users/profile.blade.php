@@ -23,5 +23,13 @@
             <th>Reporting Access</th>
             <td>{{ $report_access ? 'true' : 'false' }}</td>
         </tr>
+        <tr>
+            <th>Department</th>
+            <td>{{ Auth::user()->department }}</td>
+        </tr>
+        <tr>
+            <th>Job Title</th>
+            <td>{{ Auth::user()->position }}</td>
+        </tr>
     </table>
 @endsection
