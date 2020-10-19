@@ -14,8 +14,8 @@ class AddPositionDepartment extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('position')->nullable();
-            $table->string('department')->nullable();
+            $table->string('job_title')->nullable();
+            $table->string('site')->nullable();
         });
     }
 
@@ -27,7 +27,7 @@ class AddPositionDepartment extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn(['position', 'department']);
+            $table->dropColumn(['job_title', 'site']);
         });
     }
 }

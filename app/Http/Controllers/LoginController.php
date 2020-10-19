@@ -131,8 +131,8 @@ class LoginController extends Controller
                         'principal' => $principal,
                         'elementary_principal' => $elementary,
                         'last_login' => Carbon::now()->format('Y-m-d H:i:s'),
-                        'position' => $user->getJobTitle(),
-                        'department' => $user->getDepartment(),
+                        'job_title' => $user->getJobTitle(),
+                        'site' => $user->getDepartment(),
                     ]);
 
                     // otherwise update the principal status and last login timestamp
@@ -141,8 +141,8 @@ class LoginController extends Controller
                         'principal' => $principal,
                         'elementary_principal' => $elementary,
                         'last_login' => Carbon::now()->format('Y-m-d H:i:s'),
-                        'position' => $user->getJobTitle(),
-                        'department' => $user->getDepartment(),
+                        'job_title' => $user->getJobTitle(),
+                        'site' => $user->getDepartment(),
                     ]);
                     $localUser->save();
                 }
