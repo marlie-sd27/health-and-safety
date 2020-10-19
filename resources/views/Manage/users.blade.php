@@ -24,8 +24,8 @@
                 <tr>
                     <th>Name</th>
                     <th>Email</th>
-                    <th>Department</th>
-                    <th>Position</th>
+                    <th>Site</th>
+                    <th>Job Title</th>
                     <th>Admin</th>
                     <th>Last Login</th>
                     <th>Delete</th>
@@ -34,8 +34,8 @@
                     <tr>
                         <td>{{ $user->name }}</td>
                         <td>{{ $user->email }}</td>
-                        <td>{{ $user->department }}</td>
-                        <td>{{ $user->position }}</td>
+                        <td>{{ $user->site }}</td>
+                        <td>{{ $user->job_title }}</td>
                         <td>{{ $user->admin ? 'true' : 'false' }}</td>
                         <td>{{ date('M d, Y @ H:i a', strtotime($user->last_login)) }}</td>
                         <td>
