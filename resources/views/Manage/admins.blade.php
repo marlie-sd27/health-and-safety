@@ -30,7 +30,7 @@
                 <h2>Add a New Admin</h2>
                 <form action="{{ route('admins.store') }}" method="post">
                     @csrf
-                    <input type="text" name="course" class="form-control" placeholder="Admin Email">
+                    <input type="text" name="email" class="form-control" placeholder="Enter Email">
                     <div class="container align-content-center">
                         <button class="btn btn-block btn-sm btn-success" type="submit">Save</button>
                     </div>
