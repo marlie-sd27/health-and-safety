@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Events;
+use App\Submissions;
 use App\TokenStore\TokenCache;
 use App\User;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Log;
 use Microsoft\Graph\Graph;
 use Microsoft\Graph\Model;
 
@@ -57,7 +61,10 @@ class UserController extends Controller
             $users = $graph->createRequest('GET', $next)
                 ->execute();
 
-        } else {
+        }
+
+        // otherwise build and execute query to pull group members
+        else {
 
             $queryParams = array(
                 '$select' => 'displayName,mail,jobTitle,department',
@@ -69,9 +76,26 @@ class UserController extends Controller
                 ->execute();
         }
 
+        // convert users into a collection of Microsoft Graph Users
+        $collection = collect($users->getResponseAsObject(Model\User::class));
+
+        // gather all the email addresses from the users pulled
+        $emails = new Collection();
+        $collection->each( function ($item) use ($emails) {
+            $emails->push($item->getMail());
+        });
+
+        // run a query to check who has submitted for that deadline
+        $submissions = Submissions::whereIn('email', $emails)
+            ->where('events_id', 69)
+            ->pluck('email');
+
+
         return view('Users/index', [
-            'users' => collect($users->getResponseAsObject(Model\User::class))->sort(),
+            'users' => $collection,
             'next' => $users->getNextLink(),
+            'submissions' => $submissions,
+            'event' => Events::find(69),
         ]);
     }
 }
