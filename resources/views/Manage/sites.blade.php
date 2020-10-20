@@ -12,12 +12,12 @@
             site. This is used for reporting on deadlines for a specific site. It will retrieve all users in the staff
             group and cross-reference it with the staff who have completed submissions for a deadline to determine who
             is complete.</p>
-        <p><b>It is very important to change the group ID here if the group ID on Azure is changed or deleted.</b></p>
+        <p><b>It is very important to change the Azure Group Object ID here if the Group Object ID on Azure is changed or deleted.</b></p>
         <div class="row">
             <table class="table table-bordered table-hover col-7 container">
                 <tr>
                     <th>Site</th>
-                    <th>Azure Group ID</th>
+                    <th>Azure Group Object ID</th>
                     <th></th>
                 </tr>
                 @foreach($sites as $site)
@@ -43,7 +43,7 @@
                 <form action="{{ route('sites.store') }}" method="post">
                     @csrf
                     <input type="text" name="site" class="form-control" placeholder="Site Name">
-                    <input type="text" name="azure_group_id" class="form-control" placeholder="Azure Group ID">
+                    <input type="text" name="azure_group_id" class="form-control" placeholder="Azure Group Object ID">
                     <div class="container align-content-center">
                         <button class="btn btn-block btn-sm btn-success" type="submit">Save</button>
                     </div>
