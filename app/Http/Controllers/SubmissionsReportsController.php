@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Events;
+use App\Helpers\CollectionHelper;
 use App\Helpers\QueryHelper;
 use App\Helpers\ReportHelper;
 use App\Sites;
@@ -56,9 +57,10 @@ class SubmissionsReportsController extends Controller
         $date_to = $request->filled('date_to') ? $request->date_to : null;
 
         $overdues = ReportHelper::filterOverdues($overdues, $user, $form, $date_from, $date_to);
+        $paginated = CollectionHelper::paginate($overdues, 25);
 
         return view('ReportSubmissions/overdue', [
-            'overdues' => $overdues,
+            'overdues' => $paginated,
             'user' => $user,
             'form' => $form,
             'date_from' => $date_from,

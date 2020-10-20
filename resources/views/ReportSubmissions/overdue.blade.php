@@ -53,5 +53,6 @@
                 @endforeach
             @endforeach
         </table>
+        <p class="text-center">{{ $overdues->links() }}</p>
     </div>
 @endsection
