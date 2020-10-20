@@ -21,7 +21,6 @@ class ReportOnDeadlines extends Controller
         $graph->setAccessToken($tokenCache->getAccessToken());
 
         //build and execute query to pull group members
-
         $queryParams = array(
             '$select' => 'displayName,mail,jobTitle,department',
             '$top' => 999,
@@ -46,7 +45,7 @@ class ReportOnDeadlines extends Controller
             ->pluck('email');
 
 
-        return view('Users/index', [
+        return view('ReportOnDeadlines/index', [
             'users' => $collection,
             'next' => $users->getNextLink(),
             'submissions' => $submissions,

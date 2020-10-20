@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class Sites extends Model
 {
-    protected $fillable = ['site'];
+    protected $fillable = ['site', 'azure_group_id'];
 }

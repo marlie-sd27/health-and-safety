@@ -17,7 +17,8 @@ class SitesController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'site' => 'string|required'
+            'site' => 'string|required',
+            'azure_group_id' => 'string'
         ]);
 
         Sites::create($validated);

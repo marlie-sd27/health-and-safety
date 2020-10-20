@@ -35,6 +35,9 @@
                     <a href="{{ route('dashboard') }}" class="nav-link {{$_SERVER['REQUEST_URI'] == '/dashboard' ? ' active' : ''}}">Dashboard</a>
                 </li>
                 @if($admin)
+                    <li>
+                        <a href="{{ route('report-deadlines') }}" class="nav-link {{ $_SERVER['REQUEST_URI'] == '/report-deadlines' ? ' active' : '' }}">Report</a>
+                    </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle {{ strpos( $_SERVER['REQUEST_URI'], 'forms') != false ? ' active' : ''}}" data-toggle="dropdown" href="#" role="button"
                            aria-haspopup="true" aria-expanded="false">Forms
@@ -50,7 +53,7 @@
                            aria-haspopup="true" aria-expanded="false">Submissions
                         </a>
                         <div class="dropdown-menu dropdown-menu-right">
-                            <a href="{{route('submissions.report')}}" class="dropdown-item">Report</a>
+                            <a href="{{route('submissions.report')}}" class="dropdown-item">Submitted</a>
                             <a href="{{ route('submissions.overdue') }}" class="dropdown-item">Overdue</a>
                             <a href="{{ route('submissions.upcoming') }}" class="dropdown-item">Upcoming</a>
                         </div>
@@ -78,6 +81,9 @@
                         </div>
                     </li>
                 @elseif($principal | $report_access)
+                    <li>
+                        <a href="{{ route('report-deadlines') }}" class="nav-link {{ $_SERVER['REQUEST_URI'] == '/report-deadlines' ? ' active' : '' }}">Report</a>
+                    </li>
                     <li class="nav-item">
                         <a href="{{ route('submissions.report') }}" class="nav-link {{$_SERVER['REQUEST_URI'] == '/submissions/report' ? ' active' : ''}}">Submissions</a>
                     </li>
