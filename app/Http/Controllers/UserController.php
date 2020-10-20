@@ -67,12 +67,10 @@ class UserController extends Controller
 
             $users = $graph->createRequest('GET', $getUsersUrl)
                 ->execute();
-
         }
 
-
         return view('Users/index', [
-            'users' => $users->getResponseAsObject(Model\User::class),
+            'users' => collect($users->getResponseAsObject(Model\User::class))->sort(),
             'next' => $users->getNextLink(),
         ]);
     }
