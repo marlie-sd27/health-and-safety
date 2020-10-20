@@ -9,11 +9,20 @@ use App\Submissions;
 use App\TokenStore\TokenCache;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Microsoft\Graph\Graph;
 use Microsoft\Graph\Model;
+use Illuminate\Support\Facades\Response;
 
 class ReportOnDeadlines extends Controller
 {
+
+    private $collection;
+
+    public function __construct() {
+        $this->collection = new Collection();
+    }
+
     public function index(Request $request)
     {
         // get filter parameters
@@ -81,11 +90,11 @@ class ReportOnDeadlines extends Controller
             ->execute();
 
         // convert users into a collection of Microsoft Graph Users
-        $collection = collect($users->getResponseAsObject(Model\User::class))->sort();
+        $this->collection = collect($users->getResponseAsObject(Model\User::class))->sort();
 
         // gather all the email addresses from the users pulled
         $emails = new Collection();
-        $collection->each(function ($item) use ($emails) {
+        $this->collection->each(function ($item) use ($emails) {
             $emails->push($item->getMail());
         });
 
@@ -96,7 +105,7 @@ class ReportOnDeadlines extends Controller
 
 
         return view('ReportOnDeadlines/index', [
-            'users' => $collection,
+            'users' => $this->collection,
             'submissions' => $submissions,
             'event' => $event,
             'sites' => Sites::all(),
@@ -104,5 +113,41 @@ class ReportOnDeadlines extends Controller
             'form' => $form,
             'deadline' => $event->date,
         ]);
+    }
+
+
+    public function export(Request $request)
+    {
+        dd($this->collection);
+        // prepare export
+        $filename = $request->form . "_" . $request->site . "_" . Carbon::now() . ".csv";
+        $headers = [
+            'Cache-Control' => 'must-revalidate, post-check=0, pre-check=0',
+            'Content-type' => 'text/csv',
+            'Content-Disposition' => "attachment; filename=$filename",
+            'Expires' => '0',
+            'Pragma' => 'public'
+        ];
+
+        // if there is no data, return nessage that there is nothing to export
+//        if(!$list){
+//            return redirect()->back()->with('error', 'Nothing to export');
+//        }
+
+        // add headers for each column in the CSV download
+        array_unshift($this->collection->toArray(), ['1', '2', '3', '4', '5']);
+
+        // write data to csv
+        $callback = function()
+        {
+            $FH = fopen('php://output', 'w');
+            foreach ($this->collection as $row) {
+                fputcsv($FH, $row);
+            }
+            fclose($FH);
+        };
+
+        // return csv as a downloadable
+        return Response::stream($callback, 200, $headers);
     }
 }

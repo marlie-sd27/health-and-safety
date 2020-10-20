@@ -39,6 +39,7 @@
                 </label>
                 <button class="btn btn-primary">Report</button>
             </form>
+                <a href="{{ route('report-deadlines.export')}}"class="btn btn-success">Export</a>
         </article>
         <div class="row ">
 

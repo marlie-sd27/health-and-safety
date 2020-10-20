@@ -56,9 +56,6 @@ Route::middleware(['auth','isadmin'])->group(function ()
     Route::post('site', 'SitesController@store')->name('sites.store');
     Route::delete('site/{site}', 'SitesController@destroy')->name('sites.destroy');
 
-    // report on deadlines
-    Route::get('report-deadlines', 'ReportOnDeadlines@index')->name('report-deadlines');
-
 });
 
 
@@ -70,6 +67,10 @@ Route::middleware('auth')->group(function () {
         Route::get('submissions/report', 'SubmissionsReportsController@report')->name('submissions.report');
         Route::get('submissions/export', 'SubmissionsReportsController@export')->name('submissions.export');
         Route::get('training/report', 'TrainingController@report')->name('training.report');
+
+        // report on deadlines
+        Route::get('report-deadlines', 'ReportOnDeadlines@index')->name('report-deadlines');
+        Route::get('report-deadlines/export', 'ReportOnDeadlines@export')->name('report-deadlines.export');
     });
 
     Route::get('training', 'TrainingController@index')->name('training.index');
