@@ -8,11 +8,23 @@
             Here you'll find a list of all the sites in our District. These sites are listed in drop down
             menus of forms and training entries. Add new sites and delete old sites.
         </p>
+        <p>The Azure Group ID can be found in Azure Active Directory. It corresponds to the Staff Group ID for that
+            site. This is used for reporting on deadlines for a specific site. It will retrieve all users in the staff
+            group and cross-reference it with the staff who have completed submissions for a deadline to determine who
+            is complete.</p>
+        <p><b>It is very important to change the group ID here if the group ID on Azure is changed or deleted.</b></p>
         <div class="row">
-            <table class="table table-bordered table-hover col-5 container">
+            <table class="table table-bordered table-hover col-7 container">
+                <tr>
+                    <th>Site</th>
+                    <th>Azure Group ID</th>
+                    <th></th>
+                </tr>
                 @foreach($sites as $site)
                     <tr>
-                        <td>{{ $site->site }}
+                        <td>{{ $site->site }}</td>
+                        <td> {{ $site->azure_group_id }}</td>
+                        <td>
                             <form method="post"
                                   class="delete_form float-right"
                                   action="{{route('sites.destroy', $site->id)}}">
@@ -31,6 +43,7 @@
                 <form action="{{ route('sites.store') }}" method="post">
                     @csrf
                     <input type="text" name="site" class="form-control" placeholder="Site Name">
+                    <input type="text" name="azure_group_id" class="form-control" placeholder="Azure Group ID">
                     <div class="container align-content-center">
                         <button class="btn btn-block btn-sm btn-success" type="submit">Save</button>
                     </div>
