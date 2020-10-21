@@ -19438,6 +19438,12 @@ $(document).ready(function () {
       }
     });
   });
+
+  function copyToClipboard(id) {
+    console.log("Copying");
+    document.getElementById(id).select();
+    document.execCommand('copy');
+  }
 });
 
 /***/ }),

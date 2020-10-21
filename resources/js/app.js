@@ -202,4 +202,11 @@ $(document).ready(function () {
     });
 
 
+    $('body').on('click', '#copy-to-clipboard', function(event) {
+        console.log(event);
+        // document.getElementById(id).select();
+        // document.execCommand('copy');
+    });
+
+
 });

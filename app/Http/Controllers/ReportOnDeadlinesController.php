@@ -7,9 +7,9 @@ use App\Forms;
 use App\Sites;
 use App\Submissions;
 use App\TokenStore\TokenCache;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Collection;
 use Microsoft\Graph\Graph;
 use Microsoft\Graph\Model;
 use Illuminate\Support\Facades\Response;
@@ -72,12 +72,13 @@ class ReportOnDeadlinesController extends Controller
             $emails->push($item->getMail());
         });
 
+//        return $emails;
         // run a query to check who has submitted for that deadline
         $submissions = Submissions::whereIn('email', $emails)
             ->where('events_id', $event->id)
             ->pluck('id', 'email');
 
-
+        $outstanding = $emails->diff($submissions->keys());
         return view('ReportOnDeadlines/index', [
             'users' => $collection,
             'submissions' => $submissions,
@@ -86,6 +87,8 @@ class ReportOnDeadlinesController extends Controller
             'site' => $site->site,
             'form' => $form->title,
             'deadline' => $event->date,
+            'outstanding' => $outstanding->join(';'),
+            'emails' => $emails->join(';'),
         ]);
     }
 

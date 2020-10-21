@@ -2,6 +2,8 @@
 
 @section('content')
     <a href="{{ url()->previous() }}">Back</a>
+    @isset($outstanding)<p class="d-none" id="outstanding">{{ $outstanding }}</p>@endisset
+    @isset($emails)<p class="d-none" id="emails">{{ $emails }}</p>@endisset
     <div class="container">
         <h1>{{ $event->forms->title ?? ''}}</h1>
         @isset($event)<h2>Due {{ $event ? date('M d, Y', strtotime($event->date)) : ''}}</h2>@endisset
@@ -37,12 +39,26 @@
                            aria-label="Search"
                            required/>
                 </label>
-                <button class="btn btn-primary">Report</button>
+                <button class="btn btn-primary" type="submit">Report</button>
             </form>
-            <a href="{{ route('report-deadlines.export')}}" class="btn btn-success">Export</a>
         </article>
         <div class="row ">
-
+            @isset($emails)
+                <article>
+                    <p class="text-center">Copy all emails to Clipboard</p>
+                    <button class="btn btn-secondary text-center" type="button" value="copy"
+                            onclick="copyToClipboard('#emails')">Copy!
+                    </button>
+                </article>
+            @endisset
+            @isset($outstanding)
+                <article>
+                    <p class="text-center">Copy emails with outstanding submissions to Clipboard</p>
+                    <button class="btn btn-secondary text-center" type="button" value="copy"
+                            onclick="copyToClipboard('#outstanding')">Copy!
+                    </button>
+                </article>
+            @endisset
             <div class="col-md-12">
                 <table class="table table-bordered table-hover container">
                     <tr>
@@ -60,7 +76,8 @@
                                 <td>{{ $user->getDepartment() }}</td>
                                 <td>{{ $submissions->has($user->getMail()) ? 'Complete' : '' }}</td>
                                 <td>@if($submissions->has($user->getMail()))
-                                        <a href="{{ route('submissions.show', ['submission' => $submissions->get($user->getMail())]) }}">View Submission</a>
+                                        <a href="{{ route('submissions.show', ['submission' => $submissions->get($user->getMail())]) }}">View
+                                            Submission</a>
                                     @endif
                                 </td>
                             </tr>
@@ -70,6 +87,15 @@
             </div>
 
         </div>
+        <script type="text/javascript">
+            function copyToClipboard(element) {
+                var $temp = $("<input>");
+                $("body").append($temp);
+                $temp.val($(element).text()).select();
+                document.execCommand("copy");
+                $temp.remove();
+            }
+        </script>
 
     </div>
 
