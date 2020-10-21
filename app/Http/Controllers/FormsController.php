@@ -81,11 +81,12 @@ class FormsController extends Controller
             $form->required_for = $validated['required_for'];
             $form->full_year = $validated['full_year'];
 
-            // if the form has any changes, save the changes
-            if($form->isDirty()) {
-                $form->deleteAllFutureEvents();
-                $form->save();
+            // delete old events if interval or first_occurence_at attributes have been changed
+            // events will be re-created when form is saved
+            if($form->isDirty(['interval','first_occurence_at'])) {
+                $form->deleteEvents();
             };
+            $form->save();
 
             $form->updateSectionsandFields($validated);
         }, 3);

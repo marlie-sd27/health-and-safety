@@ -23,7 +23,7 @@ class CreateFunction extends Migration
         month INTEGER ;
 
     BEGIN
-
+    IF (old.interval IS DISTINCT FROM new.interval AND old.first_occurence_at IS DISTINCT FROM new.first_occurence_at) THEN
         IF (new.interval IS NOT NULL AND new.first_occurence_at IS NOT NULL) THEN
 
             SELECT string_to_array(new.first_occurence_at, \',\') INTO schedule_dates;
@@ -66,6 +66,7 @@ class CreateFunction extends Migration
                 INSERT INTO events (forms_id, date) VALUES (new.id, date::DATE);
             END LOOP;
         END IF;
+    END IF;
     RETURN NULL;
     END;
 $example_table$ LANGUAGE plpgsql;
