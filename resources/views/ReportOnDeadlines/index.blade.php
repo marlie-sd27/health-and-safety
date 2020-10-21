@@ -26,8 +26,8 @@
                             aria-label="Search"
                             required>
                         <option></option>
-                    @foreach($links as $link)
-                            <option @isset($form)@if ($form->title == $link->title) {{ 'selected' }} @endif @endisset>{{ $link->title }}</option>
+                        @foreach($links as $link)
+                            <option @if ($form == $link->title) {{ 'selected' }} @endif >{{ $link->title }}</option>
                         @endforeach
                     </select>
                 </label>
@@ -39,7 +39,7 @@
                 </label>
                 <button class="btn btn-primary">Report</button>
             </form>
-                <a href="{{ route('report-deadlines.export')}}"class="btn btn-success">Export</a>
+            <a href="{{ route('report-deadlines.export')}}" class="btn btn-success">Export</a>
         </article>
         <div class="row ">
 
@@ -50,6 +50,7 @@
                         <th>Email</th>
                         <th>Site</th>
                         <th>Complete</th>
+                        <th>View</th>
                     </tr>
                     @isset($users)
                         @foreach($users as $user)
@@ -57,7 +58,11 @@
                                 <td>{{ $user->getDisplayName() }}</td>
                                 <td>{{ $user->getMail() }}</td>
                                 <td>{{ $user->getDepartment() }}</td>
-                                <td>{{ $submissions->contains($user->getMail()) ? 'Complete' : '' }}</td>
+                                <td>{{ $submissions->has($user->getMail()) ? 'Complete' : '' }}</td>
+                                <td>@if($submissions->has($user->getMail()))
+                                        <a href="{{ route('submissions.show', ['submission' => $submissions->get($user->getMail())]) }}">View Submission</a>
+                                    @endif
+                                </td>
                             </tr>
                         @endforeach
                     @endisset

@@ -69,8 +69,8 @@ Route::middleware('auth')->group(function () {
         Route::get('training/report', 'TrainingController@report')->name('training.report');
 
         // report on deadlines
-        Route::get('report-deadlines', 'ReportOnDeadlines@index')->name('report-deadlines');
-        Route::get('report-deadlines/export', 'ReportOnDeadlines@export')->name('report-deadlines.export');
+        Route::get('report-deadlines', 'ReportOnDeadlinesController@index')->name('report-deadlines');
+        Route::get('report-deadlines/export', 'ReportOnDeadlinesController@export')->name('report-deadlines.export');
     });
 
     Route::get('training', 'TrainingController@index')->name('training.index');

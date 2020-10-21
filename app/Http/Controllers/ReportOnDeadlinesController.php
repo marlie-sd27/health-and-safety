@@ -14,62 +14,35 @@ use Microsoft\Graph\Graph;
 use Microsoft\Graph\Model;
 use Illuminate\Support\Facades\Response;
 
-class ReportOnDeadlines extends Controller
+class ReportOnDeadlinesController extends Controller
 {
-
-    private $collection;
-
-    public function __construct() {
-        $this->collection = new Collection();
-    }
 
     public function index(Request $request)
     {
         // get filter parameters
-        $site = $request->filled('site') ? Sites::firstWhere('site', $request->site) : null;
-        $form = $request->filled('form') ? Forms::firstWhere('title', $request->form) : null;
-        $event = $request->filled('deadline') ? Events::firstWhere([
-            ['date',$request->deadline],
-            ['forms_id', $form->id]
+        $raw_site = $request->filled('site') ? $request->site : null;
+        $raw_form = $request->filled('form') ? $request->form : null;
+        $raw_deadline = $request->filled('deadline') ? $request->deadline : null;
+
+        $site = $raw_site ? Sites::firstWhere('site', $raw_site) : null;
+        $form = $raw_form ? Forms::firstWhere('title', $raw_form) : null;
+
+        $event = $form && $raw_deadline ? Events::firstWhere([
+            'forms_id' => $form->id,
+            'date' => $raw_deadline,
         ]) : null;
 
 
-        // check for valid site
-        if (!$site)
-        {
-            $request->session()->flash('error', 'Please select a site');
+        // if site and event don't exist, return to view with message saying select those things
+        if (!$site || !$event || !$form) {
             return view('ReportOnDeadlines/index', [
-                'site' => $site ? $site->site : null,
-                'sites' => Sites::all(),
-                'form' => $form ? $form->title : null,
-                'deadline' => $event ? $event->date : null,
+                'users' => null,
+                'submissions' => null,
                 'event' => $event,
-                ]);
-        }
-
-        // check for valid form
-        if (!$form)
-        {
-            $request->session()->flash('error', 'Please select a form');
-            return view('ReportOnDeadlines/index', [
-                'site' => $site ? $site->site : null,
                 'sites' => Sites::all(),
-                'form' => $form ? $form->title : null,
-                'deadline' => $event ? $event->date : null,
-                'event' => $event,
-            ]);
-        }
-
-        // check for valid deadline
-        if (!$event)
-        {
-            $request->session()->flash('error', 'Please select a valid deadline for this form');
-            return view('ReportOnDeadlines/index', [
-                'site' => $site ? $site->site : null,
-                'sites' => Sites::all(),
-                'form' => $form ? $form->title : null,
-                'deadline' => $event ? $event->date : null,
-                'event' => $event,
+                'site' => $raw_site,
+                'form' => $raw_form,
+                'deadline' => $raw_deadline,
             ]);
         }
 
@@ -78,6 +51,7 @@ class ReportOnDeadlines extends Controller
 
         $graph = new Graph();
         $graph->setAccessToken($tokenCache->getAccessToken());
+
 
         //build and execute query to pull group members for specified site
         $queryParams = array(
@@ -90,27 +64,27 @@ class ReportOnDeadlines extends Controller
             ->execute();
 
         // convert users into a collection of Microsoft Graph Users
-        $this->collection = collect($users->getResponseAsObject(Model\User::class))->sort();
+        $collection = collect($users->getResponseAsObject(Model\User::class))->sort();
 
         // gather all the email addresses from the users pulled
         $emails = new Collection();
-        $this->collection->each(function ($item) use ($emails) {
+        $collection->each(function ($item) use ($emails) {
             $emails->push($item->getMail());
         });
 
         // run a query to check who has submitted for that deadline
         $submissions = Submissions::whereIn('email', $emails)
             ->where('events_id', $event->id)
-            ->pluck('email');
+            ->pluck('id', 'email');
 
 
         return view('ReportOnDeadlines/index', [
-            'users' => $this->collection,
+            'users' => $collection,
             'submissions' => $submissions,
             'event' => $event,
             'sites' => Sites::all(),
             'site' => $site->site,
-            'form' => $form,
+            'form' => $form->title,
             'deadline' => $event->date,
         ]);
     }
@@ -138,8 +112,7 @@ class ReportOnDeadlines extends Controller
         array_unshift($this->collection->toArray(), ['1', '2', '3', '4', '5']);
 
         // write data to csv
-        $callback = function()
-        {
+        $callback = function () {
             $FH = fopen('php://output', 'w');
             foreach ($this->collection as $row) {
                 fputcsv($FH, $row);
