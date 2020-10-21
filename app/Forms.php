@@ -205,13 +205,10 @@ class Forms extends Model
         else return null;
     }
 
-    public function deleteAllFutureEvents()
+    public function deleteEvents()
     {
-        $events = $this->events;
-        foreach ($events as $event) {
-            if ($event->date > Carbon::today()) {
-                Events::destroy($event->id);
-            }
+        foreach ($this->events as $event) {
+            Events::destroy($event->id);
         }
     }
 }
