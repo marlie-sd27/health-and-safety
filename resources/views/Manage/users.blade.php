@@ -40,7 +40,7 @@
                         <td>{{ date('M d, Y @ H:i a', strtotime($user->last_login)) }}</td>
                         <td>
                             <form method="post"
-                                  class="delete_form float-right"
+                                  class="delete_form"
                                   action="{{route('users.destroy', $user->id)}}">
                                 @csrf
                                 @method('delete')

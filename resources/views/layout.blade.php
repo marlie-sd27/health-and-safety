@@ -34,29 +34,15 @@
                 <li class="nav-item">
                     <a href="{{ route('dashboard') }}" class="nav-link {{$_SERVER['REQUEST_URI'] == '/dashboard' ? ' active' : ''}}">Dashboard</a>
                 </li>
+                <li class="nav-item">
+                    <a href="{{ route('calendar') }}" class="nav-link {{$_SERVER['REQUEST_URI'] == '/calendar' ? ' active' : ''}}">Calendar</a>
+                </li>
                 @if($admin)
                     <li>
                         <a href="{{ route('report-deadlines') }}" class="nav-link {{ $_SERVER['REQUEST_URI'] == '/report-deadlines' ? ' active' : '' }}">Report</a>
                     </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle {{ strpos( $_SERVER['REQUEST_URI'], 'forms') != false ? ' active' : ''}}" data-toggle="dropdown" href="#" role="button"
-                           aria-haspopup="true" aria-expanded="false">Forms
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right">
-                            <a href="{{route('forms.create')}}" class="dropdown-item">Create</a>
-                            <a href="{{ route('forms.index') }}" class="dropdown-item">Manage</a>
-                        </div>
-                    </li>
-
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle {{ strpos( $_SERVER['REQUEST_URI'], 'submissions') != false ? ' active' : ''}}" data-toggle="dropdown" href="#" role="button"
-                           aria-haspopup="true" aria-expanded="false">Submissions
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right">
-                            <a href="{{route('submissions.report')}}" class="dropdown-item">Submitted</a>
-                            <a href="{{ route('submissions.overdue') }}" class="dropdown-item">Overdue</a>
-                            <a href="{{ route('submissions.upcoming') }}" class="dropdown-item">Upcoming</a>
-                        </div>
+                    <li class="nav-item">
+                        <a href="{{ route('submissions.report') }}" class="nav-link {{$_SERVER['REQUEST_URI'] == '/submissions/report' ? ' active' : ''}}">Submissions</a>
                     </li>
 
                     <li class="nav-item dropdown">
@@ -64,8 +50,8 @@
                            aria-haspopup="true" aria-expanded="false">Training
                         </a>
                         <div class="dropdown-menu dropdown-menu-right">
-                            <a href="{{route('training.create')}}" class="dropdown-item">Enter Training</a>
-                            <a href="{{ route('training.report') }}" class="dropdown-item">Report</a>
+                            <a href="{{route('training.create')}}" class="dropdown-item {{ strpos( $_SERVER['REQUEST_URI'], 'training/create') != false ? ' active' : ''}}">Enter Training</a>
+                            <a href="{{ route('training.report') }}" class="dropdown-item {{ strpos( $_SERVER['REQUEST_URI'], 'training/report') != false ? ' active' : ''}}">Report</a>
                         </div>
                     </li>
                     <li class="nav-item dropdown">
@@ -73,11 +59,12 @@
                            aria-haspopup="true" aria-expanded="false">Manage
                         </a>
                         <div class="dropdown-menu dropdown-menu-right">
-                            <a href="{{ route('users') }}" class="dropdown-item">Users</a>
-                            <a href="{{route('admins')}}" class="dropdown-item">Admins</a>
-                            <a href="{{ route('reporters') }}" class="dropdown-item">Reporting Privileges</a>
-                            <a href="{{ route('sites') }}" class="dropdown-item">Sites</a>
-                            <a href="{{ route('courses') }}" class="dropdown-item">Courses</a>
+                            <a href="{{ route('users') }}" class="dropdown-item {{ strpos( $_SERVER['REQUEST_URI'], 'users') != false ? ' active' : ''}}">Users</a>
+                            <a href="{{route('admins')}}" class="dropdown-item {{ strpos( $_SERVER['REQUEST_URI'], 'admins') != false ? ' active' : ''}}">Admins</a>
+                            <a href="{{ route('reporters') }}" class="dropdown-item {{ strpos( $_SERVER['REQUEST_URI'], 'reporters') != false ? ' active' : ''}}">Reporting Privileges</a>
+                            <a href="{{ route('sites') }}" class="dropdown-item {{ strpos( $_SERVER['REQUEST_URI'], 'sites') != false ? ' active' : ''}}">Sites</a>
+                            <a href="{{ route('courses') }}" class="dropdown-item {{ strpos( $_SERVER['REQUEST_URI'], 'courses') != false ? ' active' : ''}}">Courses</a>
+                            <a href="{{ route('forms.index') }}" class="dropdown-item {{ strpos( $_SERVER['REQUEST_URI'], 'forms') != false ? ' active' : ''}}">Forms</a>
                         </div>
                     </li>
                 @elseif($principal | $report_access)
@@ -87,9 +74,9 @@
                     <li class="nav-item">
                         <a href="{{ route('submissions.report') }}" class="nav-link {{$_SERVER['REQUEST_URI'] == '/submissions/report' ? ' active' : ''}}">Submissions</a>
                     </li>
-                    <li class="nav-item">
-                        <a href="{{ route('training.report') }}" class="nav-link {{$_SERVER['REQUEST_URI'] == '/training/report' ? ' active' : ''}}">Training</a>
-                    </li>
+{{--                    <li class="nav-item">--}}
+{{--                        <a href="{{ route('training.report') }}" class="nav-link {{$_SERVER['REQUEST_URI'] == '/training/report' ? ' active' : ''}}">Training</a>--}}
+{{--                    </li>--}}
 
                 @else
                     <li class="nav-item">
@@ -99,9 +86,6 @@
 {{--                        <a href="{{ route('training.index') }}" class="nav-link {{$_SERVER['REQUEST_URI'] == '/training' ? ' active' : ''}}">My Training</a>--}}
 {{--                    </li>--}}
                 @endif
-                <li class="nav-item">
-                    <a href="{{ route('calendar') }}" class="nav-link {{$_SERVER['REQUEST_URI'] == '/calendar' ? ' active' : ''}}">Calendar</a>
-                </li>
             </ul>
             <ul class="navbar-nav justify-content-end">
                     <li class="nav-item dropdown">
