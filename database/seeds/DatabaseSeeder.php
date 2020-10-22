@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             RespectfulWorkplaceSeeder::class,
             ElementarySchoolInspectionAdditionsSeeder::class,
             SitesSeeder::class,
+            NonSchoolInspectionSeeder::class,
         ]);
     }
 }
