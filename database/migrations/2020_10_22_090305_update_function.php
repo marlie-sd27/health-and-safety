@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\DB;
 
-class CreateFunction extends Migration
+class UpdateFunction extends Migration
 {
     /**
      * Run the migrations.
