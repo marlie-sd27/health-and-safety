@@ -76,8 +76,7 @@
                                 <td>{{ $user->getDepartment() }}</td>
                                 <td>{{ $submissions->has($user->getMail()) ? 'Complete' : '' }}</td>
                                 <td>@if($submissions->has($user->getMail()))
-                                        <a href="{{ route('submissions.show', ['submission' => $submissions->get($user->getMail())]) }}">View
-                                            Submission</a>
+                                        <a href="{{ route('submissions.show', ['submission' => $submissions->get($user->getMail())]) }}">View</a>
                                     @endif
                                 </td>
                             </tr>

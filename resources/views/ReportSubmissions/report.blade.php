@@ -59,9 +59,9 @@
                 <th>School/Site</th>
                 <th>User</th>
                 <th>Date Submitted</th>
-                <th>View Submission</th>
+                <th>View</th>
                 @if(Auth::user()->isAdmin())
-                    <th>Delete</th>@endif
+                    <th></th>@endif
             </tr>
 
             @foreach($submissions as $submission)
@@ -77,7 +77,9 @@
                                   action="{{route('submissions.destroy', $submission->id)}}">
                                 @csrf
                                 @method('delete')
-                                <button type="submit" class="btn btn-secondary" onclick="return confirm('Are you sure?')">Delete</button>
+                                <button type="submit" class="border-0" onclick="return confirm('Are you sure?')">
+                                    <i class="fa fa-trash"></i>
+                                </button>
                             </form>
                         </td>
                     @endif

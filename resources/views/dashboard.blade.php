@@ -15,6 +15,9 @@
                             <td>{{ \App\Helpers\Helper::makeDateReadable($overdue->date) }}</td>
                         </tr>
                     @endforeach
+                    @if(sizeof($overdues) == 0)
+                        <h3 class="text-center container">You have no overdue deadlines!</h3>
+                    @endif
                 </table>
             </div>
             <div class="col-md card">

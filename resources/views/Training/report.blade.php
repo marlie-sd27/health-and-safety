@@ -52,7 +52,7 @@
                 <th>Expiry Date</th>
                 <th>View</th>
                 @if($admin)
-                    <th>Delete</th>@endif
+                    <th></th>@endif
             </tr>
 
             @foreach($trainings as $training)
@@ -70,8 +70,8 @@
                                   action="{{route('training.destroy', $training->id)}}">
                                 @csrf
                                 @method('delete')
-                                <button type="submit" class="btn btn-secondary"
-                                        onclick="return confirm('Are you sure?')">Delete
+                                <button type="submit" class="border-0" onclick="return confirm('Are you sure?')">
+                                    <i class="fa fa-trash"></i>
                                 </button>
                             </form>
                         </td>
