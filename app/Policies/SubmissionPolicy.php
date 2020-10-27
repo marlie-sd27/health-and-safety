@@ -18,10 +18,10 @@ class SubmissionPolicy
     }
 
 
-    // user must own the submission to update
+    // user must own the submission or be admin to update
     public function update(User $user, Submissions $submission)
     {
-        return strcasecmp($submission->email, $user->email) == 0;
+        return strcasecmp($submission->email, $user->email) == 0 | $user->isAdmin();
     }
 
 
