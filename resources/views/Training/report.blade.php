@@ -60,9 +60,9 @@
                     <td>{{ $training->course }}</td>
                     <td>{{ $training->users->name ?? $training->email}}</td>
                     <td>{{ $training->site }}</td>
-                    <td>{{ Carbon\Carbon::now()->diffInDays($training->expiry_date, false) }} days</td>
+                    <td>{{ $training->expiry_date ? Carbon\Carbon::now()->diffInDays($training->expiry_date, false) . " days" : "N/A"}}</td>
                     <td>{{ date('M d, Y', strtotime($training->course_date)) }}</td>
-                    <td>{{ date('M d, Y', strtotime($training->expiry_date)) }}</td>
+                    <td>{{ $training->expiry_date ? date('M d, Y', strtotime($training->expiry_date)) : ""}}</td>
                     <td><a href="{{ route('training.show', ['training' => $training]) }}">View</a></td>
                     @if($admin)
                         <td>

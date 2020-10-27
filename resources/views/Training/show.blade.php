@@ -4,7 +4,7 @@
 
     <a href="{{ url()->previous() }}">Back</a>
     @if($admin)
-        <a class="float-right" href="{{ route('training.edit', ['training' => $training->id]) }}">Edit</a>
+        <a class="float-right" href="{{ route('training.edit', ['training' => $training->id]) }}"><i class="fa fa-pencil-alt"></i> Edit</a>
     @endcan
     <div class="container">
         <h2>{{ $training->course }}</h2>
@@ -20,7 +20,7 @@
             </tr>
             <tr>
                 <th>Expires In</th>
-                <td>{{ $training->expiry_date ? Carbon\Carbon::now()->diffInDays($training->expiry_date, false) . "days" : "N/A"}}</td>
+                <td>{{ $training->expiry_date ? Carbon\Carbon::now()->diffInDays($training->expiry_date, false) . " days" : "N/A"}}</td>
             </tr>
             <tr>
                 <th>Course Date</th>
