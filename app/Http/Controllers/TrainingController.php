@@ -110,7 +110,8 @@ class TrainingController extends Controller
         $site = $request->filled('site') ? $request->site : null;
         $course = $request->filled('course') ? $request->course : null;
         $course_date = $request->filled('course_date') ? $request->course_date : null;
-        $expiry_date = $request->filled('expiry_date') ? $request->expiry_date : null;
+        $expiry_date_from = $request->filled('expiry_date_from') ? $request->expiry_date_from : null;
+        $expiry_date_to = $request->filled('expiry_date_to') ? $request->expiry_date_to : null;
 
         $trainings = Training::when($email, function ($query, $email) {
                 return $query->where('email', 'like', '%' . $email . '%');
@@ -124,8 +125,11 @@ class TrainingController extends Controller
             ->when($course_date, function ($query, $course_date) {
                 return $query->where('course_date', $course_date);
             })
-            ->when($expiry_date, function ($query, $expiry_date) {
-                return $query->where('expiry_date', $expiry_date);
+            ->when($expiry_date_from, function ($query, $expiry_date_from) {
+                return $query->where('expiry_date', '>=', $expiry_date_from);
+            })
+            ->when($expiry_date_to, function ($query, $expiry_date_to) {
+                return $query->where('expiry_date', '<=', $expiry_date_to);
             })
             ->orderBy('expiry_date', 'asc')
             ->paginate(25);
@@ -136,7 +140,8 @@ class TrainingController extends Controller
             'site' => $site,
             'course' => $course,
             'course_date' => $course_date,
-            'expiry_date' => $expiry_date,
+            'expiry_date_from' => $expiry_date_from,
+            'expiry_date_to' => $expiry_date_to,
             'sites' => Sites::all()->sortBy('site'),
             'courses' => Courses::all()->sortBy('course'),
         ]);

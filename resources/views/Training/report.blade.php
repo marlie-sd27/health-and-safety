@@ -26,14 +26,19 @@
                            value="{{ $email ?? ""}}"
                            aria-label="Search"/>
                 </label>
+                <label>Search by expiry date from:
+                    <input class="form-control text-reset" type="date" placeholder="Search" name='expiry_date_from'
+                           value="{{ $expiry_date_from ?? "" }}"
+                           aria-label="Search"/>
+                </label>
+                <label>to:
+                    <input class="form-control text-reset" type="date" placeholder="Search" name='expiry_date_to'
+                           value="{{ $expiry_date_to ?? "" }}"
+                           aria-label="Search"/>
+                </label>
                 <label>Search by course date:
                     <input class="form-control text-reset" type="date" placeholder="Search" name='course_date'
                            value="{{ $course_date ?? "" }}"
-                           aria-label="Search"/>
-                </label>
-                <label>Search by expiry date:
-                    <input class="form-control text-reset" type="date" placeholder="Search" name='expiry_date'
-                           value="{{ $expiry_date ?? "" }}"
                            aria-label="Search"/>
                 </label>
 
@@ -86,7 +91,9 @@
             'site' => $site,
             'course' => $course,
             'course_date' => $course_date,
-            'expiry_date' => $expiry_date,])->links() }}
+            'expiry_date_from' => $expiry_date_from,
+            'expiry_date_to' => $expiry_date_to,
+            ])->links() }}
         </div>
     </div>
 @endsection
