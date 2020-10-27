@@ -5,8 +5,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}" />
     <a href="{{ url()->previous() }}">Back</a>
     @can('update',  $submission)
-        <a class="float-right" href="{{ route('submissions.edit', ['submission' => $submission->id]) }}">Make Changes to
-            My Submission</a>
+        <a class="float-right" href="{{ route('submissions.edit', ['submission' => $submission->id]) }}"><i class="fa fa-pencil-alt"></i> Edit </a>
     @endcan
     <div class="container">
         <h2>{{ $submission->form->title }}</h2>
