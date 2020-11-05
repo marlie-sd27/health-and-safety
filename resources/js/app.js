@@ -202,10 +202,23 @@ $(document).ready(function () {
     });
 
 
-    $('body').on('click', '#copy-to-clipboard', function(event) {
-        console.log(event);
-        // document.getElementById(id).select();
-        // document.execCommand('copy');
+    // for create and editing forms. Toggle display for site or email input
+    $('body').on('change', '#required_for', function() {
+        let selected = $(this).children("option:selected").val();
+        let parent = $(this).closest('article')
+
+        parent.find("#requirees_sites").addClass("d-none");
+        parent.find("#requirees_emails").addClass("d-none");
+
+        if(selected === "Specific Sites")
+        {
+            parent.find("#requirees_sites").removeClass("d-none");
+        }
+
+        if(selected === "Specific Staff")
+        {
+            parent.find("#requirees_emails").removeClass("d-none");
+        }
     });
 
 

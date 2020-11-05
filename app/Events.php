@@ -25,4 +25,10 @@ class Events extends Model
         return $this->hasMany('App\Submissions');
     }
 
+
+    public function assignments()
+    {
+        return $this->hasMany('App\Assignments');
+    }
+
 }

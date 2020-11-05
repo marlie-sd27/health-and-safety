@@ -59,6 +59,7 @@
                            aria-haspopup="true" aria-expanded="false">Manage
                         </a>
                         <div class="dropdown-menu dropdown-menu-right">
+                            <a href="{{ route('assignments') }}" class="dropdown-item {{ strpos( $_SERVER['REQUEST_URI'], 'assignments') != false ? ' active' : ''}}">Assignments</a>
                             <a href="{{ route('users') }}" class="dropdown-item {{ strpos( $_SERVER['REQUEST_URI'], 'users') != false ? ' active' : ''}}">Users</a>
                             <a href="{{route('admins')}}" class="dropdown-item {{ strpos( $_SERVER['REQUEST_URI'], 'admins') != false ? ' active' : ''}}">Admins</a>
                             <a href="{{ route('reporters') }}" class="dropdown-item {{ strpos( $_SERVER['REQUEST_URI'], 'reporters') != false ? ' active' : ''}}">Reporting Privileges</a>

@@ -19437,13 +19437,22 @@ $(document).ready(function () {
         alert("Something went wrong. Please reload the page and try again.");
       }
     });
-  });
+  }); // for create and editing forms. Toggle display for site or email input
 
-  function copyToClipboard(id) {
-    console.log("Copying");
-    document.getElementById(id).select();
-    document.execCommand('copy');
-  }
+  $('body').on('change', '#required_for', function () {
+    var selected = $(this).children("option:selected").val();
+    var parent = $(this).closest('article');
+    parent.find("#requirees_sites").addClass("d-none");
+    parent.find("#requirees_emails").addClass("d-none");
+
+    if (selected === "Specific Sites") {
+      parent.find("#requirees_sites").removeClass("d-none");
+    }
+
+    if (selected === "Specific Staff") {
+      parent.find("#requirees_emails").removeClass("d-none");
+    }
+  });
 });
 
 /***/ }),

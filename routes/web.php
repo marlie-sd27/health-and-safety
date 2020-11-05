@@ -8,6 +8,8 @@ Route::get('/signin', 'LoginController@signin')->name('signin');
 Route::get('/callback', 'LoginController@callback');
 Route::get('/signout', 'LoginController@signout')->name('signout');
 
+Route::get('/groups', 'UserController@groups');
+
 
 // Admin routes
 Route::middleware(['auth','isadmin'])->group(function ()
@@ -55,6 +57,12 @@ Route::middleware(['auth','isadmin'])->group(function ()
     Route::get('sites', 'SitesController@index')->name('sites');
     Route::post('site', 'SitesController@store')->name('sites.store');
     Route::delete('site/{site}', 'SitesController@destroy')->name('sites.destroy');
+
+    // managing assignments
+    Route::get('assignments', 'AssignmentsController@index')->name('assignments');
+    Route::post('assignments', 'AssignmentsController@store')->name('assignments.store');
+    Route::put('assignment/{assignment}', 'AssignmentsController@update')->name('assignments.update');
+    Route::delete('assignment/{assignment}', 'AssignmentsController@destroy')->name('assignments.destroy');
 
 });
 

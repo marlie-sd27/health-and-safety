@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Submissions extends Model
 {
     protected $fillable = [
-        'events_id', 'forms_id', 'site', 'email', 'data', 'files',
+        'events_id', 'forms_id', 'site', 'email', 'data', 'files', 'assignments_id', 'sites_id'
     ];
 
 
@@ -30,6 +30,20 @@ class Submissions extends Model
     public function forms()
     {
         return $this->belongsTo('App\Forms');
+    }
+
+
+    // get the form associated with this submission
+    public function sites()
+    {
+        return $this->hasOne('App\Sites');
+    }
+
+
+    // get the form associated with this submission
+    public function assignments()
+    {
+        return $this->hasOne('App\Assignments');
     }
 
 

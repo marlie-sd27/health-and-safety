@@ -23,7 +23,7 @@ class FormsController extends Controller
     // show view for creating a new form
     public function create()
     {
-        return view('Forms/create');
+        return view('Forms/create', ['sites' => Sites::all()]);
     }
 
 
@@ -96,6 +96,7 @@ class FormsController extends Controller
     }
 
 
+    // function to receive ajax request to toggle whether or not form should be live
     public function toggleLive(Request $request)
     {
         if (!is_bool(boolval($request->live)))
