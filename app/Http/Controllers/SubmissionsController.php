@@ -9,6 +9,7 @@ use App\Sites;
 use App\Submissions;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 class SubmissionsController extends Controller
@@ -95,6 +96,10 @@ class SubmissionsController extends Controller
         {
             foreach ($validated->files as $key => $value)
             {
+                Log::debug($key);
+                Log::debug($value);
+                Log::debu(Auth::user()->name);
+                Log::debug($validated->file($key)->extension());
                 $fileName = $key . "-" . Auth::user()->name . "-" . Carbon::now()->toDateString() . "." . $validated->file($key)->extension();
                 $path = $validated->file($key)->storeAs( $submission->forms->title, $fileName);
                 $files[$key] = $path;
