@@ -98,7 +98,7 @@ class SubmissionsController extends Controller
             {
                 Log::debug($key);
                 Log::debug($value);
-                Log::debu(Auth::user()->name);
+                Log::debug(Auth::user()->name);
                 Log::debug($validated->file($key)->extension());
                 $fileName = $key . "-" . Auth::user()->name . "-" . Carbon::now()->toDateString() . "." . $validated->file($key)->extension();
                 $path = $validated->file($key)->storeAs( $submission->forms->title, $fileName);
