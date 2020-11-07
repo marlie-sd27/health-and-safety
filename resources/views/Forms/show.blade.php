@@ -57,11 +57,14 @@
                                 </button>
                             @endif
                             <select name="data[{{ trim($f->name) }}]"
-                                    class="form-control" {{ $f->required ? 'required' : '' }}>
+                                    class="form-control @error($f->name) border-danger @enderror" {{ $f->required ? 'required' : '' }}>
                                 @foreach($f->options as $option)
                                     <option>{{ $option }}</option>
                                 @endforeach
                             </select>
+                            @error($f->name )
+                            <p class="text-danger">{{ $errors->first($f->name) }}</p>
+                            @enderror
                         </div>
                         @break
 
@@ -78,8 +81,11 @@
                                     <b>?</b>
                                 </button>
                             @endif
-                            <textarea class="form-control"
+                            <textarea class="form-control @error($f->name) border-danger @enderror"
                                       name="data[{{ trim($f->name) }}]" {{ $f->required ? 'required' : '' }}></textarea>
+                            @error($f->name )
+                            <p class="text-danger">{{ $errors->first($f->name) }}</p>
+                            @enderror
                         </div>
                         @break
 
@@ -103,11 +109,16 @@
                             <div>
                                 <label>
                                     <input type="radio" value="{{ $option }}"
-                                           name="data[{{ trim($f->name) }}]" {{ $f->required ? 'required' : '' }}/>
+                                           name="data[{{ trim($f->name) }}]" {{ $f->required ? 'required' : '' }}
+                                            class="@error($f->name) border-danger @enderror"
+                                    />
                                     {{ $option }}
                                 </label>
                             </div>
                         @endforeach
+                        @error($f->name )
+                        <p class="text-danger">{{ $errors->first($f->name) }}</p>
+                        @enderror
                         <hr/>
                         @break
 
@@ -134,6 +145,9 @@
                                 </label>
                             </div>
                         @endforeach
+                        @error($f->name )
+                        <p class="text-danger">{{ $errors->first($f->name) }}</p>
+                        @enderror
                         <hr/>
                         @break
 
@@ -155,6 +169,9 @@
                                                        min="{{ $f->options[0] }}"
                                                        max="{{ $f->options[1] }}">{{ $f->options[1] }}
                             <p>Value: <span id="slider_value"></span></p>
+                            @error($f->name )
+                            <p class="text-danger">{{ $errors->first($f->name) }}</p>
+                            @enderror
                         </div>
                         @break
 
@@ -171,8 +188,13 @@
                                     <b>?</b>
                                 </button>
                             @endif
-                            <input type="{{ $f->type }}" name="{{ trim($f->name) }}"
-                                   {{ $f->required ? 'required' : '' }} class="form-control-file"/>
+                            <input type="{{ $f->type }}"
+                                   name="{{ trim($f->name) }}"
+                                   {{ $f->required ? 'required' : '' }}
+                                   class="form-control-file @error($f->name) border-danger @enderror"/>
+                            @error($f->name )
+                            <p class="text-danger">{{ $errors->first($f->name) }}</p>
+                            @enderror
                         </div>
                         @break
 
@@ -192,6 +214,9 @@
                             <input type="{{ $f->type }}" name="data[{{ trim($f->name) }}]"
                                    {{ $f->required ? 'required' : '' }} class="form-control"/>
 
+                            @error($f->name )
+                            <p class="text-danger">{{ $errors->first($f->name) }}</p>
+                            @enderror
                         </div>
                     @endswitch
                 @endforeach
