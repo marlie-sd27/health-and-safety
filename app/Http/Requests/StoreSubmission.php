@@ -28,6 +28,7 @@ class StoreSubmission extends FormRequest
 
         foreach($this->allFiles() as $key => $value)
         {
+            Log::debug($key . " - " . $value);
             $rules[$key] = 'file|max:10240|mimes:jpeg,png,pdf,docx,txt,doc';
         }
 
