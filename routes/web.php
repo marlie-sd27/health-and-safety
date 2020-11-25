@@ -53,6 +53,11 @@ Route::middleware(['auth','isadmin'])->group(function ()
     Route::post('course', 'CoursesController@store')->name('courses.store');
     Route::delete('course/{course}', 'CoursesController@destroy')->name('courses.destroy');
 
+    // managing groups list
+    Route::get('groups', 'GroupsController@index')->name('groups');
+    Route::post('group', 'GroupsController@store')->name('groups.store');
+    Route::delete('group/{group}', 'GroupsController@destroy')->name('groups.destroy');
+
     // managing sites list
     Route::get('sites', 'SitesController@index')->name('sites');
     Route::post('site', 'SitesController@store')->name('sites.store');

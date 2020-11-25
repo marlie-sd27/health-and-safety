@@ -43,6 +43,9 @@ class FormsController extends Controller
         // create sections and fields in database for the form
         $errors = $form->createSectionsandFields($validated);
 
+        // create assignments to assign staff or sites to the form deadlines
+        $form->createAssignments();
+
         // if there are errors, reload the form to fix them otherwise redirect to forms.index
         return !empty($errors) ? redirect(route('forms.create'))->withErrors($errors)->withInput() : redirect(route('forms.index'));
     }
@@ -90,7 +93,12 @@ class FormsController extends Controller
             $form->save();
 
             $form->updateSectionsandFields($validated);
+
+            // create assignments to assign staff or sites to the form deadlines
+            $form->createAssignments();
+
         }, 3);
+
 
 
         return redirect(route('forms.show', ['form' => $form->id]))->with('message','Successfully updated the form!');

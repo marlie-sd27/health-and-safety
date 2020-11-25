@@ -60,7 +60,6 @@ class Forms extends Model
     // Create sections and fields for the form
     public function createSectionsandFields(StoreForm $request)
     {
-
         // keep track of any errors that exist while submitting the form
         $errors = array();
 
@@ -209,6 +208,25 @@ class Forms extends Model
     {
         foreach ($this->events as $event) {
             Events::destroy($event->id);
+        }
+    }
+
+
+    public function createAssignments()
+    {
+        // get all the events (deadlines) for this form
+        $events = $this->events;
+
+        switch($this->required_for) {
+            // if form is required for all staff, create assignment for each staff for each event
+            case('All Staff'):
+                $staff =
+
+            // if form is required for specific staff, create assignment for each staff for each event
+
+
+            // if form is required for specific sites, create assignment for each site for each event
+
         }
     }
 }
