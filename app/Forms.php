@@ -222,16 +222,47 @@ class Forms extends Model
             // if form is required for all staff, create assignment for each staff for each event
             case('All Staff'):
                 $staff = GraphAPIHelper::getAllStaff();
-                dd($staff);
                 foreach ($events as $event)
                 {
-
+                    foreach ($staff as $staffMember)
+                    {
+                        Assignments::create([
+                            'events_id' => $event->id,
+                            'email' => $staffMember->getMail(),
+                        ]);
+                    }
                 }
+                break;
 
             // if form is required for specific staff, create assignment for each staff for each event
-
+            case('Specific Staff'):
+                $staff = explode(',', $this->requirees);
+                foreach ($events as $event)
+                {
+                    foreach ($staff as $staffMember)
+                    {
+                        Assignments::create([
+                            'events_id' => $event->id,
+                            'email' => $staffMember->getMail(),
+                        ]);
+                    }
+                }
+                break;
 
             // if form is required for specific sites, create assignment for each site for each event
+            case('Specific Sites'):
+                $sites = explode(',',$this->requirees);
+                foreach ($events as $event)
+                {
+                    foreach ($sites as $site)
+                    {
+                        Assignments::create([
+                            'events_id' => $event->id,
+                            'sites_id' => $site->id,
+                        ]);
+                    }
+                }
+                break;
 
         }
     }
