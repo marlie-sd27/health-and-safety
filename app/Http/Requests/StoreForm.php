@@ -5,6 +5,7 @@ namespace App\Http\Requests;
 use App\Rules\ValidDates;
 use App\Rules\ValidInterval;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Validator;
 use function GuzzleHttp\Psr7\str;
 
 class StoreForm extends FormRequest
@@ -23,7 +24,9 @@ class StoreForm extends FormRequest
             'description' => 'string|nullable',
             'first_occurence_at' => ['string','nullable', new ValidDates(), 'required_with:interval'],
             'interval' => ['string','nullable', new ValidInterval()],
-            'required_for' => 'nullable|in:All Staff,Principals and Vice Principals,Elementary Principals Only,Secondary Principals Only',
+            'required_for' => 'nullable|in:All Staff,Specific Staff,Specific Sites',
+            'requirees_sites.*' => 'exists:sites,site',
+            'requirees_emails' => 'string',
             'full_year' => 'boolean',
 
             'section_title' => 'nullable|array',
@@ -41,7 +44,6 @@ class StoreForm extends FormRequest
             'help' => 'array|nullable',
             'help.*' => 'string|nullable'
         ];
-
     }
 
 
@@ -54,6 +56,7 @@ class StoreForm extends FormRequest
         $labels = array();
         $options = array();
         $help = array();
+        $requirees_sites = array();
 
         if (isset($this->section_title))
         {
@@ -73,14 +76,25 @@ class StoreForm extends FormRequest
             }
         }
 
+        if (isset($this->requirees_sites))
+        {
+            foreach ($this->requirees_sites as $key => $value) {
+                $requirees_sites[$key] = str_replace(['<','>'], " ", $value);
+                $requirees_sites[$key] = str_replace(['<','>'], " ", $this->requirees_sites[$key]);
+            }
+        }
+
+
         $this->merge([
             'title' => str_replace(['<','>'], " ", $this->form_title),
             'description' => str_replace(['<','>'], " ", $this->form_description),
             'interval' => $this->interval == "" ? null : str_replace(['<','>'], " ", $this->interval),
             'first_occurence_at' => $this->first_occurence_at == "" ? null : str_replace(['<','>'], " ", $this->first_occurence_at),
             'required_for' => str_replace(['<','>'], " ", $this->required_for),
+            'requirees_emails' => str_replace(['<','>'], " ", $this->requirees_emails),
             'full_year' => isset($this->full_year),
 
+            'requirees_sites' => $requirees_sites,
 
             'section_title' => $section_titles,
             'section_description' => $section_descriptions,

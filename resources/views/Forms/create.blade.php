@@ -80,19 +80,16 @@
 
             <div class="form-group">
                 <label for="required_for"><span class="required">*</span>Who is required to submit this form?</label>
-                <select id="required_for" class="form-control @error('required_for') border-danger @enderror"
+                <select id="required_for"
+                        class="form-control @error('required_for') border-danger @enderror"
                         name="required_for">
                     <option @if (old('required_for') == "") {{ 'selected' }} @endif></option>
-                    <option @if (old('required_for') == "All Staff") {{ 'selected' }} @endif>
-                        All Staff
+                    <option @if (old('required_for') == "All Staff") {{ 'selected' }} @endif>All Staff</option>
+                    <option
+                    @if (old('required_for') == "Specific Staff") {{ 'selected' }} @endif>Specific Staff
                     </option>
                     <option
-                    @if (old('required_for') == "Specific Staff") {{ 'selected' }} @endif>
-                        Specific Staff
-                    </option>
-                    <option
-                    @if (old('required_for') == "Specific Sites") {{ 'selected' }} @endif>
-                        Specific Sites
+                    @if (old('required_for') == "Specific Sites") {{ 'selected' }} @endif>Specific Sites
                     </option>
                 </select>
                 @error('required_for')
@@ -100,7 +97,7 @@
                 @enderror
             </div>
 
-            <div id="requirees_sites" class="d-none form-group">
+            <div id="requirees_sites" class="{{ old('required_for') == 'Specific Sites' ? '' : 'd-none' }} form-group">
                 <label>Which sites would you like to make this due for?</label>
                 <button type="button"
                         class="help"
@@ -112,10 +109,12 @@
                 </button>
                 @foreach($sites as $site)
                     <p>
-                        <label><input type="checkbox"
-                               class="@error('requirees_sites') border-danger @enderror"
-                               name="requirees_sites[]"
-                               @if (old('requirees_sites')) checked @endif/> {{$site->site}}</label>
+                        <label>
+                            <input type="checkbox"
+                                   class="@error('requirees_sites') border-danger @enderror"
+                                   name="requirees_sites[]"
+                                   value="{{ $site->site }}"
+                                   @if (array_has(old('requirees_sites'), $site->site)) checked @endif/> {{$site->site}}</label>
                     @error('requirees_sites')
                     <p class=" text-danger">{{ $errors->first('requirees_sites') }}</p>
                     @enderror
@@ -123,7 +122,7 @@
                 @endforeach
             </div>
 
-            <div id="requirees_emails" class="d-none form-group">
+            <div id="requirees_emails" class="{{ old('required_for') == 'Specific Staff' ? '' : 'd-none' }} form-group">
                 <label>Which users would you like to make this due for? Separate emails with a comma</label>
                 <button type="button"
                         class="help"
@@ -133,7 +132,8 @@
                         data-content="The form will be required for each user to complete once per deadline. ">
                     <b>?</b>
                 </button>
-                <textarea class="form-control @error('requirees_emails') border-danger @enderror" name="requirees_emails"></textarea>
+                <textarea class="form-control @error('requirees_emails') border-danger @enderror"
+                          name="requirees_emails">{{ old('requirees_emails') }}</textarea>
                 @error('requirees_emails')
                 <p class=" text-danger">{{ $errors->first('requirees_emails') }}</p>
                 @enderror

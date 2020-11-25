@@ -14,7 +14,7 @@ use Illuminate\Support\Str;
 class Forms extends Model
 {
     protected $fillable = [
-        'title', 'description', 'first_occurence_at', 'interval', 'required_for', 'full_year', 'live'
+        'title', 'description', 'first_occurence_at', 'interval', 'required_for', 'full_year', 'live', 'requirees'
     ];
 
 

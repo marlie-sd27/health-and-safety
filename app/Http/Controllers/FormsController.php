@@ -36,9 +36,9 @@ class FormsController extends Controller
             'first_occurence_at' => $validated['first_occurence_at'],
             'interval' => $validated['interval'],
             'required_for' => $validated['required_for'],
+            'requirees' => $this->determineRequirees($validated),
             'full_year' => $validated['full_year'],
         ]);
-
 
         // create sections and fields in database for the form
         $errors = $form->createSectionsandFields($validated);
@@ -65,7 +65,7 @@ class FormsController extends Controller
     // show view for editing a form
     public function edit(Forms $form)
     {
-        return view('Forms/edit', ['form' => $form->fullForm()]);
+        return view('Forms/edit', ['form' => $form->fullForm(), 'sites' => Sites::all()]);
     }
 
 
@@ -79,6 +79,7 @@ class FormsController extends Controller
             $form->first_occurence_at = $validated['first_occurence_at'];
             $form->interval = $validated['interval'];
             $form->required_for = $validated['required_for'];
+            $form->requirees = $this->determineRequirees($validated);
             $form->full_year = $validated['full_year'];
 
             // delete old events if interval or first_occurence_at attributes have been changed
@@ -118,5 +119,25 @@ class FormsController extends Controller
     {
         Forms::destroy($form->id);
         return redirect(route('forms.index'))->with('message', "Successfully deleted $form->title");
+    }
+
+
+    // determine requirees
+    public function determineRequirees(StoreForm $validated)
+    {
+        // if required_for is specific staff, return the emails for staff entered
+        switch($validated->required_for) {
+            case 'Specific Staff':
+                return $validated->requirees_emails;
+                break;
+
+            // if required_for is specific sites, return the array of those sites joined in a string
+            case 'Specific Sites':
+                return join(',', $validated->requirees_sites);
+                break;
+
+            default:
+                return null;
+        }
     }
 }

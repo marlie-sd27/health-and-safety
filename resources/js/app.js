@@ -127,7 +127,7 @@ $(document).ready(function () {
         let parent = $(this).closest('article')
         let selected = $(this).children("option:selected").val();
 
-        if (selected === "select" | selected === "checkbox" | selected === "radio" | selected === "slider") {
+        if (selected === "select" || selected === "checkbox" || selected === "radio" || selected === "slider") {
             parent.find("#options").removeClass("d-none");
 
         } else {
@@ -203,8 +203,9 @@ $(document).ready(function () {
 
 
     // for create and editing forms. Toggle display for site or email input
-    $('body').on('change', '#required_for', function() {
+    $('body').on('click', "#required_for", function () {
         let selected = $(this).children("option:selected").val();
+
         let parent = $(this).closest('article')
 
         parent.find("#requirees_sites").addClass("d-none");

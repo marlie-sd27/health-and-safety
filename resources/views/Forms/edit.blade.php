@@ -67,7 +67,7 @@
                            type="text"
                            name="interval"
                            placeholder="Define an interval"
-                           value="@if (old('interval')){{ old('interval') }}@else {{ $form->interval }} @endif">
+                           value="@if (old('interval')){{ old('interval') }}@else{{ $form->interval }}@endif">
                     @error('interval')
                         <p class=" text-danger">{{ $errors->first('interval') }}</p>
                     @enderror
@@ -85,25 +85,58 @@
                 </div>
                 <div class="form-group">
                     <label for="required_for"><span class="required">*</span>Who is required to submit this form?</label>
-                    <select class="form-control @error('required_for') border-danger @enderror" name="required_for">
-                        <option value="All Staff" @if (old('required_for') == "All Staff" || $form->required_for == "All Staff" ) {{ 'selected' }} @endif>
-                            All staff
-                        </option>
-                        <option
-                            value="Principals and Vice Principals" @if (old('required_for') == "Principals and Vice Principals" || $form->required_for == "Principals and Vice Principals" ) {{ 'selected' }} @endif>
-                            Principals and Vice Principals
-                        </option>
-                        <option
-                            value="Secondary Principals Only" @if (old('required_for') == "Secondary Principals Only" || $form->required_for == "Secondary Principals Only" ) {{ 'selected' }} @endif>
-                            Secondary Principals Only
-                        </option>
-                        <option
-                            value="Elementary Principals Only" @if (old('required_for') == "Elementary Principals Only" || $form->required_for == "Elementary Principals Only" ) {{ 'selected' }} @endif>
-                            Elementary Principals Only
-                        </option>
+                    <select id="required_for"
+                            class="form-control @error('required_for') border-danger @enderror"
+                            name="required_for">
+                        <option @if (old('required_for') == "" || $form->required_for == "") {{ 'selected' }} @endif></option>
+                        <option @if (old('required_for') == "All Staff" || $form->required_for == "All Staff") {{ 'selected' }} @endif>All Staff</option>
+                        <option @if (old('required_for') == "Specific Staff" || $form->required_for == "Specific Staff") {{ 'selected' }} @endif>Specific Staff</option>
+                        <option @if (old('required_for') == "Specific Sites" || $form->required_for == "Specific Sites") {{ 'selected' }} @endif>Specific Sites</option>
                     </select>
                     @error('required_for')
-                        <p class=" text-danger">{{ $errors->first('required_for') }}</p>
+                    <p class="text-danger">{{ $errors->first('required_for') }}</p>
+                    @enderror
+                </div>
+
+                <div id="requirees_sites" class="{{ $form->required_for == 'Specific Sites' ? '' : 'd-none' }} form-group">
+                    <label>Which sites would you like to make this due for?</label>
+                    <button type="button"
+                            class="help"
+                            data-container="body"
+                            data-toggle="popover"
+                            data-placement="right"
+                            data-content="The form will be required for each site to complete once per deadline. If somebody completes this form for a site, nobody else at that site is required to complete it.">
+                        <b>?</b>
+                    </button>
+                    @foreach($sites as $site)
+                        <p>
+                            <label>
+                                <input type="checkbox"
+                                       class="@error('requirees_sites') border-danger @enderror"
+                                       name="requirees_sites[]"
+                                       value="{{ $site->site }}"/> {{$site->site}}
+                           </label>
+                        @error('requirees_sites')
+                        <p class="text-danger">{{ $errors->first('requirees_sites') }}</p>
+                        @enderror
+
+                    @endforeach
+                </div>
+
+                <div id="requirees_emails" class="{{ $form->required_for == 'Specific Staff' ? '' : 'd-none' }} form-group">
+                    <label>Which users would you like to make this due for? Separate emails with a comma</label>
+                    <button type="button"
+                            class="help"
+                            data-container="body"
+                            data-toggle="popover"
+                            data-placement="right"
+                            data-content="The form will be required for each user to complete once per deadline. ">
+                        <b>?</b>
+                    </button>
+                    <textarea class="form-control @error('requirees_emails') border-danger @enderror"
+                              name="requirees_emails">{{ old('requirees_emails') || $form->required_for == 'Specific Staff' ? $form->requirees : '' }}</textarea>
+                    @error('requirees_emails')
+                    <p class=" text-danger">{{ $errors->first('requirees_emails') }}</p>
                     @enderror
                 </div>
             </article>

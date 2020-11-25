@@ -19385,7 +19385,7 @@ $(document).ready(function () {
     var parent = $(this).closest('article');
     var selected = $(this).children("option:selected").val();
 
-    if (selected === "select" | selected === "checkbox" | selected === "radio" | selected === "slider") {
+    if (selected === "select" || selected === "checkbox" || selected === "radio" || selected === "slider") {
       parent.find("#options").removeClass("d-none");
     } else {
       parent.find("#options").addClass("d-none");
@@ -19439,7 +19439,7 @@ $(document).ready(function () {
     });
   }); // for create and editing forms. Toggle display for site or email input
 
-  $('body').on('change', '#required_for', function () {
+  $('body').on('click', "#required_for", function () {
     var selected = $(this).children("option:selected").val();
     var parent = $(this).closest('article');
     parent.find("#requirees_sites").addClass("d-none");

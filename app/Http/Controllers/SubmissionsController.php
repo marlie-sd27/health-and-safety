@@ -77,6 +77,9 @@ class SubmissionsController extends Controller
     // update submission in the database
     public function update(StoreSubmission $validated, Submissions $submission)
     {
+        if($validated->fails()) {
+            dd($validated->errors());
+        }
         $this->authorize('update', $submission);
 
         // delete previous file uploads for the submission
