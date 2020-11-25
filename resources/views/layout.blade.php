@@ -64,6 +64,7 @@
                             <a href="{{route('admins')}}" class="dropdown-item {{ strpos( $_SERVER['REQUEST_URI'], 'admins') != false ? ' active' : ''}}">Admins</a>
                             <a href="{{ route('reporters') }}" class="dropdown-item {{ strpos( $_SERVER['REQUEST_URI'], 'reporters') != false ? ' active' : ''}}">Reporting Privileges</a>
                             <a href="{{ route('sites') }}" class="dropdown-item {{ strpos( $_SERVER['REQUEST_URI'], 'sites') != false ? ' active' : ''}}">Sites</a>
+                            <a href="{{ route('groups') }}" class="dropdown-item {{ strpos( $_SERVER['REQUEST_URI'], 'groups') != false ? ' active' : ''}}">Groups</a>
                             <a href="{{ route('courses') }}" class="dropdown-item {{ strpos( $_SERVER['REQUEST_URI'], 'courses') != false ? ' active' : ''}}">Courses</a>
                             <a href="{{ route('forms.index') }}" class="dropdown-item {{ strpos( $_SERVER['REQUEST_URI'], 'forms') != false ? ' active' : ''}}">Forms</a>
                         </div>

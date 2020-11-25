@@ -220,7 +220,7 @@ class Forms extends Model
         switch($this->required_for) {
             // if form is required for all staff, create assignment for each staff for each event
             case('All Staff'):
-                $staff =
+
 
             // if form is required for specific staff, create assignment for each staff for each event
 

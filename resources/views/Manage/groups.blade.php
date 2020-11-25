@@ -3,19 +3,32 @@
 @section('content')
     <a href="{{ url()->previous() }}">Back</a>
     <div class="container">
-        <h1>Manage Courses</h1>
+        <h1>Manage Groups</h1>
         <p>
-            Here you'll find a list of all the courses. These courses are listed in drop down
-            menus of training entries. Add new courses and delete old courses.
+            Here you'll find a list of staff groups. These groups are used for assigning form deadlines to user groups.
+            Add new groups and delete old groups.
         </p>
+        <p>The Azure Group ID can be found in Azure Active Directory. It corresponds to the Group ID for that
+            group. This is used for reporting on deadlines for a specific group. It will retrieve all users in the staff
+            group and cross-reference it with the staff who have completed submissions for a deadline to determine who
+            is complete.</p>
+        <p><b>It is very important to change the Azure Group Object ID here if the Group Object ID on Azure is changed
+                or deleted.</b></p>
         <div class="row">
-            <table class="table table-bordered table-hover col-5 container">
-                @foreach($courses as $course)
+            <table class="table table-bordered table-hover col-7 container">
+                <tr>
+                    <th>Group</th>
+                    <th>Azure Group Object ID</th>
+                    <th></th>
+                </tr>
+                @foreach($groups as $group)
                     <tr>
-                        <td>{{ $course->course }}
+                        <td>{{ $group->name }}</td>
+                        <td> {{ $group->azure_group_id }}</td>
+                        <td>
                             <form method="post"
                                   class="delete_form float-right"
-                                  action="{{route('courses.destroy', $course->id)}}">
+                                  action="{{route('groups.destroy', $group->id)}}">
                                 @csrf
                                 @method('delete')
                                 <button type="submit" onclick="return confirm('Are you sure?')" class="border-0">
@@ -27,10 +40,11 @@
                 @endforeach
             </table>
             <article class="col-4 text-center container" id="create">
-                <h2>Add a New Course</h2>
-                <form action="{{ route('courses.store') }}" method="post">
+                <h2>Add a New group</h2>
+                <form action="{{ route('groups.store') }}" method="post">
                     @csrf
-                    <input type="text" name="course" class="form-control" placeholder="Course Name">
+                    <input type="text" name="name" class="form-control" placeholder="Group Name">
+                    <input type="text" name="azure_group_id" class="form-control" placeholder="Azure Group Object ID">
                     <div class="container align-content-center">
                         <button class="btn btn-block btn-sm btn-success" type="submit">Save</button>
                     </div>

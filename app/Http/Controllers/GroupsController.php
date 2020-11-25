@@ -16,7 +16,7 @@ class GroupsController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'group' => 'string|required',
+            'name' => 'string|required',
             'azure_group_id' => 'string|required',
         ]);
 
