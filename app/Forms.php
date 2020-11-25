@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Helpers\GraphAPIHelper;
 use App\Helpers\Helper;
 use App\Http\Requests\StoreForm;
 use Carbon\Carbon;
@@ -220,7 +221,12 @@ class Forms extends Model
         switch($this->required_for) {
             // if form is required for all staff, create assignment for each staff for each event
             case('All Staff'):
+                $staff = GraphAPIHelper::getAllStaff();
+                dd($staff);
+                foreach ($events as $event)
+                {
 
+                }
 
             // if form is required for specific staff, create assignment for each staff for each event
 
