@@ -113,7 +113,7 @@
                             <input type="checkbox"
                                    class="@error('requirees_sites') border-danger @enderror"
                                    name="requirees_sites[]"
-                                   value="{{ $site->site }}"
+                                   value="{{ $site->id }}"
                                    @if (array_has(old('requirees_sites'), $site->site)) checked @endif/> {{$site->site}}</label>
                     @error('requirees_sites')
                     <p class=" text-danger">{{ $errors->first('requirees_sites') }}</p>

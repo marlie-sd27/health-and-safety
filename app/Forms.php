@@ -243,7 +243,7 @@ class Forms extends Model
                     {
                         Assignments::create([
                             'events_id' => $event->id,
-                            'email' => $staffMember->getMail(),
+                            'email' => $staffMember,
                         ]);
                     }
                 }
@@ -258,12 +258,21 @@ class Forms extends Model
                     {
                         Assignments::create([
                             'events_id' => $event->id,
-                            'sites_id' => $site->id,
+                            'sites_id' => $site,
                         ]);
                     }
                 }
                 break;
 
+        }
+    }
+
+
+    public function deleteAssignments()
+    {
+        foreach($this->events as $event)
+        {
+            $event->deleteAssignments();
         }
     }
 }

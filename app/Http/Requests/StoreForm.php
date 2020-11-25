@@ -25,7 +25,7 @@ class StoreForm extends FormRequest
             'first_occurence_at' => ['string','nullable', new ValidDates(), 'required_with:interval'],
             'interval' => ['string','nullable', new ValidInterval()],
             'required_for' => 'nullable|in:All Staff,Specific Staff,Specific Sites',
-            'requirees_sites.*' => 'exists:sites,site',
+            'requirees_sites.*' => 'exists:sites,id',
             'requirees_emails' => 'string',
             'full_year' => 'boolean',
 
