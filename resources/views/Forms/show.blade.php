@@ -4,8 +4,8 @@
 
     <script type="module" src="/js/autolinker.js"></script>
 
-    @if($admin)
         <a href="{{ url()->previous() }}">Back</a>
+    @if($admin)
         <a class="float-right" href="{{ route('forms.edit', ['form' => $form->id]) }}"><i class="fa fa-pencil-alt"></i> Edit</a>
     @endif
     <div class="container">

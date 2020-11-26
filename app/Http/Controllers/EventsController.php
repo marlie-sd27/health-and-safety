@@ -22,11 +22,12 @@ class EventsController extends Controller
                     return $query->join('assignments', 'assignments.events_id', '=', 'events.id')
                         ->where('assignments.email', Auth::user()->email);
                 })
+                ->select('events.*')
                 ->get();
 
             // add attribute url for links and title for displaying in calendar
             foreach ($events as $event) {
-                $event['url'] = route('forms.show', ['form' => $event->forms_id, 'event' => $event->id]);
+                $event['url'] = route('forms.show', ['form' => $event->forms_id, 'event' => $event]);
                 $event['title'] = $event->forms->title;
             }
 
