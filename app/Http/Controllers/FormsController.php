@@ -96,11 +96,10 @@ class FormsController extends Controller
 
             // first delete old assignments then create assignments to assign staff or sites to the form deadlines
             $form->deleteAssignments();
-            $form->createAssignments();
 
         }, 3);
 
-
+        $form->createAssignments();
 
         return redirect(route('forms.show', ['form' => $form->id]))->with('message','Successfully updated the form!');
     }

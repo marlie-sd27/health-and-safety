@@ -14,7 +14,7 @@
             <h3>Due: {{ App\Helpers\Helper::makeDateReadable($event->date) }}</h3>
         @endif
         @if ($form->interval != null)
-            <p><small>To be completed every {{ $form->interval }} by <b>{{ $form->required_for }}</b></small></p>
+            <p><small>To be completed every {{ $form->interval }} </small></p>
         @endif
         <p style="white-space: pre-wrap;" class="autolink">{{ $form->description }}</p>
     </div>

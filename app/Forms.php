@@ -216,7 +216,7 @@ class Forms extends Model
     public function createAssignments()
     {
         // get all the events (deadlines) for this form
-        $events = $this->events;
+        $events = Events::where('forms_id', $this->id)->get();
 
         switch($this->required_for) {
             // if form is required for all staff, create assignment for each staff for each event
