@@ -16,6 +16,7 @@ class StoreForm extends FormRequest
         return true;
     }
 
+
     // validate the user input
     public function rules()
     {
@@ -25,8 +26,9 @@ class StoreForm extends FormRequest
             'first_occurence_at' => ['string','nullable', new ValidDates(), 'required_with:interval'],
             'interval' => ['string','nullable', new ValidInterval()],
             'required_for' => 'nullable|in:All Staff,Specific Staff,Specific Sites',
+            'requirees_sites' => 'required_if:required_for,Specific Sites',
             'requirees_sites.*' => 'exists:sites,id',
-            'requirees_emails' => 'string',
+            'requirees_emails' => 'required_if:required_for,Specific Staff|string',
             'full_year' => 'boolean',
 
             'section_title' => 'nullable|array',

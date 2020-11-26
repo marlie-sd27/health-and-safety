@@ -81,7 +81,7 @@
             <div class="form-group">
                 <label for="required_for"><span class="required">*</span>Who is required to submit this form?</label>
                 <select id="required_for"
-                        class="form-control @error('required_for') border-danger @enderror"
+                        class="form-control @error(['required_for', 'requirees_sites']) border-danger @enderror"
                         name="required_for">
                     <option @if (old('required_for') == "") {{ 'selected' }} @endif></option>
                     <option @if (old('required_for') == "All Staff") {{ 'selected' }} @endif>All Staff</option>
@@ -95,6 +95,10 @@
                 @error('required_for')
                 <p class=" text-danger">{{ $errors->first('required_for') }}</p>
                 @enderror
+                @error('requirees_sites')
+                <p class=" text-danger">{{ $errors->first('requirees_sites') }}</p>
+                @enderror
+
             </div>
 
             <div id="requirees_sites" class="{{ old('required_for') == 'Specific Sites' ? '' : 'd-none' }} form-group">
@@ -115,10 +119,6 @@
                                    name="requirees_sites[]"
                                    value="{{ $site->id }}"
                                    @if (array_has(old('requirees_sites'), $site->site)) checked @endif/> {{$site->site}}</label>
-                    @error('requirees_sites')
-                    <p class=" text-danger">{{ $errors->first('requirees_sites') }}</p>
-                    @enderror
-
                 @endforeach
             </div>
 
