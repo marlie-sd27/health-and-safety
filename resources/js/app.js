@@ -223,4 +223,10 @@ $(document).ready(function () {
     });
 
 
+    // check all boxes if clicked
+    $('body').on('click',"#checkAll", function(){
+        $('input:checkbox[name="requirees_sites[]"]').not(this).prop('checked', this.checked);
+    });
+
+
 });

@@ -101,7 +101,7 @@
 
             </div>
 
-            <div id="requirees_sites" class="{{ old('required_for') == 'Specific Sites' ? '' : 'd-none' }} form-group">
+            <div id="requirees_sites" class="{{ old('required_for') == 'Specific Sites' ? '' : 'd-none' }} form-group ">
                 <label>Which sites would you like to make this due for?</label>
                 <button type="button"
                         class="help"
@@ -111,16 +111,27 @@
                         data-content="The form will be required for each site to complete once per deadline. If somebody completes this form for a site, nobody else at that site is required to complete it.">
                     <b>?</b>
                 </button>
-                @foreach($sites as $site)
-                    <p>
-                        <label>
-                            <input type="checkbox"
-                                   class="@error('requirees_sites') border-danger @enderror"
-                                   name="requirees_sites[]"
-                                   value="{{ $site->id }}"
-                                   @if (array_has(old('requirees_sites'), $site->site)) checked @endif/> {{$site->site}}</label>
-                @endforeach
+                <div>
+                    <label>
+                        <input type="checkbox"
+                               id="checkAll"
+                               class="@error('requirees_sites') border-danger @enderror"/> Select All</label>
+                </div>
+                <div class="row container">
+                    @foreach($sites as $site)
+                        <div class="col-sm-4 d-flex align-items-stretch">
+                            <label>
+                                <input type="checkbox"
+                                       class="@error('requirees_sites') border-danger @enderror"
+                                       name="requirees_sites[]"
+                                       value="{{ $site->id }}"
+                                       @if (array_has(old('requirees_sites'), $site->site)) checked @endif/> {{$site->site}}
+                            </label>
+                        </div>
+                    @endforeach
+                </div>
             </div>
+
 
             <div id="requirees_emails" class="{{ old('required_for') == 'Specific Staff' ? '' : 'd-none' }} form-group">
                 <label>Which users would you like to make this due for? Separate emails with a comma</label>

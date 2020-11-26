@@ -19452,6 +19452,10 @@ $(document).ready(function () {
     if (selected === "Specific Staff") {
       parent.find("#requirees_emails").removeClass("d-none");
     }
+  }); // check all boxes if clicked
+
+  $('body').on('click', "#checkAll", function () {
+    $('input:checkbox[name="requirees_sites[]"]').not(this).prop('checked', this.checked);
   });
 });
 
