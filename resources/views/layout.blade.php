@@ -42,7 +42,7 @@
                         <a href="{{ route('report-deadlines') }}" class="nav-link {{ $_SERVER['REQUEST_URI'] == '/report-deadlines' ? ' active' : '' }}">Report</a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ route('submissions.report') }}" class="nav-link {{$_SERVER['REQUEST_URI'] == '/submissions/report' ? ' active' : ''}}">Submissions</a>
+                        <a href="{{ route('submissions.index') }}" class="nav-link {{$_SERVER['REQUEST_URI'] == '/submissions' ? ' active' : ''}}">Submissions</a>
                     </li>
 
                     <li class="nav-item dropdown">
@@ -74,7 +74,7 @@
                         <a href="{{ route('report-deadlines') }}" class="nav-link {{ $_SERVER['REQUEST_URI'] == '/report-deadlines' ? ' active' : '' }}">Report</a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ route('submissions.report') }}" class="nav-link {{$_SERVER['REQUEST_URI'] == '/submissions/report' ? ' active' : ''}}">Submissions</a>
+                        <a href="{{ route('submissions.index') }}" class="nav-link {{$_SERVER['REQUEST_URI'] == '/submissions' ? ' active' : ''}}">Submissions</a>
                     </li>
 {{--                    <li class="nav-item">--}}
 {{--                        <a href="{{ route('training.report') }}" class="nav-link {{$_SERVER['REQUEST_URI'] == '/training/report' ? ' active' : ''}}">Training</a>--}}

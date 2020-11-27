@@ -6,6 +6,7 @@ use App\Assignments;
 use App\Events;
 use App\Helpers\Helper;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 class EventsController extends Controller
@@ -35,18 +36,34 @@ class EventsController extends Controller
     }
 
 
+    // index all events
     public function index()
     {
         $events = Events::with('Forms')
             ->orderBy('date')
             ->paginate(20);
 
-        return view('events', ['events' => $events]);
+        return view('Events/index', ['events' => $events]);
     }
 
+
+    // destroy specified event
     public function destroy(Events $event)
     {
         Events::destroy($event->id);
         return redirect(route('events'))->with('message', 'Successfully deleted event!');
+    }
+
+
+    // get all upcoming deadlines in the next 4 months
+    public function upcoming()
+    {
+        $upcomings = Events::with('forms')
+            ->where('date', '>', Carbon::now())
+            ->where('date', '<', Carbon::now()->addMonths(6))
+            ->orderBy('date', 'asc')
+            ->get();
+
+        return view('Events/upcoming', ['upcomings' => $upcomings]);
     }
 }

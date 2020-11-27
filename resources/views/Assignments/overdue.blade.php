@@ -5,7 +5,7 @@
     <div class="container">
         <h1>Overdue Submissions</h1>
         <article class="container">
-            <form method="get" action="{{ route('submissions.overdue') }}">
+            <form method="get" action="{{ route('assignments.overdue') }}">
                 <label>Search by form:
                     <select class="form-control text-reset" type="text" name='form'
                             aria-label="Search">
@@ -51,6 +51,6 @@
                 </tr>
             @endforeach
         </table>
-{{--        <p class="text-center">{{ $overdues->links() }}</p>--}}
+        <p class="text-center">{{ $overdues->links() }}</p>
     </div>
 @endsection

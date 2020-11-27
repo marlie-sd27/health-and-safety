@@ -9,7 +9,7 @@
             </div>
         @endif
         <article class="container">
-            <form method="get" action="{{ route('submissions.report') }}">
+            <form method="get" action="{{ route('submissions.index') }}">
                 <label>Search by form:
                     <select class="form-control text-reset" type="text" name='form'
                             aria-label="Search">

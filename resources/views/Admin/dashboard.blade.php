@@ -22,7 +22,7 @@
                         </tr>
                     @endforeach
                 </table>
-                <a class="text-right" href="{{ route('submissions.overdue') }}">See all overdues...</a>
+                <a class="text-right" href="{{ route('assignments.overdue') }}">See all overdues...</a>
             </div>
         </div>
         <div class="row">
@@ -66,7 +66,7 @@
                         </tr>
                     @endforeach
                 </table>
-                <a class="text-right" href="{{ route('submissions.report') }}">See all submissions...</a>
+                <a class="text-right" href="{{ route('submissions.index') }}">See all submissions...</a>
             </div>
         </div>
     </div>

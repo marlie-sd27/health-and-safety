@@ -19,8 +19,7 @@ Route::middleware(['auth','isadmin'])->group(function ()
     Route::post('toggle-live', 'FormsController@toggleLive');
 
     //submission reporting
-    Route::get('submissions/overdue', 'SubmissionsReportsController@overdue')->name('submissions.overdue');
-    Route::get('submissions/upcoming', 'SubmissionsReportsController@upcoming')->name('submissions.upcoming');
+
 
     // manage users
     Route::get('users', 'UserController@index')->name('users');
@@ -37,9 +36,10 @@ Route::middleware(['auth','isadmin'])->group(function ()
     Route::post('reporters', 'ReportingAccessController@store')->name('reporters.store');
     Route::delete('reporter/{user}', 'ReportingAccessController@destroy')->name('reporters.destroy');
 
-    // events
+    // events (deadlines)
     Route::delete('events/{event}', 'EventsController@destroy')->name('events.destroy');
     Route::get('events', 'EventsController@index')->name('events');
+    Route::get('events/upcoming', 'EventsController@upcoming')->name('events.upcoming');
 
     // training
     Route::post('training', 'TrainingController@store')->name('training.store');
@@ -68,6 +68,7 @@ Route::middleware(['auth','isadmin'])->group(function ()
     Route::post('assignments', 'AssignmentsController@store')->name('assignments.store');
     Route::put('assignment/{assignment}', 'AssignmentsController@update')->name('assignments.update');
     Route::delete('assignment/{assignment}', 'AssignmentsController@destroy')->name('assignments.destroy');
+    Route::get('assignments/overdue', 'AssignmentsController@overdue')->name('assignments.overdue');
 
 });
 
@@ -77,8 +78,7 @@ Route::middleware('auth')->group(function () {
 
     // reporting submissions/training requires admin or principal designation
     Route::middleware('reporting_access')->group(function() {
-        Route::get('submissions/report', 'SubmissionsReportsController@report')->name('submissions.report');
-        Route::get('submissions/export', 'SubmissionsReportsController@export')->name('submissions.export');
+        Route::get('submissions/export', 'SubmissionsController@export')->name('submissions.export');
         Route::get('training/report', 'TrainingController@report')->name('training.report');
 
         // report on deadlines
