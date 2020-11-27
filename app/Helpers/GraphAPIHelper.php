@@ -33,7 +33,7 @@ class GraphAPIHelper
 
         //build and execute query to pull all staff
         $queryParams = array(
-            '$select' => 'mail',
+            '$select' => 'displayName,mail,jobTitle,department',
             '$top' => 999,
             '$count' => 'true',
             '$filter' => 'endsWith(mail,\'@sd27.bc.ca\')',
