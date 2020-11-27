@@ -161,8 +161,9 @@ class Forms extends Model
 
     public function closestDueDate()
     {
-        // get all the relevant overdue dates for this event for this user
-        $overdues = Events::join('forms', 'forms_id', '=', 'forms.id')
+        // check if there are any overdue assignment deadlines for this form/user
+        $first_overdue = Events::join('assignments', 'assignments.events_id', '=', 'events.id')
+            ->where('assignments.email', Auth::user()->email)
             ->where('date', '<', Carbon::now())
             ->where('events.forms_id', '=', $this->id)
             ->whereNotIn('events.id', function ($query) {
@@ -173,13 +174,18 @@ class Forms extends Model
             })
             ->select('events.*')
             ->orderBy('date', 'desc')
-            ->get();
+            ->first();
 
-        $overdues = Helper::filterEvents($overdues);
+        // if there is an overdue assignment, return the event id
+        if($first_overdue)
+        {
+            return $first_overdue->id;
+        }
 
 
-        // get the next closest due date for this event for this user
-        $next_due_date = Events::join('forms', 'forms_id', '=', 'forms.id')
+        // otherwise, check for the next closest assignment deadline for this user/form
+        $next_deadline = Events::join('assignments', 'assignments.events_id', '=', 'events.id')
+            ->where('assignments.email', Auth::user()->email)
             ->where('date', '>=', Carbon::now())
             ->where('events.forms_id', '=', $this->id)
             ->whereNotIn('events.id', function ($query) {
@@ -190,18 +196,15 @@ class Forms extends Model
             })
             ->select('events.*')
             ->orderBy('date', 'asc')
-            ->get();
+            ->first();
 
-        $next_due_date = Helper::filterEvents($next_due_date);
+        // if there is an upcoming assignment, return the event id
+        if($next_deadline)
+        {
+            return $next_deadline->id;
+        }
 
-
-        // if there's an overdue event for this form, return it's id
-        if (sizeof($overdues) > 0) {
-            return $overdues->first()->id;
-        } // otherwise, if there's an upcoming due date for it, return the upcoming id
-        else if (sizeof($next_due_date) > 0) {
-            return $next_due_date->first()->id;
-        } // otherwise return null
+        // if the user has no assignment for this form, return null
         else return null;
     }
 
