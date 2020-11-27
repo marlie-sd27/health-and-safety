@@ -46,7 +46,7 @@ class DeadlinesController extends Controller
                         $deadline['color'] = '#24b924';
                     }
 
-                    // if a submission is not found and the deadline is overdue, mark the deadline orange
+                    // if a deadline is overdue, mark the deadline orange
                     elseif ($deadline->date < Carbon::now())
                     {
                         $deadline['color'] = '#ff9400';
