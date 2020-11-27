@@ -6,7 +6,7 @@ use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
-class ReportingAccessController extends Controller
+class ReportingPrivilegesController extends Controller
 {
 
     public function index()

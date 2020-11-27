@@ -32,14 +32,14 @@ Route::middleware(['auth','isadmin'])->group(function ()
     Route::delete('admins/{admin}', 'AdminController@destroy')->name('admins.destroy');
 
     // managing users with report access (who aren't principals)
-    Route::get('reporters', 'ReportingAccessController@index')->name('reporters');
-    Route::post('reporters', 'ReportingAccessController@store')->name('reporters.store');
-    Route::delete('reporter/{user}', 'ReportingAccessController@destroy')->name('reporters.destroy');
+    Route::get('reporters', 'ReportingPrivilegesController@index')->name('reporters');
+    Route::post('reporters', 'ReportingPrivilegesController@store')->name('reporters.store');
+    Route::delete('reporter/{user}', 'ReportingPrivilegesController@destroy')->name('reporters.destroy');
 
     // events (deadlines)
-    Route::delete('events/{event}', 'EventsController@destroy')->name('events.destroy');
-    Route::get('events', 'EventsController@index')->name('events');
-    Route::get('events/upcoming', 'EventsController@upcoming')->name('events.upcoming');
+    Route::delete('events/{event}', 'DeadlinesController@destroy')->name('events.destroy');
+    Route::get('events', 'DeadlinesController@index')->name('events');
+    Route::get('events/upcoming', 'DeadlinesController@upcoming')->name('events.upcoming');
 
     // training
     Route::post('training', 'TrainingController@store')->name('training.store');
@@ -101,7 +101,7 @@ Route::middleware('auth')->group(function () {
 
     // Calendar
     Route::get('/calendar', 'CalendarController@calendar')->name('calendar');
-    Route::get('/events/ajax', 'EventsController@ajax')->name('events.ajax');
+    Route::get('/events/ajax', 'DeadlinesController@ajax')->name('events.ajax');
 });
 
 

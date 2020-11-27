@@ -62,7 +62,7 @@ class User extends Authenticatable
         return $this->hasMany('App\Submissions');
     }
 
-    public function canViewAllSubmissions() {
+    public function hasReportingPrivileges() {
         return $this->isAdmin() | $this->isPrincipal() | $this->isReporter();
     }
 }

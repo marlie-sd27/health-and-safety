@@ -23,7 +23,7 @@ class SubmissionsController extends Controller
     public function index(Request $request)
     {
         // if user can view all submissions, show all submissions with optional search parameters
-        if(Auth::user()->canViewAllSubmissions())
+        if(Auth::user()->hasReportingPrivileges())
         {
             // get optional search filtering parameters
             $this->authorize('report', Submissions::class);
