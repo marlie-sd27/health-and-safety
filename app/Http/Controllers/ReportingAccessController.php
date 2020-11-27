@@ -2,13 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\ReportAccess;
 use App\User;
 use Carbon\Carbon;
-use Facade\FlareClient\Report;
 use Illuminate\Http\Request;
 
-class ReportAccessController extends Controller
+class ReportingAccessController extends Controller
 {
 
     public function index()

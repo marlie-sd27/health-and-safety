@@ -33,9 +33,9 @@ Route::middleware(['auth','isadmin'])->group(function ()
     Route::delete('admins/{admin}', 'AdminController@destroy')->name('admins.destroy');
 
     // managing users with report access (who aren't principals)
-    Route::get('reporters', 'ReportAccessController@index')->name('reporters');
-    Route::post('reporters', 'ReportAccessController@store')->name('reporters.store');
-    Route::delete('reporter/{user}', 'ReportAccessController@destroy')->name('reporters.destroy');
+    Route::get('reporters', 'ReportingAccessController@index')->name('reporters');
+    Route::post('reporters', 'ReportingAccessController@store')->name('reporters.store');
+    Route::delete('reporter/{user}', 'ReportingAccessController@destroy')->name('reporters.destroy');
 
     // events
     Route::delete('events/{event}', 'EventsController@destroy')->name('events.destroy');

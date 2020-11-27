@@ -3,7 +3,7 @@
 @section('content')
     <a href="{{ url()->previous() }}">Back</a>
     <div class="container">
-    <h1>Overdue Submissions</h1>
+        <h1>Overdue Submissions</h1>
         <article class="container">
             <form method="get" action="{{ route('submissions.overdue') }}">
                 <label>Search by form:
@@ -41,18 +41,16 @@
                 <th>User</th>
                 <th>Due</th>
             </tr>
-            @foreach( $overdues as $user => $overdue)
-                @foreach($overdue as $key => $value)
-                    <tr>
-                        <td>
-                            <a href="{{ route('forms.show', ['form' => $value->forms_id, 'event' => $value->id]) }}">{{ $value->title }}</a>
-                        </td>
-                        <td>{{ $user }}</td>
-                        <td>{{ \App\Helpers\Helper::makeDateReadable($value->date) }}</td>
-                    </tr>
-                @endforeach
+            @foreach( $overdues as $overdue)
+                <tr>
+                    <td>
+                        <a href="{{ route('forms.show', ['form' => $overdue->forms_id, 'event' => $overdue->id]) }}">{{ $overdue->forms->title }}</a>
+                    </td>
+                    <td>{{ $overdue->email }}</td>
+                    <td>{{ \App\Helpers\Helper::makeDateReadable($overdue->date) }}</td>
+                </tr>
             @endforeach
         </table>
-        <p class="text-center">{{ $overdues->links() }}</p>
+{{--        <p class="text-center">{{ $overdues->links() }}</p>--}}
     </div>
 @endsection

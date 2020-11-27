@@ -6,9 +6,12 @@ namespace App\Http\Controllers;
 
 use App\Events;
 use App\Helpers\Helper;
+use App\Helpers\QueryHelper;
+use App\Helpers\ReportHelper;
 use App\Submissions;
 use App\User;
 use Carbon\Carbon;
+use GuzzleHttp\Psr7\Query;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -29,23 +32,8 @@ class HomeController extends Controller
                 ->get();
 
 
-            // get first 5 overdue events for all users
-            $viewData['overdues'] = Events::with('forms')
-                ->join('assignments', 'assignments.events_id', '=', 'events.id')
-                ->where('date', '<', Carbon::now())
-                ->whereNotNull('assignments.email')
-                ->whereNotIn('events.id', function ($query) {
-                    $query->select('events_id')
-                        ->from('submissions')
-                        ->where('email', Auth::user()->email)
-                        ->whereNotNull('events_id')
-                        ->get();
-                })
-                ->orderBy('date', 'asc')
-                ->limit(5)
-                ->select('events.*','assignments.email','assignments.sites_id')
-                ->get();
-
+            // get first 5 overdue events
+            $viewData['overdues'] = QueryHelper::getOverdues()->take(5);
 
             // get all recent submissions
             $viewData['recents'] = Submissions::with('forms')
@@ -78,21 +66,7 @@ class HomeController extends Controller
 
 
             // get all overdue events for the user
-            $viewData['overdues'] = Events::with('forms')
-                ->join('assignments', 'assignments.events_id', '=', 'events.id')
-                ->where('assignments.email', Auth::user()->email)
-                ->where('date', '<', Carbon::now())
-                ->whereNotIn('events.id', function ($query) {
-                    $query->select('events_id')
-                        ->from('submissions')
-                        ->where('email', Auth::user()->email)
-                        ->whereNotNull('events_id')
-                        ->get();
-                })
-                ->orderBy('date', 'asc')
-                ->limit(5)
-                ->select('events.*')
-                ->get();
+            $viewData['overdues'] =QueryHelper::getOverdues(Auth::user()->email);
 
 
             // get first 5 completed submissions for the user

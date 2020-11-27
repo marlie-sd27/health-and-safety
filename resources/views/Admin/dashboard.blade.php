@@ -44,7 +44,7 @@
                         </tr>
                     @endforeach
                 </table>
-                <a class="text-right" href="{{ route('submissions.upcoming') }}">See all upcoming...</a>
+                <a class="text-right" href="{{ route('calendar') }}">See all upcoming...</a>
             </div>
         </div>
         <div class="row">

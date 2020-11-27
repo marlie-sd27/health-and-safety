@@ -4,41 +4,46 @@
 namespace App\Helpers;
 
 
+use App\Events;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class QueryHelper
 {
 
-    public static function getOverdues($user)
+    public static function getOverdues( $user = null, $form = null, $date_from = null, $date_to = null)
     {
-        $overdues =  DB::select(DB::raw(
-            'SELECT e.*, f.title, f.required_for ' .
-            "FROM events e " .
-            "JOIN forms f ON f.id = e.forms_id " .
-
-            // get only overdue events
-            "WHERE e.date < :now " .
-
-            // filter events by only taking events that don't have an entry in the user's submissions
-            "AND NOT EXISTS " .
-            "(SELECT null FROM submissions s " .
-            "WHERE e.id = s.events_id " .
-            "AND s.email = :user) "),
-            array(
-                'now' => Carbon::now(),
-                'user' => $user->email,
-            )
-        );
-
-        // if user is an admin, don't return any as overdue.
-        if ($user->isAdmin())
-        {
-            return [];
-        }
-
-        // filter events to make sure only events applicable to the user's group apply
-        // ie. an elementary principal shouldn't be getting a secondary principal's events
-        return Helper::filterEventsDashboard(collect($overdues), $user);
+        // get first 5 overdue events
+        return Events::join('forms','events.forms_id','=','forms.id')
+            ->join('assignments', 'assignments.events_id', '=', 'events.id')
+            ->where('date', '<', Carbon::now())
+            ->whereNotNull('assignments.email')
+            ->whereNotIn('assignments.id', function ($query) {
+                $query->from('events')
+                    ->join('submissions','events.id','=','submissions.events_id')
+                    ->join('assignments','events.id','=','assignments.events_id')
+                    ->whereNotNull('assignments.email')
+                    ->whereColumn('submissions.email','=', 'assignments.email')
+                    ->select('assignments.id')
+                    ->get();
+            })
+            // when the user search parameter is filled, filter out collections whose key is not the user
+            ->when($user, function ($query, $user) {
+                return $query->where('assignments.email','like','%'.$user.'%');
+            })
+            // when the form search parameter is filled, filter out instances who's title value is not the form
+            ->when($form, function ($query, $form) {
+                return $query->where('forms.title', $form);
+            })
+            //
+            ->when($date_from, function ($query, $date_from) {
+                return $query->where('events.date','>=',$date_from);
+            })
+            ->when($date_to, function ($query, $date_to) {
+                return $query->where('events.date','<=',$date_to);
+            })
+            ->orderBy('date', 'asc')
+            ->select('events.*','assignments.email')
+            ->paginate(25);
     }
 }

@@ -3,8 +3,10 @@
 
 namespace App\Helpers;
 
+use App\Events;
 use App\Fields;
 use App\Submissions;
+use Illuminate\Support\Carbon;
 
 class ReportHelper
 {
@@ -31,50 +33,6 @@ class ReportHelper
             ->orderBy('submissions.created_at', 'desc')
             ->select('submissions.*', 'users.name', 'forms.title')
             ->paginate(25);
-    }
-
-
-    public static function filterOverdues($overdues, $user, $form, $date_from, $date_to)
-    {
-        // convert our array of users' overdue submissions into an Eloquent collection for easy filtering
-        // filter by user's search parameters
-        return collect($overdues)
-
-            // filter out users with no overdue events
-            ->filter(function ($instance) {
-                return sizeof($instance) > 0;
-            })
-
-            // when the user search parameter is filled, filter out collections whose key is not the user
-            ->when($user, function ($collection, $user) {
-                return $collection->filter(function ($value, $key) use ($user) {
-                    return strstr($key, $user) != false;
-                });
-
-            })
-            // when the form search parameter is filled, filter out instances who's title value is not the form
-            ->when($form, function ($collection, $form) {
-                return $collection->map(function ($instance) use ($form) {
-                    return $instance->filter(function ($value) use ($form) {
-                        return strstr($value->title, $form) != false;
-                    });
-                });
-            })
-            //
-            ->when($date_from, function ($collection, $date_from) {
-                return $collection->map(function ($instance) use ($date_from) {
-                    return $instance->filter(function ($value) use ($date_from) {
-                        return $value->date >= $date_from;
-                    });
-                });
-            })
-            ->when($date_to, function ($collection, $date_to) {
-                return $collection->map(function ($instance) use ($date_to) {
-                    return $instance->filter(function ($value) use ($date_to) {
-                        return $value->date <= $date_to;
-                    });
-                });
-            });
     }
 
 

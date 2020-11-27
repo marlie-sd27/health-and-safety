@@ -42,28 +42,16 @@ class SubmissionsReportsController extends Controller
 
     public function overdue(Request $request)
     {
-        $overdues = array();
-
-        // for each user, get all the overdue submissions (with form and event info)
-        foreach (User::all() as $user) {
-            $overdue = QueryHelper::getOverdues($user);
-
-            // push the user's overdues to the array with their name as the index
-            $overdues[$user->name] = $overdue;
-        }
-
         // get optional search filtering parameters
         $user = $request->filled('user') ? $request->user : null;
         $form = $request->filled('form') ? $request->form : null;
         $date_from = $request->filled('date_from') ? $request->date_from : null;
         $date_to = $request->filled('date_to') ? $request->date_to : null;
 
-        // filter data by filtering parameters and paginate
-        $overdues = ReportHelper::filterOverdues($overdues, $user, $form, $date_from, $date_to);
-        $paginated = CollectionHelper::paginate($overdues, 25);
+        $overdues = QueryHelper::getOverdues($user, $form, $date_from, $date_to);
 
         return view('ReportSubmissions/overdue', [
-            'overdues' => $paginated,
+            'overdues' => $overdues,
             'user' => $user,
             'form' => $form,
             'date_from' => $date_from,
