@@ -13,7 +13,7 @@ class AssignmentsController extends Controller
     // show all assignments
     public function index()
     {
-        return view('Manage/Assignments', ['assignments' => Assignments::paginate(25)]);
+        return view('Manage/assignments', ['assignments' => Assignments::paginate(25)]);
     }
 
 
