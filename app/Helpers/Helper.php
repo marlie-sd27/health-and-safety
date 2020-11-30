@@ -11,13 +11,13 @@ class Helper
 {
     public static function makeTimeStampReadable($timestamp)
     {
-        return date('M d, Y @ H:i a', strtotime($timestamp));
+        return date('M d/y', strtotime($timestamp));
     }
 
 
     public static function makeDateReadable($date)
     {
-        return date('M d, Y', strtotime($date));
+        return date('M d/y', strtotime($date));
     }
 
 //    public static function filterEvents($events)

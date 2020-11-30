@@ -54,7 +54,7 @@
                 @isset($overdues)
                     @foreach($overdues as $overdue)
                         <tr>
-                            <td>{{ $overdue->email }}</td>
+                            <td>{{ str_replace(['@sd27.bc.ca','.'], ' ', $overdue->email) }}</td>
                             <td>{{ $overdue->title }}</td>
                             <td>{{ \App\Helpers\Helper::makeDateReadable($overdue->date) }}</td>
                         </tr>
@@ -75,7 +75,7 @@
                 @isset($completeds)
                     @foreach($completeds as $completed)
                         <tr>
-                            <td>{{ $completed->email }}</td>
+                            <td>{{ str_replace(['@sd27.bc.ca','.'], ' ', $completed->email) }}</td>
                             <td>{{ $completed->title }}</td>
                             <td>{{ \App\Helpers\Helper::makeDateReadable($completed->date) }}</td>
                             <td>
