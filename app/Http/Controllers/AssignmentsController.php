@@ -71,7 +71,7 @@ class AssignmentsController extends Controller
     public function report(Request $request)
     {
         // get optional search filtering parameters
-        $user = $request->filled('user') ? $request->user : null;
+        $user = $request->filled('user') ? strtolower(str_replace(' ', '.', $request->user)) : null;
         $form = $request->filled('form') ? $request->form : null;
         $date_from = $request->filled('date_from') ? $request->date_from : null;
         $date_to = $request->filled('date_to') ? $request->date_to : null;

@@ -5,41 +5,51 @@
 
     <article class="container">
         <form method="get" action="{{ route('assignments.report') }}">
-            <label>Search by form:
-                <select class="form-control text-reset" type="text" name='form'
-                        aria-label="Search">
-                    <option></option>
-                    @foreach($links as $link)
-                        <option @if ($form == $link->title) {{ 'selected' }} @endif>{{ $link->title }}</option>
-                    @endforeach
-                </select>
-            </label>
-            <label>Search by site:
-                <select class="form-control text-reset" type="text" name='site'>
-                    <option @if ($site == "") {{ 'selected' }} @endif></option>
-                    @foreach($sites as $_site)
-                        <option @if($site == $_site->site) {{ 'selected' }} @endif>{{ $_site->site}}</option>
-                    @endforeach
-                </select>
-            </label>
-            <label>Search by user:
-                <input class="form-control" type="text" placeholder="Search" name='user'
-                       value="{{ $user ?? ""}}"
-                       aria-label="Search"/>
-            </label>
-            <label>Search from date:
-                <input class="form-control text-reset" type="date" placeholder="Search" name='date_from'
-                       value="{{ $date_from ?? "" }}"
-                       aria-label="Search"/>
-            </label>
-            <label>to date:
-                <input class="form-control text-reset" type="date" placeholder="Search" name='date_to'
-                       value="{{ $date_to ?? "" }}"
-                       aria-label="Search"/>
-            </label>
-
-            <button class="btn btn-primary" type="submit">Search</button>
-            <button class="btn btn-dark" type="button" id="clear">Clear Search Fields</button>
+            <h2>Search Filters</h2>
+            <div class="row">
+                <label class="col-3">Form:
+                    <select class="form-control text-reset"
+                            type="text"
+                            name='form'
+                            aria-label="Search">
+                        <option></option>
+                        @foreach($links as $link)
+                            <option @if ($form == $link->title) {{ 'selected' }} @endif>{{ $link->title }}</option>
+                        @endforeach
+                    </select>
+                </label>
+                <label class="col-3">Site:
+                    <select class="form-control text-reset" type="text" name='site'>
+                        <option @if ($site == "") {{ 'selected' }} @endif></option>
+                        @foreach($sites as $_site)
+                            <option @if($site == $_site->site) {{ 'selected' }} @endif>{{ $_site->site}}</option>
+                        @endforeach
+                    </select>
+                </label>
+                <label class="col-2">User:
+                    <input class="form-control" type="text" placeholder="Search" name='user'
+                           value="{{ $user ?? ""}}"
+                           aria-label="Search"/>
+                </label>
+                <label class="col-2">Due Date From:
+                    <input class="form-control text-reset" type="date" placeholder="Search" name='date_from'
+                           value="{{ $date_from ?? "" }}"
+                           aria-label="Search"/>
+                </label>
+                <label class="col-2">Due Date To:
+                    <input class="form-control text-reset" type="date" placeholder="Search" name='date_to'
+                           value="{{ $date_to ?? "" }}"
+                           aria-label="Search"/>
+                </label>
+            </div>
+            <div class="row container">
+                <div class="col-6">
+                    <button class="btn btn-primary w-100" type="submit">Search</button>
+                </div>
+                <div class="col-6">
+                    <button class="btn btn-dark w-100" type="button" id="clear">Clear Search Fields</button>
+                </div>
+            </div>
         </form>
     </article>
     <div class="row ">
