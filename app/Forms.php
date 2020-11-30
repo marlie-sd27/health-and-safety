@@ -171,7 +171,6 @@ class Forms extends Model
             return $first_overdue->first()->id;
         }
 
-
         // otherwise, check for the next closest assignment deadline for this user/form
         $next_deadline = Events::join('assignments', 'assignments.events_id', '=', 'events.id')
             ->where('assignments.email', Auth::user()->email)
