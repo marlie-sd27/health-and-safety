@@ -10,46 +10,57 @@
         @endif
         <article class="container">
             <form method="get" action="{{ route('submissions.index') }}">
-                <label>Search by form:
-                    <select class="form-control text-reset" type="text" name='form'
-                            aria-label="Search">
-                        <option></option>
-                        @foreach($links as $link)
-                            <option @if ($form == $link->title) {{ 'selected' }} @endif>{{ $link->title }}</option>
-                        @endforeach
-                    </select>
-                </label>
-                <label>Search by site:
-                    <select class="form-control text-reset" type="text" name='site'>
-                        <option @if ($site == "") {{ 'selected' }} @endif></option>
-                        @foreach($sites as $_site)
-                            <option @if($site == $_site->site) {{ 'selected' }} @endif>{{ $_site->site}}</option>
-                        @endforeach
-                    </select>
-                </label>
-                <label>Search by user:
-                    <input class="form-control" type="text" placeholder="Search" name='user'
-                           value="{{ $user ?? ""}}"
-                           aria-label="Search"/>
-                </label>
-                <label>Search from date:
-                    <input class="form-control text-reset" type="date" placeholder="Search" name='date_from'
-                           value="{{ $date_from ?? "" }}"
-                           aria-label="Search"/>
-                </label>
-                <label>to date:
-                    <input class="form-control text-reset" type="date" placeholder="Search" name='date_to'
-                           value="{{ $date_to ?? "" }}"
-                           aria-label="Search"/>
-                </label>
+                <h2>Search Parameters</h2>
+                <div class="row">
+                    <label class="col-3">Form:
+                        <select class="form-control text-reset" type="text" name='form'
+                                aria-label="Search">
+                            <option></option>
+                            @foreach($links as $link)
+                                <option @if ($form == $link->title) {{ 'selected' }} @endif>{{ $link->title }}</option>
+                            @endforeach
+                        </select>
+                    </label>
+                    <label class="col-2">Site:
+                        <select class="form-control text-reset" type="text" name='site'>
+                            <option @if ($site == "") {{ 'selected' }} @endif></option>
+                            @foreach($sites as $_site)
+                                <option @if($site == $_site->site) {{ 'selected' }} @endif>{{ $_site->site}}</option>
+                            @endforeach
+                        </select>
+                    </label>
+                    <label class="col-2">User:
+                        <input class="form-control" type="text" placeholder="Search" name='user'
+                               value="{{ $user ?? ""}}"
+                               aria-label="Search"/>
+                    </label>
+                    <label class="col-3">Date Submitted From:
+                        <input class="form-control text-reset" type="date" placeholder="Search" name='date_from'
+                               value="{{ $date_from ?? "" }}"
+                               aria-label="Search"/>
+                    </label>
+                    <label class="col-2">Date Submitted To:
+                        <input class="form-control text-reset" type="date" placeholder="Search" name='date_to'
+                               value="{{ $date_to ?? "" }}"
+                               aria-label="Search"/>
+                    </label>
+                </div>
 
-                <button class="btn btn-primary" type="submit">Search</button>
-                <button class="btn btn-dark" type="button" id="clear">Clear Search Fields</button>
+                <div class="row container">
+                    <div class="col-4">
+                        <button class="btn btn-primary w-100" type="submit">Search</button>
+                    </div>
+                    <div class="col-4">
+                        <button class="btn btn-dark w-100" type="button" id="clear">Clear Search Fields</button>
+                    </div>
 
-                @if($form)
-                    <a href="{{ route('submissions.export', ['form'=>$form, 'user'=>$user, 'site'=>$site, 'date_from'=>$date_from, 'date_to'=>$date_to]) }}"
-                       class="btn btn-success">Export</a>
-                @endif
+                    @if($form)
+                        <div class="col-4">
+                            <a href="{{ route('submissions.export', ['form'=>$form, 'user'=>$user, 'site'=>$site, 'date_from'=>$date_from, 'date_to'=>$date_to]) }}"
+                              class="btn btn-success w-100">Export</a>
+                        </div>
+                    @endif
+                </div>
             </form>
 
         </article>
@@ -69,7 +80,7 @@
                     <td>{{ $submission->forms->title }}</td>
                     <td>{{ $submission->site }}</td>
                     <td>{{ $submission->users->name }}</td>
-                    <td>{{ date('M d, Y @ H:i a', strtotime($submission->created_at)) }}</td>
+                    <td>{{ App\Helpers\Helper::makeDateReadable($submission->created_at) }}</td>
                     <td><a href="{{ route('submissions.show', ['submission' => $submission]) }}">View</a></td>
                     @if($admin)
                         <td>

@@ -24,8 +24,8 @@
                 <td>{{ $submission->site }}</td>
                 <td>{{ $submission->users->name }}</td>
                 <td>{{ $submission->email }}</td>
-                <td>{{ $submission->created_at_readable }}</td>
-                <td>{{ $submission->updated_at_readable }}</td>
+                <td>{{ App\Helpers\Helper::makeDateReadable($submission->created_at) }}</td>
+                <td>{{ App\Helpers\Helper::makeDateReadable($submission->updated_at) }}</td>
             </tr>
         </table>
     </div>

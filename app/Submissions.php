@@ -58,8 +58,6 @@ class Submissions extends Model
     public function prepareSubmission()
     {
         $this->prepareData();
-        $this->created_at_readable = Helper::makeTimeStampReadable($this->created_at);
-        $this->updated_at_readable = Helper::makeTimeStampReadable($this->updated_at);
         $this->form = $this->forms->fullForm();
 
         return $this;
