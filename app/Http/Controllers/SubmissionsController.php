@@ -36,7 +36,7 @@ class SubmissionsController extends Controller
             // generate report with filtering parameters
             $submissions = ReportHelper::generateReport($user, $site, $form, $date_from, $date_to);
 
-            return view('Submissions/adminIndex', [
+            return view('Submissions/report', [
                 'submissions' => $submissions,
                 'user' => $user,
                 'site' => $site,
@@ -48,7 +48,7 @@ class SubmissionsController extends Controller
         }
 
         // otherwise show only this user's submissions
-        return view('Submissions.index', [
+        return view('Submissions/index', [
             'submissions' => Submissions::with('forms')
                 ->where('email', '=',Auth::user()->email)
                 ->orderBy('created_at', 'desc')
