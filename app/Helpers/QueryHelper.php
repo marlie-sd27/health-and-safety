@@ -45,7 +45,7 @@ class QueryHelper
             })
             ->orderBy('date', 'asc')
             ->select('events.*', 'assignments.email', 'forms.title')
-            ->paginate($paginate);
+            ->paginate($paginate, ['*'], 'overdue');
     }
 
 
@@ -81,6 +81,6 @@ class QueryHelper
             })
             ->orderBy('date', 'asc')
             ->select('events.date', 'assignments.email','forms.title', 'submissions.id')
-            ->paginate($paginate);
+            ->paginate($paginate, ['*'], 'completed');
     }
 }

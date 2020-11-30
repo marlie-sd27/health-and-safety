@@ -2,7 +2,6 @@
 
 @section('content')
     <a href="{{ url()->previous() }}">Back</a>
-    @isset($overdues)<p class="d-none" id="outstanding">{{ $overdues }}</p>@endisset
 
     <article class="container">
         <form method="get" action="{{ route('assignments.report') }}">
@@ -62,7 +61,7 @@
                     @endforeach
                 @endisset
             </table>
-            <p>{{ $overdues->links() }}</p>
+            <p>{{ $overdues->withQueryString()->appends(array_except(Request::query(), 'overdue'))->links() }}</p>
         </div>
         <div class="col-md-6">
             <h2>Completed</h2>
@@ -86,7 +85,7 @@
                     @endforeach
                 @endisset
             </table>
-            <p>{{ $completeds->links() }}</p>
+            <p>{{ $completeds->withQueryString()->appends(array_except(Request::query(), 'completed'))->links() }}</p>
         </div>
         <script type="text/javascript">
             function copyToClipboard(element) {
