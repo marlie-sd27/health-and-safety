@@ -18,9 +18,6 @@ Route::middleware(['auth','isadmin'])->group(function ()
     Route::resource('forms', 'FormsController')->except('show');
     Route::post('toggle-live', 'FormsController@toggleLive');
 
-    //submission reporting
-
-
     // manage users
     Route::get('users', 'UserController@index')->name('users');
     Route::post('users', 'UserController@store')->name('users.store');
@@ -82,8 +79,9 @@ Route::middleware('auth')->group(function () {
         Route::get('training/report', 'TrainingController@report')->name('training.report');
 
         // report on deadlines
-        Route::get('report-deadlines', 'ReportOnDeadlinesController@index')->name('report-deadlines');
-        Route::get('report-deadlines/export', 'ReportOnDeadlinesController@export')->name('report-deadlines.export');
+        Route::get('report/bysite', 'ReportController@bySite')->name('report.bysite');
+        Route::get('assignments/report', 'AssignmentsController@report')->name('assignments.report');
+        Route::get('report-deadlines/export', 'ReportController@export')->name('report-deadlines.export');
     });
 
     Route::get('training', 'TrainingController@index')->name('training.index');

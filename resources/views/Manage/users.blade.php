@@ -22,6 +22,7 @@
                     <th>Email</th>
                     <th>Site</th>
                     <th>Job Title</th>
+                    <th>Report Submissions</th>
                 </tr>
                 @foreach($users as $user)
                     <tr>

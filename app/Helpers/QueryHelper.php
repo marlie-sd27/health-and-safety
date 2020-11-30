@@ -11,25 +11,25 @@ use Illuminate\Support\Facades\DB;
 class QueryHelper
 {
 
-    public static function getOverdues( $user = null, $form = null, $date_from = null, $date_to = null)
+    public static function getOverdues($user = null, $form = null, $date_from = null, $date_to = null)
     {
         // get first 5 overdue events
-        return Events::join('forms','events.forms_id','=','forms.id')
+        return Events::join('forms', 'events.forms_id', '=', 'forms.id')
             ->join('assignments', 'assignments.events_id', '=', 'events.id')
             ->where('date', '<', Carbon::now())
             ->whereNotNull('assignments.email')
             ->whereNotIn('assignments.id', function ($query) {
                 $query->from('events')
-                    ->join('submissions','events.id','=','submissions.events_id')
-                    ->join('assignments','events.id','=','assignments.events_id')
+                    ->join('submissions', 'events.id', '=', 'submissions.events_id')
+                    ->join('assignments', 'events.id', '=', 'assignments.events_id')
                     ->whereNotNull('assignments.email')
-                    ->whereColumn('submissions.email','=', 'assignments.email')
+                    ->whereColumn('submissions.email', '=', 'assignments.email')
                     ->select('assignments.id')
                     ->get();
             })
             // when the user search parameter is filled, filter out collections whose key is not the user
             ->when($user, function ($query, $user) {
-                return $query->where('assignments.email','like','%'.$user.'%');
+                return $query->where('assignments.email', 'like', '%' . $user . '%');
             })
             // when the form search parameter is filled, filter out instances who's title value is not the form
             ->when($form, function ($query, $form) {
@@ -37,13 +37,46 @@ class QueryHelper
             })
             //
             ->when($date_from, function ($query, $date_from) {
-                return $query->where('events.date','>=',$date_from);
+                return $query->where('events.date', '>=', $date_from);
             })
             ->when($date_to, function ($query, $date_to) {
-                return $query->where('events.date','<=',$date_to);
+                return $query->where('events.date', '<=', $date_to);
             })
             ->orderBy('date', 'asc')
-            ->select('events.*','assignments.email')
+            ->select('events.*', 'assignments.email')
+            ->paginate(25);
+    }
+
+
+    // get all completed submissions
+    public static function getCompleted($user = null, $form = null, $date_from = null, $date_to = null, $deadline = null)
+    {
+        return Events::join('submissions', 'events.id', '=', 'submissions.events_id')
+            ->join('assignments', 'events.id', '=', 'assignments.events_id')
+            ->join('forms', 'events.forms_id', '=', 'forms.id')
+            ->whereNotNull('assignments.email')
+            ->whereColumn('submissions.email', '=', 'assignments.email')
+
+            // when the user search parameter is filled, filter out collections whose key is not the user
+            ->when($user, function ($query, $user) {
+                return $query->where('submissions.email', 'like', '%' . $user . '%');
+            })
+            // when the form search parameter is filled, filter out instances who's title value is not the form
+            ->when($form, function ($query, $form) {
+                return $query->where('forms.title', $form);
+            })
+            //
+            ->when($date_from, function ($query, $date_from) {
+                return $query->where('events.date', '>=', $date_from);
+            })
+            ->when($date_to, function ($query, $date_to) {
+                return $query->where('events.date', '<=', $date_to);
+            })
+            ->when($deadline, function ($query, $deadline) {
+                return $query->where('events.id', $deadline);
+            })
+            ->orderBy('date', 'asc')
+            ->select('events.*', 'assignments.email')
             ->paginate(25);
     }
 }

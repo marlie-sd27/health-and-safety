@@ -152,7 +152,7 @@ class SubmissionsController extends Controller
         $this->authorize('delete', $submission);
 
         Submissions::destroy($submission->id);
-        return redirect(route('submissions.report'))
+        return redirect(route('submissions.index'))
             ->with('message', 'Successfully deleted submission!');
     }
 

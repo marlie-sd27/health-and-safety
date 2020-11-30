@@ -14,10 +14,10 @@ use Microsoft\Graph\Graph;
 use Microsoft\Graph\Model;
 use Illuminate\Support\Facades\Response;
 
-class ReportOnDeadlinesController extends Controller
+class ReportController extends Controller
 {
 
-    public function index(Request $request)
+    public function bySite(Request $request)
     {
         // get filter parameters
         $raw_site = $request->filled('site') ? $request->site : null;
@@ -35,7 +35,7 @@ class ReportOnDeadlinesController extends Controller
 
         // if site and event don't exist, return to view with message saying select those things
         if (!$site || !$event || !$form) {
-            return view('ReportOnDeadlines/index', [
+            return view('Report/bysite', [
                 'users' => null,
                 'submissions' => null,
                 'event' => $event,
@@ -72,14 +72,13 @@ class ReportOnDeadlinesController extends Controller
             $emails->push($item->getMail());
         });
 
-//        return $emails;
         // run a query to check who has submitted for that deadline
         $submissions = Submissions::whereIn('email', $emails)
             ->where('events_id', $event->id)
             ->pluck('id', 'email');
 
         $outstanding = $emails->diff($submissions->keys());
-        return view('ReportOnDeadlines/index', [
+        return view('Report/bysite', [
             'users' => $collection,
             'submissions' => $submissions,
             'event' => $event,
@@ -95,7 +94,7 @@ class ReportOnDeadlinesController extends Controller
 
     public function export(Request $request)
     {
-        dd($this->collection);
+//        dd($this->collection);
         // prepare export
         $filename = $request->form . "_" . $request->site . "_" . Carbon::now() . ".csv";
         $headers = [

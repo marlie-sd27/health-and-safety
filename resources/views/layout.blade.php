@@ -38,8 +38,17 @@
                     <a href="{{ route('calendar') }}" class="nav-link {{$_SERVER['REQUEST_URI'] == '/calendar' ? ' active' : ''}}">Calendar</a>
                 </li>
                 @if($admin)
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle {{ strpos( $_SERVER['REQUEST_URI'], '/report') != false ? ' active' : ''}}" data-toggle="dropdown" href="#" role="button"
+                           aria-haspopup="true" aria-expanded="false">Report
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a href="{{ route('report.bysite') }}" class="dropdown-item {{ strpos($_SERVER['REQUEST_URI'], '/report/bysite') != false ? ' active' : '' }}">By Site</a>
+                            <a href="{{ route('assignments.report') }}" class="dropdown-item {{ strpos( $_SERVER['REQUEST_URI'], '/assignments/report') != false ? ' active' : ''}}">By User</a>
+                        </div>
+                    </li>
                     <li>
-                        <a href="{{ route('report-deadlines') }}" class="nav-link {{ $_SERVER['REQUEST_URI'] == '/report-deadlines' ? ' active' : '' }}">Report</a>
+
                     </li>
                     <li class="nav-item">
                         <a href="{{ route('submissions.index') }}" class="nav-link {{$_SERVER['REQUEST_URI'] == '/submissions' ? ' active' : ''}}">Submissions</a>

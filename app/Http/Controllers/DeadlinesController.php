@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Events;
+use App\Helpers\QueryHelper;
 use App\Submissions;
+use GuzzleHttp\Psr7\Query;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -32,16 +34,11 @@ class DeadlinesController extends Controller
                 // check to see if user has submitted for the assigned deadline
                 if (!Auth::user()->hasReportingPrivileges())
                 {
-                    $submission = Events::join('submissions','events.id','=','submissions.events_id')
-                        ->join('assignments','events.id','=','assignments.events_id')
-                        ->whereNotNull('assignments.email')
-                        ->whereColumn('submissions.email','=', 'assignments.email')
-                        ->where('submissions.email','=',Auth::user()->email)
-                        ->where('events.id', $deadline->id)
-                        ->first();
+                    // query for a completed submission for this event for this user
+                    $submission = QueryHelper::getCompleted(Auth::user()->email, null, null, null, $deadline->id);
 
                     // if a submissions is found, mark the deadline green
-                    if ($submission)
+                    if (sizeof($submission) > 0)
                     {
                         $deadline['color'] = '#24b924';
                     }
