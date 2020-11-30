@@ -4,6 +4,7 @@ namespace App;
 
 use App\Helpers\GraphAPIHelper;
 use App\Helpers\Helper;
+use App\Helpers\QueryHelper;
 use App\Http\Requests\StoreForm;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
@@ -162,24 +163,12 @@ class Forms extends Model
     public function closestDueDate()
     {
         // check if there are any overdue assignment deadlines for this form/user
-        $first_overdue = Events::join('assignments', 'assignments.events_id', '=', 'events.id')
-            ->where('assignments.email', Auth::user()->email)
-            ->where('date', '<', Carbon::now())
-            ->where('events.forms_id', '=', $this->id)
-            ->whereNotIn('events.id', function ($query) {
-                $query->select('events_id')
-                    ->from('submissions')
-                    ->where('email', Auth::user()->email)
-                    ->get();
-            })
-            ->select('events.*')
-            ->orderBy('date', 'desc')
-            ->first();
+        $first_overdue = QueryHelper::getOverdues(Auth::user()->email, $this->title);
 
         // if there is an overdue assignment, return the event id
-        if($first_overdue)
+        if($first_overdue->isNotEmpty())
         {
-            return $first_overdue->id;
+            return $first_overdue->first()->id;
         }
 
 
