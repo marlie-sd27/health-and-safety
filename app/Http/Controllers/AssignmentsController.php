@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Assignments;
 use App\Events;
 use App\Helpers\QueryHelper;
+use App\Sites;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -74,11 +75,21 @@ class AssignmentsController extends Controller
         $form = $request->filled('form') ? $request->form : null;
         $date_from = $request->filled('date_from') ? $request->date_from : null;
         $date_to = $request->filled('date_to') ? $request->date_to : null;
+        $site = $request->filled('site') ? $request->site : null;
 
-        $overdues = QueryHelper::getOverdues($user, $form, $date_from, $date_to);
-        $completeds = QueryHelper::getCompleted($user, $form, $date_from, $date_from);
+        $overdues = QueryHelper::getOverdues($user, $form, $date_from, $date_to, 10);
+        $completeds = QueryHelper::getCompleted($user, $form, $date_from, $date_from, $site, 10);
 
-        return view('Assignments/report', ['overdues' => $overdues, 'completeds' => $completeds]);
+        return view('Assignments/report', [
+            'overdues' => $overdues,
+            'completeds' => $completeds,
+            'user' => $user,
+            'form' => $form,
+            'date_from' => $date_from,
+            'date_to' => $date_to,
+            'site' => $site,
+            'sites' => Sites::all(),
+        ]);
     }
 
 }

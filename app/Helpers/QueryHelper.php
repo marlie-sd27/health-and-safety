@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\DB;
 class QueryHelper
 {
 
-    public static function getOverdues($user = null, $form = null, $date_from = null, $date_to = null)
+    public static function getOverdues($user = null, $form = null, $date_from = null, $date_to = null, $paginate = 25)
     {
         // get first 5 overdue events
         return Events::join('forms', 'events.forms_id', '=', 'forms.id')
@@ -24,6 +24,7 @@ class QueryHelper
                     ->join('assignments', 'events.id', '=', 'assignments.events_id')
                     ->whereNotNull('assignments.email')
                     ->whereColumn('submissions.email', '=', 'assignments.email')
+//                    ->orWhereColumn('submissions.site', '=', 'assignments.sites_id')
                     ->select('assignments.id')
                     ->get();
             })
@@ -43,13 +44,13 @@ class QueryHelper
                 return $query->where('events.date', '<=', $date_to);
             })
             ->orderBy('date', 'asc')
-            ->select('events.*', 'assignments.email')
-            ->paginate(25);
+            ->select('events.*', 'assignments.email', 'forms.title')
+            ->paginate($paginate);
     }
 
 
     // get all completed submissions
-    public static function getCompleted($user = null, $form = null, $date_from = null, $date_to = null, $deadline = null)
+    public static function getCompleted($user = null, $form = null, $date_from = null, $date_to = null, $deadline = null, $site = null, $paginate = 25)
     {
         return Events::join('submissions', 'events.id', '=', 'submissions.events_id')
             ->join('assignments', 'events.id', '=', 'assignments.events_id')
@@ -75,8 +76,11 @@ class QueryHelper
             ->when($deadline, function ($query, $deadline) {
                 return $query->where('events.id', $deadline);
             })
+            ->when($site, function ($query, $site) {
+                return $query->where('submissions.site', $site);
+            })
             ->orderBy('date', 'asc')
-            ->select('events.*', 'assignments.email')
-            ->paginate(25);
+            ->select('events.date', 'assignments.email','forms.title', 'submissions.id')
+            ->paginate($paginate);
     }
 }
