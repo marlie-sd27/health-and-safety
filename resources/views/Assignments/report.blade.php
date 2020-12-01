@@ -95,7 +95,7 @@
                     @foreach($completeds as $completed)
 
                         <tr>
-                            <td>{{ str_replace(['@sd27.bc.ca','.'], ' ', $completed->email) }}</td>
+                            <td>{{ $completed->site ?? str_replace(['@sd27.bc.ca','.'], ' ', $completed->email) }}</td>
                             <td>
                                 <a href="{{ route('submissions.show', ['submission' => $completed->id]) }}">{{ $completed->title }}</a>
                             </td>

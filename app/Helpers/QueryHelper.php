@@ -64,7 +64,7 @@ class QueryHelper
             ->when($group_member_emails, function ($query, $group_member_emails) {
                 return $query->whereIn('assignments.email', $group_member_emails);
             })
-            // when the form search parameter is filled, filter out assignments who's title value is not the form
+            // when the form search parameter is filled, filter out assignments who's title is not the form
             ->when($form, function ($query, $form) {
                 return $query->where('forms.title', $form);
             })
@@ -109,8 +109,9 @@ class QueryHelper
         return Events::join('submissions', 'events.id', '=', 'submissions.events_id')
             ->join('assignments', 'events.id', '=', 'assignments.events_id')
             ->join('forms', 'events.forms_id', '=', 'forms.id')
-            ->whereNotNull('assignments.email')
+            ->leftJoin('sites', 'assignments.sites_id','=', 'sites.id')
             ->whereColumn('submissions.email', '=', 'assignments.email')
+            ->orWhereColumn('submissions.sites_id', '=', 'assignments.sites_id')
 
             // when the user search parameter is filled, filter out collections whose key is not the user
             ->when($user, function ($query, $user) {
@@ -142,7 +143,7 @@ class QueryHelper
                 return $query->where('submissions.site', $site);
             })
             ->orderBy('date', 'asc')
-            ->select('events.date', 'assignments.email','forms.title', 'submissions.id')
+            ->select('events.date', 'assignments.email','forms.title', 'submissions.id', 'sites.site')
             ->paginate($paginate, ['*'], 'completed');
     }
 }
