@@ -21,7 +21,7 @@
                 <th>Last Updated</th>
             </tr>
             <tr>
-                <td>{{ $submission->site }}</td>
+                <td>{{ $submission->sites->site ?? "" }}</td>
                 <td>{{ $submission->users->name }}</td>
                 <td>{{ $submission->email }}</td>
                 <td>{{ App\Helpers\Helper::makeDateReadable($submission->created_at) }}</td>

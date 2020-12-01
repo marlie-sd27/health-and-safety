@@ -78,7 +78,7 @@
             @foreach($submissions as $submission)
                 <tr class="row-data">
                     <td>{{ $submission->forms->title }}</td>
-                    <td>{{ $submission->site }}</td>
+                    <td>{{ $submission->sites->site ?? ''}}</td>
                     <td>{{ $submission->users->name }}</td>
                     <td>{{ App\Helpers\Helper::makeDateReadable($submission->created_at) }}</td>
                     <td><a href="{{ route('submissions.show', ['submission' => $submission]) }}">View</a></td>

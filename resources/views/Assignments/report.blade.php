@@ -36,7 +36,7 @@
                 </label>
             </div>
             <div class="row">
-                <label class="col-4">User:
+                <label class="col-4">Staff Member:
                     <input class="form-control" type="text" placeholder="Search" name='user'
                            value="{{ $user ?? ""}}"
                            aria-label="Search"/>
@@ -67,14 +67,14 @@
             <h2>Overdue</h2>
             <table class="table table-bordered table-hover">
                 <tr>
-                    <th>User</th>
+                    <th>Staff/Site</th>
                     <th>Form</th>
                     <th>Due</th>
                 </tr>
                 @isset($overdues)
                     @foreach($overdues as $overdue)
                         <tr>
-                            <td>{{ str_replace(['@sd27.bc.ca','.'], ' ', $overdue->email) }}</td>
+                            <td>{{ $overdue->site ?? str_replace(['@sd27.bc.ca','.'], ' ', $overdue->email) }}</td>
                             <td>{{ $overdue->title }}</td>
                             <td>{{ \App\Helpers\Helper::makeDateReadable($overdue->date) }}</td>
                         </tr>
@@ -87,7 +87,7 @@
             <h2>Completed</h2>
             <table class="table table-bordered table-hover">
                 <tr>
-                    <th>User</th>
+                    <th>Staff/Site</th>
                     <th>Form</th>
                     <th>Due</th>
                 </tr>

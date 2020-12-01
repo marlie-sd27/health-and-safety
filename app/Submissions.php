@@ -36,15 +36,15 @@ class Submissions extends Model
     // get the form associated with this submission
     public function sites()
     {
-        return $this->hasOne('App\Sites');
+        return $this->belongsTo('App\Sites');
     }
 
 
-    // get the form associated with this submission
-    public function assignments()
-    {
-        return $this->hasOne('App\Assignments');
-    }
+//    // get the assignment associated with this submission
+//    public function assignments()
+//    {
+//        return $this->hasOne('App\Assignments');
+//    }
 
 
     // convert data string to array

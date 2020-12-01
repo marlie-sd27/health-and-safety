@@ -41,15 +41,14 @@ class QueryHelper
         // get first 5 overdue events
         return Events::join('forms', 'events.forms_id', '=', 'forms.id')
             ->join('assignments', 'assignments.events_id', '=', 'events.id')
+            ->leftJoin('sites', 'assignments.sites_id', '=', 'sites.id')
             ->where('date', '<', Carbon::now())
-            ->whereNotNull('assignments.email')
             ->whereNotIn('assignments.id', function ($query) {
                 $query->from('events')
                     ->join('submissions', 'events.id', '=', 'submissions.events_id')
                     ->join('assignments', 'events.id', '=', 'assignments.events_id')
-                    ->whereNotNull('assignments.email')
                     ->whereColumn('submissions.email', '=', 'assignments.email')
-//                    ->orWhereColumn('submissions.site', '=', 'assignments.sites_id')
+                    ->orWhereColumn('submissions.sites_id', '=', 'assignments.sites_id')
                     ->select('assignments.id')
                     ->get();
             })
@@ -77,7 +76,7 @@ class QueryHelper
                 return $query->where('events.date', '<=', $date_to);
             })
             ->orderBy('date', 'asc')
-            ->select('events.*', 'assignments.email', 'forms.title')
+            ->select('events.*', 'assignments.email', 'forms.title', 'sites.site')
             ->paginate($paginate, ['*'], 'overdue');
     }
 

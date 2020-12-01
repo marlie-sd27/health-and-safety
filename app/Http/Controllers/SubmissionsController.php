@@ -75,7 +75,7 @@ class SubmissionsController extends Controller
         Submissions::create([
             'forms_id' => $validated->form_id,
             'events_id' => $validated->event_id,
-            'site' => $validated->site,
+            'sites_id' => $validated->sites_id,
             'email' => Auth::user()->email,
             'data' => $validated->data,
             'files' => http_build_query($files),
@@ -135,7 +135,7 @@ class SubmissionsController extends Controller
 
 
         $submission->update([
-            'site' => $validated->site,
+            'sites_id' => $validated->sites_id,
             'data' => $validated->data,
             'files' => http_build_query($files),
         ]);

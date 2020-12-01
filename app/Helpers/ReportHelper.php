@@ -14,12 +14,13 @@ class ReportHelper
     {
         return Submissions::join('forms', 'forms_id', '=', 'forms.id')
             ->join('users', 'submissions.email', '=', 'users.email')
+            ->leftJoin('sites', 'submissions.sites_id', '=', 'sites.id')
             ->when($user, function ($query, $user) {
                 return $query->where('users.name', 'like', '%' . $user . '%')
                     ->orWhere('users.email', 'like', '%'.$user.'%');;
             })
             ->when($site, function ($query, $site) {
-                return $query->where('submissions.site', 'like', '%' . $site . '%');
+                return $query->where('sites.site', 'like', '%' . $site . '%');
             })
             ->when($form, function ($query, $form) {
                 return $query->where('title', 'like', '%' . $form . '%');
@@ -31,7 +32,7 @@ class ReportHelper
                 return $query->where('submissions.created_at', '<', $date_to);
             })
             ->orderBy('submissions.created_at', 'desc')
-            ->select('submissions.*', 'users.name', 'forms.title')
+            ->select('submissions.*', 'users.name', 'forms.title','sites.site')
             ->paginate(25);
     }
 
@@ -47,7 +48,7 @@ class ReportHelper
 
             $export = [
                 'form' => $submission->title,
-                'site' => $submission->site,
+                'site' => $submission->sites->site,
                 'name' => $submission->name,
                 'email' => $submission->email,
                 'created_at' => $submission->created_at->toCookieString(),
