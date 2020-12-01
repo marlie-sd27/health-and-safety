@@ -5,6 +5,7 @@ namespace App\Helpers;
 
 
 use App\Events;
+use App\Groups;
 use App\Sites;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
@@ -13,7 +14,7 @@ use Illuminate\Support\Facades\DB;
 class QueryHelper
 {
 
-    public static function getOverdues($user = null, $form = null, $date_from = null, $date_to = null, $site = null, $paginate = 25)
+    public static function getOverdues($user = null, $form = null, $date_from = null, $date_to = null, $site = null, $group = null, $paginate = 25)
     {
         // if site isn't null, retrieve all staff members at that site
         $site_member_emails = null;
@@ -23,6 +24,17 @@ class QueryHelper
             $site_members = collect(GraphAPIHelper::getSiteStaff(Sites::firstWhere('site', $site)));
             $site_members->each(function ($item) use ($site_member_emails) {
                 $site_member_emails->push($item->getMail());
+            });
+        }
+
+        // if group isn't null, retrieve all staff members at that site
+        $group_member_emails = null;
+        if($group)
+        {
+            $group_member_emails = new Collection();
+            $group_members = collect(GraphAPIHelper::getGroupStaff(Groups::firstWhere('name', $group)));
+            $group_members->each(function ($item) use ($group_member_emails) {
+                $group_member_emails->push($item->getMail());
             });
         }
 
@@ -49,6 +61,10 @@ class QueryHelper
             ->when($site_member_emails, function ($query, $site_member_emails) {
                 return $query->whereIn('assignments.email', $site_member_emails);
             })
+            // when the group_members_emails is filled, filter out users not in the group
+            ->when($group_member_emails, function ($query, $group_member_emails) {
+                return $query->whereIn('assignments.email', $group_member_emails);
+            })
             // when the form search parameter is filled, filter out assignments who's title value is not the form
             ->when($form, function ($query, $form) {
                 return $query->where('forms.title', $form);
@@ -67,7 +83,7 @@ class QueryHelper
 
 
     // get all completed submissions
-    public static function getCompleted($user = null, $form = null, $date_from = null, $date_to = null, $deadline = null, $site = null, $paginate = 25)
+    public static function getCompleted($user = null, $form = null, $date_from = null, $date_to = null, $deadline = null, $site = null, $group = null, $paginate = 25)
     {
         // if site isn't null, retrieve all staff members at that site
         $site_member_emails = null;
@@ -77,6 +93,17 @@ class QueryHelper
             $site_members = collect(GraphAPIHelper::getSiteStaff(Sites::firstWhere('site', $site)));
             $site_members->each(function ($item) use ($site_member_emails) {
                 $site_member_emails->push($item->getMail());
+            });
+        }
+
+        // if group isn't null, retrieve all staff members at that site
+        $group_member_emails = null;
+        if($group)
+        {
+            $group_member_emails = new Collection();
+            $group_members = collect(GraphAPIHelper::getGroupStaff(Groups::firstWhere('name', $group)));
+            $group_members->each(function ($item) use ($group_member_emails) {
+                $group_member_emails->push($item->getMail());
             });
         }
 
@@ -90,9 +117,13 @@ class QueryHelper
             ->when($user, function ($query, $user) {
                 return $query->where('submissions.email', 'like', '%' . $user . '%');
             })
-            // when the site_members is filled, filter out users not at the site
+            // when the site_members_emails is filled, filter out users not at the site
             ->when($site_member_emails, function ($query, $site_member_emails) {
                 return $query->whereIn('assignments.email', $site_member_emails);
+            })
+            // when the group_members_emails is filled, filter out users not in the group
+            ->when($group_member_emails, function ($query, $group_member_emails) {
+                return $query->whereIn('assignments.email', $group_member_emails);
             })
             // when the form search parameter is filled, filter out instances who's title value is not the form
             ->when($form, function ($query, $form) {

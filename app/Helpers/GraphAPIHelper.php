@@ -67,7 +67,22 @@ class GraphAPIHelper
     }
 
 
+    // get all staff at a specified site
     public static function getSiteStaff(Sites $site)
+    {
+        return self::getAzureGroupStaff($site->azure_group_id);
+    }
+
+
+    // retrieve all staff in a specified group
+    public static function getGroupStaff(Groups $group)
+    {
+        return self::getAzureGroupStaff($group->azure_group_id);
+    }
+
+
+    // get staff from azure group
+    private static function getAzureGroupStaff($azure_group_id)
     {
         $graph = self::prepareAPI();
 
@@ -76,7 +91,7 @@ class GraphAPIHelper
             '$select' => 'displayName,mail,jobTitle,department',
             '$top' => 999,
         );
-        $getUsersUrl = "/groups/{$site->azure_group_id}/members?" . http_build_query($queryParams);
+        $getUsersUrl = "/groups/{$azure_group_id}/members?" . http_build_query($queryParams);
 
         return $graph->createRequest('GET', $getUsersUrl)
             ->execute()

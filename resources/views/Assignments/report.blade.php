@@ -7,7 +7,7 @@
         <form method="get" action="{{ route('assignments.report') }}">
             <h2>Search Filters</h2>
             <div class="row">
-                <label class="col-3">Form:
+                <label class="col-4">Form:
                     <select class="form-control text-reset"
                             type="text"
                             name='form'
@@ -18,7 +18,7 @@
                         @endforeach
                     </select>
                 </label>
-                <label class="col-3">Site:
+                <label class="col-4">Site:
                     <select class="form-control text-reset" type="text" name='site'>
                         <option @if ($site == "") {{ 'selected' }} @endif></option>
                         @foreach($sites as $_site)
@@ -26,17 +26,27 @@
                         @endforeach
                     </select>
                 </label>
-                <label class="col-2">User:
+                <label class="col-4">Group:
+                    <select class="form-control text-reset" type="text" name='group'>
+                        <option @if ($group == "") {{ 'selected' }} @endif></option>
+                        @foreach($groups as $_group)
+                            <option @if($group == $_group->name) {{ 'selected' }} @endif>{{ $_group->name}}</option>
+                        @endforeach
+                    </select>
+                </label>
+            </div>
+            <div class="row">
+                <label class="col-4">User:
                     <input class="form-control" type="text" placeholder="Search" name='user'
                            value="{{ $user ?? ""}}"
                            aria-label="Search"/>
                 </label>
-                <label class="col-2">Due Date From:
+                <label class="col-4">Due Date From:
                     <input class="form-control text-reset" type="date" placeholder="Search" name='date_from'
                            value="{{ $date_from ?? "" }}"
                            aria-label="Search"/>
                 </label>
-                <label class="col-2">Due Date To:
+                <label class="col-4">Due Date To:
                     <input class="form-control text-reset" type="date" placeholder="Search" name='date_to'
                            value="{{ $date_to ?? "" }}"
                            aria-label="Search"/>
@@ -80,18 +90,18 @@
                     <th>User</th>
                     <th>Form</th>
                     <th>Due</th>
-                    <th>View</th>
                 </tr>
                 @isset($completeds)
                     @foreach($completeds as $completed)
+
                         <tr>
                             <td>{{ str_replace(['@sd27.bc.ca','.'], ' ', $completed->email) }}</td>
-                            <td>{{ $completed->title }}</td>
-                            <td>{{ \App\Helpers\Helper::makeDateReadable($completed->date) }}</td>
                             <td>
-                                <a href="{{ route('submissions.show', ['submission' => $completed->id]) }}">View</a>
+                                <a href="{{ route('submissions.show', ['submission' => $completed->id]) }}">{{ $completed->title }}</a>
                             </td>
+                            <td>{{ \App\Helpers\Helper::makeDateReadable($completed->date) }}</td>
                         </tr>
+                        </a>
                     @endforeach
                 @endisset
             </table>
