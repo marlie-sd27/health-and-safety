@@ -19445,11 +19445,11 @@ $(document).ready(function () {
     parent.find("#requirees_sites").addClass("d-none");
     parent.find("#requirees_emails").addClass("d-none");
 
-    if (selected === "Specific Sites") {
+    if (selected === "Sites") {
       parent.find("#requirees_sites").removeClass("d-none");
     }
 
-    if (selected === "Specific Staff") {
+    if (selected === "Staff") {
       parent.find("#requirees_emails").removeClass("d-none");
     }
   }); // check all boxes if clicked

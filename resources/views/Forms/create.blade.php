@@ -84,12 +84,11 @@
                         class="form-control @error(['required_for', 'requirees_sites']) border-danger @enderror"
                         name="required_for">
                     <option @if (old('required_for') == "") {{ 'selected' }} @endif></option>
-                    <option @if (old('required_for') == "All Staff") {{ 'selected' }} @endif>All Staff</option>
                     <option
-                    @if (old('required_for') == "Specific Staff") {{ 'selected' }} @endif>Specific Staff
+                    @if (old('required_for') == "Staff") {{ 'selected' }} @endif>Staff
                     </option>
                     <option
-                    @if (old('required_for') == "Specific Sites") {{ 'selected' }} @endif>Specific Sites
+                    @if (old('required_for') == "Sites") {{ 'selected' }} @endif>Sites
                     </option>
                 </select>
                 @error('required_for')
@@ -101,7 +100,7 @@
 
             </div>
 
-            <div id="requirees_sites" class="{{ old('required_for') == 'Specific Sites' ? '' : 'd-none' }} form-group ">
+            <div id="requirees_sites" class="{{ old('required_for') == 'Sites' ? '' : 'd-none' }} form-group ">
                 <label>Which sites would you like to make this due for?</label>
                 <button type="button"
                         class="help"
@@ -133,8 +132,8 @@
             </div>
 
 
-            <div id="requirees_emails" class="{{ old('required_for') == 'Specific Staff' ? '' : 'd-none' }} form-group">
-                <label>Which users would you like to make this due for? Separate emails with a comma</label>
+            <div id="requirees_emails" class="{{ old('required_for') == 'Staff' ? '' : 'd-none' }} form-group">
+                <label>Which staff groups would you like to make this due for?</label>
                 <button type="button"
                         class="help"
                         data-container="body"
@@ -143,6 +142,19 @@
                         data-content="The form will be required for each user to complete once per deadline. ">
                     <b>?</b>
                 </button>
+                <div class="row container">
+                    @foreach($groups as $group)
+                        <div class="col-sm-4 d-flex align-items-stretch">
+                            <label>
+                                <input type="checkbox"
+                                       class="@error('requirees_groups') border-danger @enderror"
+                                       name= "requirees_groups[]"
+                                       value="{{ $group->id }}"/> {{$group->name}}
+                            </label>
+                        </div>
+                    @endforeach
+                </div>
+                <label>Enter any additional staff individually here. Separate each email with a comma</label>
                 <textarea class="form-control @error('requirees_emails') border-danger @enderror"
                           name="requirees_emails">{{ old('requirees_emails') }}</textarea>
                 @error('requirees_emails')

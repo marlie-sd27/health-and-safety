@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Events;
 use App\Forms;
+use App\Groups;
 use App\Http\Requests\StoreForm;
 use App\Sites;
 use Illuminate\Http\Request;
@@ -23,7 +24,10 @@ class FormsController extends Controller
     // show view for creating a new form
     public function create()
     {
-        return view('Forms/create', ['sites' => Sites::all()]);
+        return view('Forms/create', [
+            'sites' => Sites::all(),
+            'groups' => Groups::all()
+        ]);
     }
 
 
@@ -36,7 +40,9 @@ class FormsController extends Controller
             'first_occurence_at' => $validated['first_occurence_at'],
             'interval' => $validated['interval'],
             'required_for' => $validated['required_for'],
-            'requirees' => $this->determineRequirees($validated),
+            'requirees_emails' => $validated['requirees_emails'],
+            'requirees_groups' => join(',', $validated['requirees_groups']),
+            'requirees_sites' => join(',', $validated['requirees_sites']),
             'full_year' => $validated['full_year'],
         ]);
 
@@ -61,14 +67,18 @@ class FormsController extends Controller
             'form' => $form->fullForm(),
             'event' => Events::find($event_id),
             'sites' => Sites::all()->sortBy('site'),
-            ]));
+        ]));
     }
 
 
     // show view for editing a form
     public function edit(Forms $form)
     {
-        return view('Forms/edit', ['form' => $form->fullForm(), 'sites' => Sites::all()]);
+        return view('Forms/edit', [
+            'form' => $form->fullForm(),
+            'sites' => Sites::all(),
+            'groups' => Groups::all(),
+        ]);
     }
 
 
@@ -82,15 +92,18 @@ class FormsController extends Controller
             $form->first_occurence_at = $validated['first_occurence_at'];
             $form->interval = $validated['interval'];
             $form->required_for = $validated['required_for'];
-            $form->requirees = $this->determineRequirees($validated);
+            $form->requirees_emails = $validated['requirees_emails'];
+            $form->requirees_groups = join(',', $validated['requirees_groups']);
+            $form->requirees_sites = join(',', $validated['requirees_sites']);
             $form->full_year = $validated['full_year'];
 
             // delete old events if interval or first_occurence_at attributes have been changed
             // events will be re-created when form is saved
-            if($form->isDirty(['interval','first_occurence_at'])) {
+            if ($form->isDirty(['interval', 'first_occurence_at'])) {
                 $form->deleteEvents();
             };
             $form->save();
+
 
             $form->updateSectionsandFields($validated);
 
@@ -101,15 +114,14 @@ class FormsController extends Controller
 
         $form->createAssignments();
 
-        return redirect(route('forms.show', ['form' => $form->id]))->with('message','Successfully updated the form!');
+        return redirect(route('forms.show', ['form' => $form->id]))->with('message', 'Successfully updated the form!');
     }
 
 
     // function to receive ajax request to toggle whether or not form should be live
     public function toggleLive(Request $request)
     {
-        if (!is_bool(boolval($request->live)))
-        {
+        if (!is_bool(boolval($request->live))) {
             return response()->json("Value is not boolean");
         }
         $form = Forms::find($request->form);
@@ -127,25 +139,5 @@ class FormsController extends Controller
     {
         Forms::destroy($form->id);
         return redirect(route('forms.index'))->with('message', "Successfully deleted $form->title");
-    }
-
-
-    // determine requirees
-    public function determineRequirees(StoreForm $validated)
-    {
-        // if required_for is specific staff, return the emails for staff entered
-        switch($validated->required_for) {
-            case 'Specific Staff':
-                return $validated->requirees_emails;
-                break;
-
-            // if required_for is specific sites, return the array of those sites joined in a string
-            case 'Specific Sites':
-                return join(',', $validated->requirees_sites);
-                break;
-
-            default:
-                return null;
-        }
     }
 }

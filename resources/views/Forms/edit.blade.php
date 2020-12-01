@@ -91,16 +91,9 @@
                     <select id="required_for"
                             class="form-control @error('required_for') border-danger @enderror @error('requirees_sites') border-danger @enderror"
                             name="required_for">
-                        <option @if (old('required_for') == "" || $form->required_for == "") {{ 'selected' }} @endif></option>
-                        <option @if (old('required_for') == "All Staff" || $form->required_for == "All Staff") {{ 'selected' }} @endif>
-                            All Staff
-                        </option>
-                        <option @if (old('required_for') == "Specific Staff" || $form->required_for == "Specific Staff") {{ 'selected' }} @endif>
-                            Specific Staff
-                        </option>
-                        <option @if (old('required_for') == "Specific Sites" || $form->required_for == "Specific Sites") {{ 'selected' }} @endif>
-                            Specific Sites
-                        </option>
+                        <option @if ($form->required_for == "") {{ 'selected' }} @endif></option>
+                        <option @if ($form->required_for == "Staff") {{ 'selected' }} @endif>Staff</option>
+                        <option @if ($form->required_for == "Sites") {{ 'selected' }} @endif>Sites</option>
                     </select>
                     @error('required_for')
                     <p class="text-danger">{{ $errors->first('required_for') }}</p>
@@ -111,7 +104,7 @@
                 </div>
 
                 <div id="requirees_sites"
-                     class="{{ $form->required_for == 'Specific Sites' ? '' : 'd-none' }} form-group">
+                     class="{{ $form->required_for == 'Sites' ? '' : 'd-none' }} form-group">
                     <label>Which sites would you like to make this due for?</label>
                     <button type="button"
                             class="help"
@@ -140,9 +133,8 @@
                     </div>
                 </div>
 
-                <div id="requirees_emails"
-                     class="{{ $form->required_for == 'Specific Staff' ? '' : 'd-none' }} form-group">
-                    <label>Which users would you like to make this due for? Separate emails with a comma</label>
+                <div id="requirees_emails" class="{{ $form->required_for == 'Staff' ? '' : 'd-none' }} form-group">
+                    <label>Which staff groups would you like to make this due for?</label>
                     <button type="button"
                             class="help"
                             data-container="body"
@@ -151,8 +143,21 @@
                             data-content="The form will be required for each user to complete once per deadline. ">
                         <b>?</b>
                     </button>
+                    <div class="row container">
+                        @foreach($groups as $group)
+                            <div class="col-sm-4 d-flex align-items-stretch">
+                                <label>
+                                    <input type="checkbox"
+                                           class="@error('requirees_groups') border-danger @enderror"
+                                           name= "requirees_groups[]"
+                                           value="{{ $group->id }}"/> {{$group->name}}
+                                </label>
+                            </div>
+                        @endforeach
+                    </div>
+                    <label>Enter any additional staff individually here. Separate each email with a comma</label>
                     <textarea class="form-control @error('requirees_emails') border-danger @enderror"
-                              name="requirees_emails">{{ old('requirees_emails') || $form->required_for == 'Specific Staff' ? $form->requirees : '' }}</textarea>
+                              name="requirees_emails">{{ old('requirees_emails') || $form->requirees_emails }}</textarea>
                     @error('requirees_emails')
                     <p class=" text-danger">{{ $errors->first('requirees_emails') }}</p>
                     @enderror

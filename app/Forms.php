@@ -2,12 +2,14 @@
 
 namespace App;
 
+use App\Helpers\CollectionHelper;
 use App\Helpers\GraphAPIHelper;
 use App\Helpers\Helper;
 use App\Helpers\QueryHelper;
 use App\Http\Requests\StoreForm;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -16,7 +18,7 @@ use Illuminate\Support\Str;
 class Forms extends Model
 {
     protected $fillable = [
-        'title', 'description', 'first_occurence_at', 'interval', 'required_for', 'full_year', 'live', 'requirees'
+        'title', 'description', 'first_occurence_at', 'interval', 'required_for', 'full_year', 'live', 'requirees_groups', 'requirees_emails', 'requirees_sites'
     ];
 
 
@@ -226,8 +228,28 @@ class Forms extends Model
                 break;
 
             // if form is required for specific staff, create assignment for each staff for each event
-            case('Specific Staff'):
-                $staff = explode(',', $this->requirees);
+            case('Staff'):
+                $staff = new Collection();
+
+                // loop through each group and get the staff members. Add to staff master collection
+                if($this->requirees_groups)
+                {
+                    foreach (explode(',', $this->requirees_groups) as $group) {
+                        $group_members = collect(GraphAPIHelper::getGroupStaff(Groups::find($group)));
+                        $group_members->each(function ($item) use ($staff) {
+                            $staff->push($item->getMail());
+                        });
+                    }
+                }
+                // loop through each additional email and push to staff master collection
+                if($this->requirees_emails)
+                {
+                    foreach (explode(',', $this->requirees_emails) as $email) {
+                        $staff->push($email);
+                    }
+                }
+
+                // loop through each event and assign it to each staff member
                 foreach ($events as $event)
                 {
                     foreach ($staff as $staffMember)
@@ -241,8 +263,8 @@ class Forms extends Model
                 break;
 
             // if form is required for specific sites, create assignment for each site for each event
-            case('Specific Sites'):
-                $sites = explode(',',$this->requirees);
+            case('Sites'):
+                $sites = explode(',',$this->requirees_sites);
                 foreach ($events as $event)
                 {
                     foreach ($sites as $site)
