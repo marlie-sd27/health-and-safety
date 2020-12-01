@@ -69,7 +69,7 @@ class QueryHelper
     public static function getCompleted($user = null, $form = null, $date_from = null, $date_to = null, $deadline = null, $site = null, $paginate = 25)
     {
         // if site isn't null, retrieve all staff members at that site
-        $site_member_emails = new Collection();
+        $site_member_emails = null;
         if($site)
         {
             $site_members = collect(GraphAPIHelper::getSiteStaff(Sites::firstWhere('site', $site)));
