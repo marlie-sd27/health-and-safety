@@ -77,7 +77,7 @@ class AssignmentsController extends Controller
         $date_to = $request->filled('date_to') ? $request->date_to : null;
         $site = $request->filled('site') ? $request->site : null;
 
-        $overdues = QueryHelper::getOverdues($user, $form, $date_from, $date_to, 10);
+        $overdues = QueryHelper::getOverdues($user, $form, $date_from, $date_to, $site, 10);
         $completeds = QueryHelper::getCompleted($user, $form, $date_from, $date_from, null, $site,10);
 
         return view('Assignments/report', [

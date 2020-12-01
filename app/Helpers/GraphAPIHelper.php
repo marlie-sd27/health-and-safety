@@ -5,6 +5,7 @@ namespace App\Helpers;
 
 
 use App\Groups;
+use App\Sites;
 use App\TokenStore\TokenCache;
 use Microsoft\Graph\Graph;
 use Microsoft\Graph\Model\User;
@@ -63,5 +64,22 @@ class GraphAPIHelper
         }
 
         return $users;
+    }
+
+
+    public static function getSiteStaff(Sites $site)
+    {
+        $graph = self::prepareAPI();
+
+        //build and execute query to pull group members for specified site
+        $queryParams = array(
+            '$select' => 'displayName,mail,jobTitle,department',
+            '$top' => 999,
+        );
+        $getUsersUrl = "/groups/{$site->azure_group_id}/members?" . http_build_query($queryParams);
+
+        return $graph->createRequest('GET', $getUsersUrl)
+            ->execute()
+            ->getResponseAsObject(User::class);
     }
 }

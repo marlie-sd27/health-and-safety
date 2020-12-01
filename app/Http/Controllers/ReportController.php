@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Events;
 use App\Forms;
+use App\Helpers\GraphAPIHelper;
+use App\Helpers\QueryHelper;
 use App\Sites;
 use App\Submissions;
 use App\TokenStore\TokenCache;
+use GuzzleHttp\Psr7\Query;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
@@ -46,25 +49,8 @@ class ReportController extends Controller
             ]);
         }
 
-        // build query to get user data
-        $tokenCache = new TokenCache();
-
-        $graph = new Graph();
-        $graph->setAccessToken($tokenCache->getAccessToken());
-
-
-        //build and execute query to pull group members for specified site
-        $queryParams = array(
-            '$select' => 'displayName,mail,jobTitle,department',
-            '$top' => 999,
-        );
-        $getUsersUrl = "/groups/{$site->azure_group_id}/members?" . http_build_query($queryParams);
-
-        $users = $graph->createRequest('GET', $getUsersUrl)
-            ->execute();
-
         // convert users into a collection of Microsoft Graph Users
-        $collection = collect($users->getResponseAsObject(Model\User::class))->sort();
+        $collection = collect(GraphAPIHelper::getSiteStaff($site))->sort();
 
         // gather all the email addresses from the users pulled
         $emails = new Collection();
