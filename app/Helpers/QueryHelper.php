@@ -19,6 +19,7 @@ class QueryHelper
         $site_member_emails = null;
         if($site)
         {
+            $site_member_emails = new Collection();
             $site_members = collect(GraphAPIHelper::getSiteStaff(Sites::firstWhere('site', $site)));
             $site_members->each(function ($item) use ($site_member_emails) {
                 $site_member_emails->push($item->getMail());
@@ -72,6 +73,7 @@ class QueryHelper
         $site_member_emails = null;
         if($site)
         {
+            $site_member_emails = new Collection();
             $site_members = collect(GraphAPIHelper::getSiteStaff(Sites::firstWhere('site', $site)));
             $site_members->each(function ($item) use ($site_member_emails) {
                 $site_member_emails->push($item->getMail());
