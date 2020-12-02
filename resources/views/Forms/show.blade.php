@@ -27,6 +27,7 @@
             @endif
             <span class="required">*</span><label>School/Site</label>
             <select name="site" class="form-control @error('site') border-danger @enderror">
+                <option @if(old('site') == '') {{ 'selected' }} @endif></option>
                 @foreach($sites as $site)
                     <option @if(old('site') == $site->site) {{ 'selected' }} @endif>{{ $site->site}}</option>
                 @endforeach
