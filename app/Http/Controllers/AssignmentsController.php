@@ -76,11 +76,12 @@ class AssignmentsController extends Controller
         $form = $request->filled('form') ? $request->form : null;
         $date_from = $request->filled('date_from') ? $request->date_from : null;
         $date_to = $request->filled('date_to') ? $request->date_to : null;
-        $site = $request->filled('site') ? $request->site : null;
+        $site_staff = $request->filled('site_staff') ? $request->site_staff : null;
+        $site_due = $request->filled('site_due') ? $request->site_due : null;
         $group = $request->filled('group') ? $request->group : null;
 
-        $overdues = QueryHelper::getOverdues($user, $form, $date_from, $date_to, $site, $group, 10);
-        $completeds = QueryHelper::getCompleted($user, $form, $date_from, $date_from, null, $site, $group, 10);
+        $overdues = QueryHelper::getOverdues($user, $form, $date_from, $date_to, $site_staff, $group, $site_due);
+        $completeds = QueryHelper::getCompleted($user, $form, $date_from, $date_from, null, $site_staff, $group, $site_due);
 
         return view('Assignments/report', [
             'overdues' => $overdues,
@@ -89,7 +90,8 @@ class AssignmentsController extends Controller
             'form' => $form,
             'date_from' => $date_from,
             'date_to' => $date_to,
-            'site' => $site,
+            'site_staff' => $site_staff,
+            'site_due' => $site_due,
             'sites' => Sites::all(),
             'group' => $group,
             'groups' => Groups::all(),

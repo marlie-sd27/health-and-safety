@@ -10,18 +10,19 @@ use App\Sites;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use Microsoft\Graph\Model\Group;
 
 class QueryHelper
 {
 
-    public static function getOverdues($user = null, $form = null, $date_from = null, $date_to = null, $site = null, $group = null, $paginate = 25)
+    public static function getOverdues($user = null, $form = null, $date_from = null, $date_to = null, $site_staff = null, $group = null, $site_due = null, $paginate = 25)
     {
         // if site isn't null, retrieve all staff members at that site
         $site_member_emails = null;
-        if($site)
+        if($site_staff)
         {
             $site_member_emails = new Collection();
-            $site_members = collect(GraphAPIHelper::getSiteStaff(Sites::firstWhere('site', $site)));
+            $site_members = collect(GraphAPIHelper::getSiteStaff(Sites::find($site_staff)));
             $site_members->each(function ($item) use ($site_member_emails) {
                 $site_member_emails->push($item->getMail());
             });
@@ -32,7 +33,7 @@ class QueryHelper
         if($group)
         {
             $group_member_emails = new Collection();
-            $group_members = collect(GraphAPIHelper::getGroupStaff(Groups::firstWhere('name', $group)));
+            $group_members = collect(GraphAPIHelper::getGroupStaff(Groups::find($group)));
             $group_members->each(function ($item) use ($group_member_emails) {
                 $group_member_emails->push($item->getMail());
             });
@@ -75,6 +76,9 @@ class QueryHelper
             ->when($date_to, function ($query, $date_to) {
                 return $query->where('events.date', '<=', $date_to);
             })
+            ->when($site_due, function( $query, $site_due) {
+                return $query->where('assignments.sites_id', $site_due);
+            })
             ->orderBy('date', 'asc')
             ->select('events.*', 'assignments.email', 'forms.title', 'sites.site')
             ->paginate($paginate, ['*'], 'overdue');
@@ -82,14 +86,14 @@ class QueryHelper
 
 
     // get all completed submissions
-    public static function getCompleted($user = null, $form = null, $date_from = null, $date_to = null, $deadline = null, $site = null, $group = null, $paginate = 25)
+    public static function getCompleted($user = null, $form = null, $date_from = null, $date_to = null, $deadline = null, $site_staff = null, $group = null, $site_due = null, $paginate = 25)
     {
-        // if site isn't null, retrieve all staff members at that site
+        // if $site_staff isn't null, retrieve all staff members at that site
         $site_member_emails = null;
-        if($site)
+        if($site_staff)
         {
             $site_member_emails = new Collection();
-            $site_members = collect(GraphAPIHelper::getSiteStaff(Sites::firstWhere('site', $site)));
+            $site_members = collect(GraphAPIHelper::getSiteStaff(Sites::find($site_staff)));
             $site_members->each(function ($item) use ($site_member_emails) {
                 $site_member_emails->push($item->getMail());
             });
@@ -100,7 +104,7 @@ class QueryHelper
         if($group)
         {
             $group_member_emails = new Collection();
-            $group_members = collect(GraphAPIHelper::getGroupStaff(Groups::firstWhere('name', $group)));
+            $group_members = collect(GraphAPIHelper::getGroupStaff(Groups::find($group)));
             $group_members->each(function ($item) use ($group_member_emails) {
                 $group_member_emails->push($item->getMail());
             });
@@ -142,8 +146,8 @@ class QueryHelper
             ->when($deadline, function ($query, $deadline) {
                 return $query->where('events.id', $deadline);
             })
-            ->when($site, function ($query, $site) {
-                return $query->where('submissions.site', $site);
+            ->when($site_due, function ($query, $site_due) {
+                return $query->where('assignments.sites_id', $site_due);
             })
             ->orderBy('date', 'asc')
             ->select('events.date', 'assignments.email','forms.title', 'submissions.id', 'sites.site')
