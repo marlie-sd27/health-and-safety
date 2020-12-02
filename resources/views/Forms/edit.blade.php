@@ -157,7 +157,7 @@
                     </div>
                     <label>Enter any additional staff individually here. Separate each email with a comma</label>
                     <textarea class="form-control @error('requirees_emails') border-danger @enderror"
-                              name="requirees_emails">{{ old('requirees_emails') || $form->requirees_emails }}</textarea>
+                              name="requirees_emails">{{ old('requirees_emails') ?? $form->requirees_emails }}</textarea>
                     @error('requirees_emails')
                     <p class=" text-danger">{{ $errors->first('requirees_emails') }}</p>
                     @enderror

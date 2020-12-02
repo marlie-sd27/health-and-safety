@@ -28,7 +28,7 @@ class StoreForm extends FormRequest
             'required_for' => 'nullable|in:Staff,Sites',
             'requirees_sites' => 'required_if:required_for,Sites',
             'requirees_sites.*' => 'exists:sites,id',
-            'requirees_groups' => 'required_if:required_for,Staff',
+            'requirees_groups' => 'nullable',
             'requirees_groups.*' => 'exists:groups,id',
             'requirees_emails' => 'nullable|string',
             'full_year' => 'boolean',
