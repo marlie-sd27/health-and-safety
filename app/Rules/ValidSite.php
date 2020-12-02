@@ -25,7 +25,7 @@ class ValidSite implements Rule
      */
     public function passes($attribute, $value)
     {
-        return $value !== "--";
+        return $value !== '';
     }
 
     /**

@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use App\Rules\ValidSite;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Log;
 
 class StoreSubmission extends FormRequest
 {
@@ -16,12 +17,22 @@ class StoreSubmission extends FormRequest
     // validate request with rules
     public function rules()
     {
-        return [
-            'forms_id' => 'exists:forms',
-            'events_id' => 'exists:events|nullable',
-            'data' => 'string',
-            'site' => ['string', new ValidSite()],
-        ];
+        $rules = [];
+
+        $rules['forms_id'] = 'exists:forms';
+        $rules['events_id'] = 'exists:events|nullable';
+        $rules['data'] = 'string';
+        $rules['site'] = ['required','string', new ValidSite()];
+
+        $files = [];
+
+        foreach($this->allFiles() as $key => $value)
+        {
+            Log::debug($key . " - " . $value);
+            $rules[$key] = 'file|max:10240|mimes:jpeg,png,pdf,docx,txt,doc';
+        }
+
+        return $rules;
     }
 
 
