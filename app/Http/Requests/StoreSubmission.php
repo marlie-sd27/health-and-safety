@@ -22,7 +22,7 @@ class StoreSubmission extends FormRequest
         $rules['forms_id'] = 'exists:forms';
         $rules['events_id'] = 'exists:events|nullable';
         $rules['data'] = 'string';
-        $rules['site'] = ['string', new ValidSite()];
+        $rules['site'] = ['required','string', new ValidSite()];
 
         $files = [];
 

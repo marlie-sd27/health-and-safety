@@ -19438,12 +19438,10 @@ $(document).ready(function () {
       }
     });
   });
-
-  function copyToClipboard(id) {
-    console.log("Copying");
-    document.getElementById(id).select();
-    document.execCommand('copy');
-  }
+  $('body').on('click', '#copy-to-clipboard', function (event) {
+    console.log(event); // document.getElementById(id).select();
+    // document.execCommand('copy');
+  });
 });
 
 /***/ }),
