@@ -17,7 +17,7 @@
                             <td>
                                 <a href="{{ route('forms.show', ['form' => $overdue->forms_id, 'event' => $overdue->id]) }}">{{ $overdue->forms->title }}</a>
                             </td>
-                            <td>{{ $overdue->email ?? $overdue->sites_id }}</td>
+                            <td>{{ $overdue->site ?? str_replace(['@sd27.bc.ca','.'], ' ', $overdue->email) }}</td>
                             <td>{{ \App\Helpers\Helper::makeDateReadable($overdue->date) }}</td>
                         </tr>
                     @endforeach
@@ -53,7 +53,7 @@
                 <table class="table table-bordered table-hover">
                     @foreach( $recents as $recent)
                         <tr>
-                            <td>{{ $recent->users->name }}</td>
+                            <td>{{ $recent->sites->site ?? str_replace(['@sd27.bc.ca','.'], ' ', $recent->email) }}</td>
                             <td>{{ $recent->forms->title }}</td>
                             @if(isset($recent->created_at))
                                 <td>{{ \App\Helpers\Helper::makeDateReadable($recent->created_at) }}</td>

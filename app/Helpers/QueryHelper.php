@@ -110,22 +110,24 @@ class QueryHelper
             ->join('assignments', 'events.id', '=', 'assignments.events_id')
             ->join('forms', 'events.forms_id', '=', 'forms.id')
             ->leftJoin('sites', 'assignments.sites_id','=', 'sites.id')
-            ->whereColumn('submissions.email', '=', 'assignments.email')
-            ->orWhereColumn('submissions.sites_id', '=', 'assignments.sites_id')
+            ->where( function ($query)  {
+                $query->whereColumn('submissions.email', '=', 'assignments.email')
+                    ->orWhereColumn('submissions.sites_id', '=', 'assignments.sites_id');
+            })
 
-            // when the user search parameter is filled, filter out collections whose key is not the user
+            // when the user search parameter is filled, match the email
             ->when($user, function ($query, $user) {
                 return $query->where('submissions.email', 'like', '%' . $user . '%');
             })
-            // when the site_members_emails is filled, filter out users not at the site
+            // when the site_members_emails is filled, match emails
             ->when($site_member_emails, function ($query, $site_member_emails) {
                 return $query->whereIn('assignments.email', $site_member_emails);
             })
-            // when the group_members_emails is filled, filter out users not in the group
+            // when the group_members_emails is filled, match emails
             ->when($group_member_emails, function ($query, $group_member_emails) {
                 return $query->whereIn('assignments.email', $group_member_emails);
             })
-            // when the form search parameter is filled, filter out instances who's title value is not the form
+            // when the form search parameter is filled, find matches with the form title
             ->when($form, function ($query, $form) {
                 return $query->where('forms.title', $form);
             })
@@ -136,6 +138,7 @@ class QueryHelper
             ->when($date_to, function ($query, $date_to) {
                 return $query->where('events.date', '<=', $date_to);
             })
+            // when deadline search parameter is filled, find the events with that exact deadline
             ->when($deadline, function ($query, $deadline) {
                 return $query->where('events.id', $deadline);
             })

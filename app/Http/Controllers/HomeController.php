@@ -70,7 +70,7 @@ class HomeController extends Controller
 
 
             // get first 5 completed submissions for the user
-            $viewData['completeds'] = Submissions::with('forms')
+            $viewData['completeds'] = Submissions::with(['forms','sites'])
                 ->where('email', Auth::user()->email)
                 ->orderBy('created_at', 'desc')
                 ->limit(5)
