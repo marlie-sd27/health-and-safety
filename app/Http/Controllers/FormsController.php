@@ -6,6 +6,7 @@ use App\Events;
 use App\Forms;
 use App\Groups;
 use App\Http\Requests\StoreForm;
+use App\Jobs\CreateAssignments;
 use App\Sites;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -50,7 +51,7 @@ class FormsController extends Controller
         $errors = $form->createSectionsandFields($validated);
 
         // create assignments to assign staff or sites to the form deadlines
-        $form->createAssignments();
+        CreateAssignments::dispatch($form);
 
         // if there are errors, reload the form to fix them otherwise redirect to forms.index
         return !empty($errors) ? redirect(route('forms.create'))->withErrors($errors)->withInput() : redirect(route('forms.index'));
@@ -112,7 +113,7 @@ class FormsController extends Controller
 
         }, 3);
 
-        $form->createAssignments();
+        CreateAssignments::dispatchNow($form);
 
         return redirect(route('forms.show', ['form' => $form->id]))->with('message', 'Successfully updated the form!');
     }

@@ -22,6 +22,7 @@
         <article class="container">
                 <label><span class="required">*</span>School/Site</label>
                 <select name="sites_id" class="form-control @error('sites_id') border-danger @enderror">
+                    <option @if (old('sites_id') == '' || $submission->sites_id == '') {{ 'selected' }} @endif></option>
                     @foreach($sites as $site)
                         <option value="{{ $site->id }}" @if (old('sites_id') == $site->id || $submission->sites_id == $site->id) {{ 'selected' }} @endif>
                             {{$site->site}}</option>

@@ -15,7 +15,7 @@
                         @endforeach
                     </select>
                 </label>
-                <label>Search by user:
+                <label>Search by Staff Member:
                     <input class="form-control" type="text" placeholder="Search" name='user'
                            value="{{ $user ?? ""}}"
                            aria-label="Search"/>
@@ -38,7 +38,7 @@
         <table class="table table-bordered table-hover">
             <tr>
                 <th>Form</th>
-                <th>User</th>
+                <th>Staff/Site</th>
                 <th>Due</th>
             </tr>
             @foreach( $overdues as $overdue)
@@ -46,7 +46,7 @@
                     <td>
                         <a href="{{ route('forms.show', ['form' => $overdue->forms_id, 'event' => $overdue->id]) }}">{{ $overdue->forms->title }}</a>
                     </td>
-                    <td>{{ $overdue->email }}</td>
+                    <td>{{ $overdue->site ?? str_replace(['@sd27.bc.ca','.'], ' ', $overdue->email) }}</td>
                     <td>{{ \App\Helpers\Helper::makeDateReadable($overdue->date) }}</td>
                 </tr>
             @endforeach

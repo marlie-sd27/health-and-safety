@@ -8,6 +8,10 @@ Route::get('/signin', 'LoginController@signin')->name('signin');
 Route::get('/callback', 'LoginController@callback');
 Route::get('/signout', 'LoginController@signout')->name('signout');
 
+Route::get('/token-response', function(\Illuminate\Http\Request $request) {
+    echo $request->consent;
+});
+
 Route::get('/groups', 'UserController@groups');
 
 
