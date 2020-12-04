@@ -41,17 +41,6 @@
                     <li class="nav-item">
                         <a href="{{ route('assignments.report') }}" class="nav-link {{ str_contains($_SERVER['REQUEST_URI'], '/assignments/report') ? ' active' : ''}}">Report</a>
                     </li>
-{{--                    <li class="nav-item dropdown">--}}
-{{--                        <a class="nav-link dropdown-toggle {{ strpos( $_SERVER['REQUEST_URI'], '/report') != false ? ' active' : ''}}" data-toggle="dropdown" href="#" role="button"--}}
-{{--                           aria-haspopup="true" aria-expanded="false">Report--}}
-{{--                        </a>--}}
-{{--                        <div class="dropdown-menu dropdown-menu-right">--}}
-{{--                            <a href="{{ route('report.bysite') }}" class="dropdown-item {{ strpos($_SERVER['REQUEST_URI'], '/report/bysite') != false ? ' active' : '' }}">By Site</a>--}}
-{{--                            <a href="{{ route('assignments.report') }}" class="dropdown-item {{ strpos( $_SERVER['REQUEST_URI'], '/assignments/report') != false ? ' active' : ''}}">By User</a>--}}
-{{--                        </div>--}}
-{{--                    </li>--}}
-{{--                    <li>--}}
-{{--                    </li>--}}
                     <li class="nav-item">
                         <a href="{{ route('assignments.overdue') }}" class="nav-link {{ str_contains($_SERVER['REQUEST_URI'] , '/assignments/overdue') ? ' active' : ''}}">Overdue</a>
                     </li>
