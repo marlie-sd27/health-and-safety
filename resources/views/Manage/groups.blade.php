@@ -43,8 +43,14 @@
                 <h2>Add a New group</h2>
                 <form action="{{ route('groups.store') }}" method="post">
                     @csrf
-                    <input type="text" name="name" class="form-control" placeholder="Group Name">
-                    <input type="text" name="azure_group_id" class="form-control" placeholder="Azure Group Object ID">
+                    <input type="text" name="name" class="form-control @error('name') border-danger @enderror" placeholder="Group Name" value="{{ old('name') }}" required>
+                    @error('name')
+                    <p class=" text-danger">{{ $errors->first('name') }}</p>
+                    @enderror
+                    <input type="text" name="azure_group_id" class="form-control @error('azure_group_id') border-danger @enderror" placeholder="Azure Group Object ID" value="{{ old('azure_group_id')}}" required>
+                    @error('azure_group_id')
+                    <p class=" text-danger">{{ $errors->first('azure_group_id') }}</p>
+                    @enderror
                     <div class="container align-content-center">
                         <button class="btn btn-block btn-sm btn-success" type="submit">Save</button>
                     </div>

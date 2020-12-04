@@ -42,8 +42,15 @@
                 <h2>Add a New Site</h2>
                 <form action="{{ route('sites.store') }}" method="post">
                     @csrf
-                    <input type="text" name="site" class="form-control" placeholder="Site Name">
-                    <input type="text" name="azure_group_id" class="form-control" placeholder="Azure Group Object ID">
+                    @csrf
+                    <input type="text" name="site" class="form-control @error('site') border-danger @enderror" placeholder="Site Name" value="{{ old('site') }}" required>
+                    @error('site')
+                    <p class=" text-danger">{{ $errors->first('site') }}</p>
+                    @enderror
+                    <input type="text" name="azure_group_id" class="form-control @error('azure_group_id') border-danger @enderror" placeholder="Azure Group Object ID" value="{{ old('azure_group_id')}}" required>
+                    @error('azure_group_id')
+                    <p class=" text-danger">{{ $errors->first('azure_group_id') }}</p>
+                    @enderror
                     <div class="container align-content-center">
                         <button class="btn btn-block btn-sm btn-success" type="submit">Save</button>
                     </div>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Groups;
+use App\Rules\ValidAzureObjectID;
 use Illuminate\Http\Request;
 
 class GroupsController extends Controller
@@ -17,7 +18,7 @@ class GroupsController extends Controller
     {
         $validated = $request->validate([
             'name' => 'string|required',
-            'azure_group_id' => 'string|required',
+            'azure_group_id' => ['string', 'required', new ValidAzureObjectID()],
         ]);
 
         Groups::create($validated);

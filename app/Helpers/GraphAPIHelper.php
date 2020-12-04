@@ -7,8 +7,11 @@ namespace App\Helpers;
 use App\Groups;
 use App\Sites;
 use App\TokenStore\TokenCache;
+use GuzzleHttp\Exception\ClientException;
+use http\Exception;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Microsoft\Graph\Exception\GraphException;
 use Microsoft\Graph\Graph;
 use Microsoft\Graph\Model\User;
 
@@ -111,5 +114,23 @@ class GraphAPIHelper
         }
 
         return $users;
+    }
+
+
+    // test that give Azure Object ID is valid and exists
+    public static function testAzureObjectIDValidity($azure_object_id)
+    {
+        $graph = self::prepareAPI();
+
+        $getGroupURL = "/groups/{$azure_object_id}";
+
+        try {
+            $response = $graph->createRequest('GET', $getGroupURL)
+                ->execute();
+        } catch (ClientException $e) {
+            return false;
+        }
+
+        return $response->getStatus() == '200';
     }
 }
