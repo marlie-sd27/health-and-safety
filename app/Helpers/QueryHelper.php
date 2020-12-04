@@ -7,6 +7,7 @@ namespace App\Helpers;
 use App\Events;
 use App\Groups;
 use App\Sites;
+use App\Submissions;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
@@ -151,6 +152,71 @@ class QueryHelper
             })
             ->orderBy('date', 'asc')
             ->select('events.date', 'assignments.email','forms.title', 'submissions.id', 'sites.site')
+            ->paginate($paginate, ['*'], 'completed');
+    }
+
+
+    public static function getSubmissions($user = null, $form = null, $date_from = null, $date_to = null, $deadline = null, $site_staff = null, $group = null, $site_due = null, $paginate = 25)
+    {
+        // if $site_staff isn't null, retrieve all staff members at that site
+        $site_member_emails = null;
+        if($site_staff)
+        {
+            $site_member_emails = new Collection();
+            $site_members = collect(GraphAPIHelper::getSiteStaff(Sites::find($site_staff)));
+            $site_members->each(function ($item) use ($site_member_emails) {
+                $site_member_emails->push($item->getMail());
+            });
+        }
+
+        // if group isn't null, retrieve all staff members at that site
+        $group_member_emails = null;
+        if($group)
+        {
+            $group_member_emails = new Collection();
+            $group_members = collect(GraphAPIHelper::getGroupStaff(Groups::find($group)));
+            $group_members->each(function ($item) use ($group_member_emails) {
+                $group_member_emails->push($item->getMail());
+            });
+        }
+
+        return Submissions::join('forms', 'forms_id', '=', 'forms.id')
+            ->leftJoin('sites', 'submissions.sites_id', '=', 'sites.id')
+            ->when($user, function ($query, $user) {
+                return $query->where('submissions.email', 'like', '%' . $user . '%');
+            })
+            // when the user search parameter is filled, match the email
+            ->when($user, function ($query, $user) {
+                return $query->where('submissions.email', 'like', '%' . $user . '%');
+            })
+            // when the site_members_emails is filled, match emails
+            ->when($site_member_emails, function ($query, $site_member_emails) {
+                return $query->whereIn('submissions.email', $site_member_emails);
+            })
+            // when the group_members_emails is filled, match emails
+            ->when($group_member_emails, function ($query, $group_member_emails) {
+                return $query->whereIn('submissions.email', $group_member_emails);
+            })
+            // when the form search parameter is filled, find matches with the form title
+            ->when($form, function ($query, $form) {
+                return $query->where('forms.title', $form);
+            })
+            //
+            ->when($date_from, function ($query, $date_from) {
+                return $query->where('submissions.created_at', '>=', $date_from);
+            })
+            ->when($date_to, function ($query, $date_to) {
+                return $query->where('submissions.created_at', '<=', $date_to);
+            })
+            // when deadline search parameter is filled, find the events with that exact deadline
+            ->when($deadline, function ($query, $deadline) {
+                return $query->where('events.id', $deadline);
+            })
+            ->when($site_due, function ($query, $site_due) {
+                return $query->where('submissions.sites_id', $site_due);
+            })
+            ->orderBy('created_at', 'asc')
+            ->select('submissions.*','forms.title')
             ->paginate($paginate, ['*'], 'completed');
     }
 }

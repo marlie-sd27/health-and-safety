@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Events;
 use App\Forms;
+use App\Groups;
 use App\Helpers\Helper;
 use App\Helpers\QueryHelper;
 use App\Helpers\ReportHelper;
@@ -27,23 +28,29 @@ class SubmissionsController extends Controller
         {
             // get optional search filtering parameters
             $this->authorize('report', Submissions::class);
-            $user = $request->filled('user') ? $request->user : null;
-            $site = $request->filled('site') ? $request->site : null;
+            // get optional search filtering parameters
+            $user = $request->filled('user') ? strtolower(str_replace(' ', '.', $request->user)) : null;
             $form = $request->filled('form') ? $request->form : null;
             $date_from = $request->filled('date_from') ? $request->date_from : null;
             $date_to = $request->filled('date_to') ? $request->date_to : null;
+            $site_staff = $request->filled('site_staff') ? $request->site_staff : null;
+            $site_due = $request->filled('site_due') ? $request->site_due : null;
+            $group = $request->filled('group') ? $request->group : null;
 
             // generate report with filtering parameters
-            $submissions = ReportHelper::generateReport($user, $site, $form, $date_from, $date_to);
+            $submissions = QueryHelper::getSubmissions($user, $form, $date_from, $date_to, null, $site_staff, $group, $site_due);
 
             return view('Submissions/report', [
                 'submissions' => $submissions,
                 'user' => $user,
-                'site' => $site,
                 'form' => $form,
                 'date_from' => $date_from,
                 'date_to' => $date_to,
+                'site_staff' => $site_staff,
+                'site_due' => $site_due,
                 'sites' => Sites::all()->sortBy('site'),
+                'group' => $group,
+                'groups' => Groups::all()->sortBy('name'),
             ]);
         }
 
@@ -161,11 +168,13 @@ class SubmissionsController extends Controller
     public function export(Request $request)
     {
         // get optional search filtering parameters
+        $user = $request->filled('user') ? strtolower(str_replace(' ', '.', $request->user)) : null;
         $form = $request->filled('form') ? $request->form : null;
-        $site = $request->filled('site') ? $request->site : null;
-        $user = $request->filled('user') ? $request->user : null;
         $date_from = $request->filled('date_from') ? $request->date_from : null;
         $date_to = $request->filled('date_to') ? $request->date_to : null;
+        $site_staff = $request->filled('site_staff') ? $request->site_staff : null;
+        $site_due = $request->filled('site_due') ? $request->site_due : null;
+        $group = $request->filled('group') ? $request->group : null;
 
         // if form filter doesn't exist, return message that exports are only available with form filter
         if (!$form)
@@ -184,10 +193,10 @@ class SubmissionsController extends Controller
         ];
 
         // get report data and convert to array
-        $list = ReportHelper::generateReport( $user, $site, $form, $date_from, $date_to);
+        $list = QueryHelper::getSubmissions($user, $form, $date_from, $date_to, null, $site_staff, $group, $site_due);
         $list = ReportHelper::prepareData($list)->toArray();
 
-        // if there is no data, return nessage that there is nothing to export
+        // if there is no data, return message that there is nothing to export
         if(!$list){
             return redirect()->back()->with('error', 'Nothing to export');
         }

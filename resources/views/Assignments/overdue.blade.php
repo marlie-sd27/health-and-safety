@@ -3,7 +3,6 @@
 @section('content')
     <a href="{{ url()->previous() }}">Back</a>
     <div class="container">
-        <h1>Overdue Submissions</h1>
         <article class="container">
             <form method="get" action="{{ route('assignments.overdue') }}">
                 <h2>Search Filters</h2>
@@ -87,6 +86,6 @@
                 </tr>
             @endforeach
         </table>
-        <p class="text-center">{{ $overdues->links() }}</p>
+        <p class="text-center">{{ $overdues->withQueryString()->links() }}</p>
     </div>
 @endsection
