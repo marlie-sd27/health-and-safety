@@ -24,16 +24,13 @@
 <body>
 <!-- Top nav bar -->
 <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-        <a href="{{ route('dashboard') }}" class="navbar-brand">Health and Safety Dashboard</a>
+        <a href="{{ route('dashboard') }}" class="navbar-brand">Health & Safety Dashboard</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
                 aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item">
-                    <a href="{{ route('dashboard') }}" class="nav-link {{$_SERVER['REQUEST_URI'] == '/dashboard' ? ' active' : ''}}">Dashboard</a>
-                </li>
                 <li class="nav-item">
                     <a href="{{ route('calendar') }}" class="nav-link {{$_SERVER['REQUEST_URI'] == '/calendar' ? ' active' : ''}}">Calendar</a>
                 </li>
