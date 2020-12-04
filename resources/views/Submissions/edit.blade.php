@@ -78,7 +78,7 @@
                                 </button>
                             @endif
                             <textarea class="form-control" name="data[{{ trim($f->name) }}]"
-                                      placeholder="{{ $f->label }}" {{ $f->required ? 'required' : '' }}>{{ $submission->data[trim(trim(trim($f->name)))] ?? ""}}</textarea>
+                                      placeholder="{{ $f->label }}" {{ $f->required ? 'required' : '' }}>{{ $submission->data[trim($f->name)] ?? ""}}</textarea>
 
                         </div>
                         @break
@@ -100,8 +100,8 @@
                         @foreach($f->options as $option)
                             <div>
                                 <label>
-                                    <input type="radio" name="data[{{ trim(trim(trim($f->name))) }}]"
-                                           value="{{ $option }}" {{ isset($submission->data[trim(trim(trim($f->name)))]) && trim($submission->data[trim(trim($f->name))]) === trim($option) ? "checked" : ""}} {{ $f->required ? 'required' : '' }}/>
+                                    <input type="radio" name="data[{{ trim($f->name) }}]"
+                                           value="{{ $option }}" {{ isset($submission->data[trim($f->name)]) && trim($submission->data[trim($f->name)]) === trim($option) ? "checked" : ""}} {{ $f->required ? 'required' : '' }}/>
                                     {{ $option }}
                                 </label>
                             </div>
@@ -127,7 +127,7 @@
                             <div>
                                 <label>
                                     <input type="checkbox"
-                                           name="data[{{ trim(trim($f->name)) }}][{{ $option }}]" {{ isset($submission->data[trim(trim($f->name))]) && in_array($option, explode(", ", $submission->data[trim(trim($f->name))])) ? "checked" : "" }} {{ $f->required ? 'required' : '' }} />
+                                           name="data[{{ trim($f->name) }}][{{ $option }}]" {{ isset($submission->data[trim($f->name)]) && in_array($option, explode(", ", $submission->data[trim($f->name)])) ? "checked" : "" }} {{ $f->required ? 'required' : '' }} />
                                     {{ $option }}
                                 </label>
                             </div>

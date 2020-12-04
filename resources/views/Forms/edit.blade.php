@@ -126,7 +126,8 @@
                                 <label>
                                     <input type="checkbox"
                                            name="requirees_sites[]"
-                                           value="{{ $site->id }}"/> {{$site->site}}
+                                           value="{{ $site->id }}"
+                                            {{ in_array($site->id, $form->requirees_sites) ? "checked" : "" }}/> {{$site->site}}
                                 </label>
                             </div>
                         @endforeach
@@ -150,7 +151,8 @@
                                     <input type="checkbox"
                                            class="@error('requirees_groups') border-danger @enderror"
                                            name= "requirees_groups[]"
-                                           value="{{ $group->id }}"/> {{$group->name}}
+                                           value="{{ $group->id }}"
+                                           {{ in_array($group->id, $form->requirees_groups) ? "checked" : "" }}/> {{$group->name}}
                                 </label>
                             </div>
                         @endforeach

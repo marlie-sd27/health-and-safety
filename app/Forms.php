@@ -57,6 +57,9 @@ class Forms extends Model
             }
         }
 
+        $this['requirees_sites'] = explode(',', $this->requirees_sites);
+        $this['requirees_groups'] = explode(',', $this->requirees_groups);
+
         return $this;
     }
 
