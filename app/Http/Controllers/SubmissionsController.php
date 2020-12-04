@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Events;
+use App\Fields;
 use App\Forms;
 use App\Groups;
 use App\Helpers\Helper;
@@ -24,8 +25,7 @@ class SubmissionsController extends Controller
     public function index(Request $request)
     {
         // if user can view all submissions, show all submissions with optional search parameters
-        if(Auth::user()->hasReportingPrivileges())
-        {
+        if (Auth::user()->hasReportingPrivileges()) {
             // get optional search filtering parameters
             $this->authorize('report', Submissions::class);
             // get optional search filtering parameters
@@ -57,7 +57,7 @@ class SubmissionsController extends Controller
         // otherwise show only this user's submissions
         return view('Submissions/index', [
             'submissions' => Submissions::with('forms')
-                ->where('email', '=',Auth::user()->email)
+                ->where('email', '=', Auth::user()->email)
                 ->orderBy('created_at', 'desc')
                 ->get()
         ]);
@@ -69,12 +69,10 @@ class SubmissionsController extends Controller
     {
         // if any files are uploaded, store them properly and put the path into the files array
         $files = array();
-        if( isset($validated->files))
-        {
-            foreach ($validated->files as $key => $value)
-            {
+        if (isset($validated->files)) {
+            foreach ($validated->files as $key => $value) {
                 $fileName = $key . "-" . Auth::user()->name . "-" . Carbon::now()->toDateString() . "." . $validated->file($key)->extension();
-                $path = $validated->file($key)->storeAs( Forms::find($validated->form_id)->title, $fileName);
+                $path = $validated->file($key)->storeAs(Forms::find($validated->form_id)->title, $fileName);
                 $files[$key] = $path;
             }
         }
@@ -119,26 +117,21 @@ class SubmissionsController extends Controller
 
         // delete previous file uploads for the submission
         $oldFiles = Helper::parseHTTPQuery($submission->files);
-        foreach($oldFiles as $file)
-        {
-            if( Storage::exists($file))
-            {
+        foreach ($oldFiles as $file) {
+            if (Storage::exists($file)) {
                 Storage::delete($file);
             }
         }
 
         // if any files are uploaded, store them properly and put the path into the files array
         $files = array();
-        if( isset($validated->files))
-        {
-            foreach ($validated->files as $key => $value)
-            {
+        if (isset($validated->files)) {
+            foreach ($validated->files as $key => $value) {
                 $fileName = $key . "-" . Auth::user()->name . "-" . Carbon::now()->toDateString() . "." . $validated->file($key)->extension();
-                $path = $validated->file($key)->storeAs( $submission->forms->title, $fileName);
+                $path = $validated->file($key)->storeAs($submission->forms->title, $fileName);
                 $files[$key] = $path;
             }
         }
-
 
 
         $submission->update([
@@ -177,9 +170,8 @@ class SubmissionsController extends Controller
         $group = $request->filled('group') ? $request->group : null;
 
         // if form filter doesn't exist, return message that exports are only available with form filter
-        if (!$form)
-        {
-            return redirect(route('report'))->with('error','Exports are only available when a form is specified in the search parameters');
+        if (!$form) {
+            return redirect(route('report'))->with('error', 'Exports are only available when a form is specified in the search parameters');
         }
 
         // otherwise, prepare export
@@ -193,11 +185,35 @@ class SubmissionsController extends Controller
         ];
 
         // get report data and convert to array
-        $list = QueryHelper::getSubmissions($user, $form, $date_from, $date_to, null, $site_staff, $group, $site_due);
-        $list = ReportHelper::prepareData($list)->toArray();
+        $submissions = QueryHelper::getSubmissions($user, $form, $date_from, $date_to, null, $site_staff, $group, $site_due);
+
+        // map through each submission and customize each row
+        $list = $submissions->map(function ($submission) {
+
+            // parse all the data into an array
+            $submission->prepareData();
+
+            $export = [
+                'form' => $submission->title,
+                'site' => $submission->sites->site,
+                'name' => $submission->name,
+                'email' => $submission->email,
+                'created_at' => $submission->created_at->toCookieString(),
+                'updated_at' => $submission->updated_at->toCookieString(),
+            ];
+
+            foreach ($submission->data as $key => $value) {
+                $field = Fields::where('name', 'like', '%' . $key . '%')->first();
+                if ($field) {
+                    $export[$field->label] = $value;
+                }
+            }
+
+            return $export;
+        })->toArray();
 
         // if there is no data, return message that there is nothing to export
-        if(!$list){
+        if (!$list) {
             return redirect()->back()->with('error', 'Nothing to export');
         }
 
@@ -205,8 +221,7 @@ class SubmissionsController extends Controller
         array_unshift($list, array_keys($list[0]));
 
         // write data to csv
-        $callback = function() use ($list)
-        {
+        $callback = function () use ($list) {
             $FH = fopen('php://output', 'w');
             foreach ($list as $row) {
                 fputcsv($FH, $row);
