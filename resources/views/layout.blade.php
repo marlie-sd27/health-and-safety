@@ -39,7 +39,7 @@
                 </li>
                 @if($admin)
                     <li class="nav-item">
-                        <a href="{{ route('assignments.report') }}" class="nav-link {{$_SERVER['REQUEST_URI'] == '/assignments/report' ? ' active' : ''}}">Report</a>
+                        <a href="{{ route('assignments.report') }}" class="nav-link {{ str_contains($_SERVER['REQUEST_URI'], '/assignments/report') ? ' active' : ''}}">Report</a>
                     </li>
 {{--                    <li class="nav-item dropdown">--}}
 {{--                        <a class="nav-link dropdown-toggle {{ strpos( $_SERVER['REQUEST_URI'], '/report') != false ? ' active' : ''}}" data-toggle="dropdown" href="#" role="button"--}}
@@ -51,10 +51,12 @@
 {{--                        </div>--}}
 {{--                    </li>--}}
 {{--                    <li>--}}
-
+{{--                    </li>--}}
+                    <li class="nav-item">
+                        <a href="{{ route('assignments.overdue') }}" class="nav-link {{ str_contains($_SERVER['REQUEST_URI'] , '/assignments/overdue') ? ' active' : ''}}">Overdue</a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ route('submissions.index') }}" class="nav-link {{$_SERVER['REQUEST_URI'] == '/submissions' ? ' active' : ''}}">Submissions</a>
+                        <a href="{{ route('submissions.index') }}" class="nav-link {{ str_contains($_SERVER['REQUEST_URI'] , '/submissions') ? ' active' : ''}}">Submissions</a>
                     </li>
 
                     <li class="nav-item dropdown">

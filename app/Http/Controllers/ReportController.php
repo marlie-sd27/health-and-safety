@@ -91,7 +91,7 @@ class ReportController extends Controller
             'Pragma' => 'public'
         ];
 
-        // if there is no data, return nessage that there is nothing to export
+//         if there is no data, return nessage that there is nothing to export
 //        if(!$list){
 //            return redirect()->back()->with('error', 'Nothing to export');
 //        }
