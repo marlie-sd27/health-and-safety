@@ -17258,7 +17258,13 @@ document.addEventListener('DOMContentLoaded', function () {
     navLinks: true,
     // can click day/week names to navigate views
     editable: true,
-    events: '/events/ajax'
+    // events:
+    eventSources: [{
+      url: '/events/ajax'
+    }, {
+      url: '/training/ajax',
+      color: '#24b924'
+    }]
   });
   calendar.render();
 });

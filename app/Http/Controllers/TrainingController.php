@@ -7,6 +7,7 @@ use App\Sites;
 use App\Training;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class TrainingController extends Controller
 {
@@ -146,4 +147,20 @@ class TrainingController extends Controller
             'courses' => Courses::all()->sortBy('course'),
         ]);
     }
+
+    public function ajax()
+    {
+        // query for the events
+        $trainings = Training::all();
+
+        // add attribute url for links and title for displaying in calendar
+        foreach ($trainings as $training) {
+            $training['url'] = route('training.show', ['training' => $training->id]);
+            $training['title'] = Str::title(str_replace(['@sd27.bc.ca','.'], ' ', $training->email)) . ': ' . $training->course;
+            $training['date'] = $training->expiry_date;
+        }
+
+        return response()->json($trainings);
+    }
+
 }

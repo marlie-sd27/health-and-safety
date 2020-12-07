@@ -59,6 +59,11 @@ tr, td, th {
         margin-left: 0;
     }
 }
+
+.blue {
+    color: #007bff;
+}
+
 .btn {
     color: white;
 }
@@ -74,12 +79,12 @@ tr, td, th {
     padding-bottom: 1.3em;
 }
 
-.complete {
-    color: #24b924;
-}
-
 .form-group {
     position: relative;
+}
+
+.green {
+    color: #24b924;
 }
 
 .help {
@@ -104,7 +109,7 @@ tr, td, th {
     padding: 1em 3em;
 }
 
-.overdue {
+.orange {
     color: #ff9400;
 }
 
@@ -134,10 +139,6 @@ tr, td, th {
     height: 22px;
     width: 22px;
     margin: 0;
-}
-
-.upcoming {
-    color: #007bff;
 }
 
 .wrapper {

@@ -6,17 +6,27 @@
         <div class="container">
             <a href="{{ route('events') }}">List all event deadlines..</a>
         </div>
+        <nav class="navbar navbar-expand-md">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item padding-right">
+                    <p> <i class="fa fa-square blue"></i> Form Deadlines</p>
+                </li>
+                <li class="nav-item padding-right">
+                    <p> <i class="fa fa-square green"></i> Training Expiration</p>
+                </li>
+            </ul>
+        </nav>
     @else
         <nav class="navbar navbar-expand-md">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item padding-right">
-                    <p> <i class="fa fa-square upcoming"></i> Upcoming</p>
+                    <p> <i class="fa fa-square blue"></i> Upcoming</p>
                 </li>
                 <li class="nav-item padding-right">
-                    <p> <i class="fa fa-square complete"></i> Complete</p>
+                    <p> <i class="fa fa-square green"></i> Complete</p>
                 </li>
                 <li class="nav-item padding-right">
-                    <p> <i class="fa fa-square overdue"></i> Overdue</p>
+                    <p> <i class="fa fa-square orange"></i> Overdue</p>
                 </li>
             </ul>
         </nav>
