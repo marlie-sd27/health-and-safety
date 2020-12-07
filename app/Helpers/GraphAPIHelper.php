@@ -11,7 +11,6 @@ use GuzzleHttp\Exception\ClientException;
 use http\Exception;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
-use Microsoft\Graph\Exception\GraphException;
 use Microsoft\Graph\Graph;
 use Microsoft\Graph\Model\User;
 
@@ -23,9 +22,7 @@ class GraphAPIHelper
         // build query to get user data
         $tokenCache = new TokenCache();
 
-        Log::debug($tokenCache->getAccessToken());
-
-        $token = $tokenCache->getAccessToken() ?? self::getToken();
+        $token = $tokenCache->getAccessToken() == '' ? self::getToken() : $tokenCache->getAccessToken();
 
         $graph = new Graph();
         $graph->setAccessToken($token);
@@ -45,12 +42,11 @@ class GraphAPIHelper
             ->post(env('OAUTH_AUTHORITY') . env('OAUTH_TOKEN_ENDPOINT'), [
                 'grant_type' => 'client_credentials',
                 'client_id' => env('OAUTH_APP_ID'),
-                'scope' => env('OAUTH_SCOPES'),
+                'scope' => 'https://graph.microsoft.com/.default',
                 'client_secret' => env('OAUTH_APP_PASSWORD'),
             ]);
 
-        Log::debug($response->body());
-        return $response;
+        return $response['access_token'];
     }
 
 
@@ -91,29 +87,32 @@ class GraphAPIHelper
         );
         $getUsersUrl = "/groups/{$azure_group_id}/members?" . http_build_query($queryParams);
 
-        // execute query
-        $response = $graph->createRequest('GET', $getUsersUrl)
-            ->addHeaders(['ConsistencyLevel' => 'eventual'])
-            ->execute();
-
-        // get users returned from query
-        $users = $response->getResponseAsObject(User::class);
-
-        // if there's another page of users, execute query to get those users
-        if($response->getNextLink())
-        {
-            $response = $graph->createRequest('GET', $response->getNextLink())
+        try {
+            // execute query
+            $response = $graph->createRequest('GET', $getUsersUrl)
                 ->addHeaders(['ConsistencyLevel' => 'eventual'])
                 ->execute();
 
-            // append each user returned to the users array
-            foreach($response->getResponseAsObject(User::class) as $user)
-            {
-                array_push($users, $user);
-            }
-        }
+            // get users returned from query
+            $users = $response->getResponseAsObject(User::class);
 
-        return $users;
+            // if there's another page of users, execute query to get those users
+            if ($response->getNextLink()) {
+                $response = $graph->createRequest('GET', $response->getNextLink())
+                    ->addHeaders(['ConsistencyLevel' => 'eventual'])
+                    ->execute();
+
+                // append each user returned to the users array
+                foreach ($response->getResponseAsObject(User::class) as $user) {
+                    array_push($users, $user);
+                }
+            }
+
+            return $users;
+        } catch (ClientException $e) {
+            Log::debug($e);
+            return null;
+        }
     }
 
 

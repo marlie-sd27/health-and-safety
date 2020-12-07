@@ -113,7 +113,7 @@ class FormsController extends Controller
 
         }, 3);
 
-        CreateAssignments::dispatchNow($form);
+        CreateAssignments::dispatch($form);
 
         return redirect(route('forms.show', ['form' => $form->id]))->with('message', 'Successfully updated the form!');
     }
