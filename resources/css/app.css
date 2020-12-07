@@ -73,6 +73,11 @@ tr, td, th {
     padding-top: 1.3em;
     padding-bottom: 1.3em;
 }
+
+.complete {
+    color: #24b924;
+}
+
 .form-group {
     position: relative;
 }
@@ -99,6 +104,14 @@ tr, td, th {
     padding: 1em 3em;
 }
 
+.overdue {
+    color: #ff9400;
+}
+
+.padding-right {
+    padding-right: 2em;
+}
+
 .required {
     color: red;
 }
@@ -121,6 +134,10 @@ tr, td, th {
     height: 22px;
     width: 22px;
     margin: 0;
+}
+
+.upcoming {
+    color: #007bff;
 }
 
 .wrapper {
