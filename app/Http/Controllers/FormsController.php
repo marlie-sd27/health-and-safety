@@ -108,9 +108,6 @@ class FormsController extends Controller
 
             $form->updateSectionsandFields($validated);
 
-            // first delete old assignments then create assignments to assign staff or sites to the form deadlines
-            $form->deleteAssignments();
-
         }, 3);
 
         CreateAssignments::dispatch($form);

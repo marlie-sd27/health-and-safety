@@ -37,6 +37,9 @@ class CreateAssignments implements ShouldQueue
      */
     public function handle()
     {
+        // first delete old assignments then create assignments to assign staff or sites to the form deadlines
+        $this->form->deleteAssignments();
+
         // get all the events (deadlines) for this form
         $events = Events::where('forms_id', $this->form->id)->get();
 
