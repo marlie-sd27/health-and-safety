@@ -32,13 +32,13 @@ class TrainingController extends Controller
         $this->authorize('create', Training::class);
         $request['designated_fa_attendant'] = isset($request->designated_fa_attendant);
         $validated = $request->validate([
-            'course' => 'required|string',
+            'course' => 'nullable|string',
             'description' => 'nullable|string',
             'email' => 'required|email',
             'course_date' => 'required|date',
             'expiry_date' => 'nullable|date',
             'inspection_date' => 'nullable|date',
-            'site' => 'nullable|string',
+            'site' => 'required|string',
             'notes' => 'nullable|string',
             'union' => 'nullable|string',
             'fa_level' => 'nullable|string',
@@ -74,13 +74,13 @@ class TrainingController extends Controller
         $this->authorize('update', Training::class);
         $request['designated_fa_attendant'] = isset($request->designated_fa_attendant);
         $validated = $request->validate([
-            'course' => 'required|string',
+            'course' => 'nullable|string',
             'description' => 'nullable|string',
             'email' => 'required|email',
             'course_date' => 'required|date',
             'expiry_date' => 'nullable|date',
             'inspection_date' => 'nullable|date',
-            'site' => 'nullable|string',
+            'site' => 'required|string',
             'notes' => 'nullable|string',
             'union' => 'nullable|string',
             'fa_level' => 'nullable|string',
