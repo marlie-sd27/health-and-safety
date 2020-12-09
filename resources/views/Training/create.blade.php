@@ -10,6 +10,7 @@
             <p>Enter training for an employee here. </p>
             <span class="required">*</span><label>School/Site</label>
             <select name="site" class="form-control @error('site') border-danger @enderror">
+                <option></option>
                 @foreach($sites as $site)<option @if(old('site') == $site->site) {{ 'selected' }} @endif>{{$site->site}}</option>@endforeach
             </select>
             <div class="form-group">
@@ -17,8 +18,9 @@
                 <p class="text-danger">{{ $errors->first("site") }}</p>
                 @enderror
             </div>
-            <span class="required">*</span><label>Course</label>
+            <label>Course</label>
             <select name="course" class="form-control @error('course') border-danger @enderror">
+                <option></option>
                 @foreach($courses as $course)<option @if(old('course') == $course->course) {{ 'selected' }} @endif>{{$course->course}}</option>@endforeach
             </select>
             <div>
@@ -89,6 +91,7 @@
             </div>
             <label>Union</label>
             <select name="union" class="form-control @error('union') border-danger @enderror">
+                <option></option>
                 <option @if(old('union') == 'CCTA') {{ 'selected' }} @endif>CCTA</option>
                 <option @if(old('union') == 'IUOE') {{ 'selected' }} @endif>IUOE</option>
                 <option @if(old('union') == 'BCPVPA') {{ 'selected' }} @endif>BCPVPA</option>

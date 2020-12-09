@@ -23,7 +23,7 @@
                 @enderror
             </div>
             <div class="form-group">
-                <label for="course"><span class="required">*</span>Course</label>
+                <label for="course">Course</label>
                 <select name="course" class="form-control @error('course') border-danger @enderror">
                     <option @if (old('course') == '' || $training->course == "") {{ 'selected' }} @endif></option>
                     @foreach($courses as $course)
@@ -69,7 +69,7 @@
             </div>
             <div class="form-group">
                 <label for="expiry_date">Expiry Date</label>
-                <input class="form-control @error('expiry_date') border-danger @enderror" type="date" name="expiry_date" placeholder="Expiry date" required
+                <input class="form-control @error('expiry_date') border-danger @enderror" type="date" name="expiry_date" placeholder="Expiry date"
                        value="{{ old('expiry_date') ?? $training->expiry_date}}">
                 @error('expiry_date')
                 <p class="text-danger">{{ $errors->first('expiry_date') }}</p>
@@ -88,6 +88,7 @@
             </div>
             <label>Union</label>
             <select name="union" class="form-control @error('union') border-danger @enderror">
+                <option></option>
                 <option @if(old('union') == 'CCTA' || $training->union == 'CCTA') {{ 'selected' }} @endif>CCTA</option>
                 <option @if(old('union') == 'IUOE' || $training->union == 'IUOE') {{ 'selected' }} @endif>IUOE</option>
                 <option @if(old('union') == 'BCPVPA' || $training->union == 'BCPVPA') {{ 'selected' }} @endif>BCPVPA</option>
