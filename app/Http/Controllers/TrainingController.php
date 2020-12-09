@@ -107,7 +107,7 @@ class TrainingController extends Controller
     public function report(Request $request)
     {
         $this->authorize('report', Training::class);
-        $email = $request->filled('email') ? $request->user : null;
+        $email = $request->filled('email') ? $request->email : null;
         $site = $request->filled('site') ? $request->site : null;
         $course = $request->filled('course') ? $request->course : null;
         $course_date = $request->filled('course_date') ? $request->course_date : null;
