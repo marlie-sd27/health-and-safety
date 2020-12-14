@@ -46,11 +46,15 @@
                 </div>
 
                 <div class="row container">
-                    <div class="col-6">
+                    <div class="col-4">
                         <button class="btn btn-primary w-100" type="submit">Search</button>
                     </div>
-                    <div class="col-6 ">
+                    <div class="col-4 ">
                         <button class="btn btn-dark w-100" type="button" id="clear">Clear Search Fields</button>
+                    </div>
+                    <div class="col-4">
+                        <a href="{{ route('training.export', ['course'=>$course, 'email'=>$email, 'site'=>$site, 'expiry_date_from'=>$expiry_date_from, 'expiry_date_to'=>$expiry_date_to, 'course_date' => $course_date]) }}"
+                           class="btn btn-success w-100">Export</a>
                     </div>
                 </div>
             </form>
@@ -72,7 +76,7 @@
             @foreach($trainings as $training)
                 <tr class="row-data">
                     <td>{{ $training->course }}</td>
-                    <td>{{ $training->users->name ?? $training->email}}</td>
+                    <td>{{ str_replace(['@sd27.bc.ca','.'], ' ', $training->email) }}</td>
                     <td>{{ $training->site }}</td>
                     <td>{{ $training->expiry_date ? Carbon\Carbon::now()->diffInDays($training->expiry_date, false) . " days" : "N/A"}}</td>
                     <td>{{ date('M d, Y', strtotime($training->course_date)) }}</td>

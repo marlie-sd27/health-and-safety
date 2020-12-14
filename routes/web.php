@@ -49,6 +49,7 @@ Route::middleware(['auth','isadmin'])->group(function ()
     Route::put('training/{training}', 'TrainingController@update')->name('training.update');
     Route::get('training/{training}/edit', 'TrainingController@edit')->name('training.edit');
     Route::get('training/ajax', 'TrainingController@ajax')->name('training.ajax');
+    Route::get('training/export', 'TrainingController@export')->name('training.export');
 
     // managing courses list
     Route::get('courses', 'CoursesController@index')->name('courses');

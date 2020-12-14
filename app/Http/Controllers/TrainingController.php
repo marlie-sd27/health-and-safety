@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Courses;
+use Illuminate\Support\Facades\Response;
+use App\Helpers\QueryHelper;
 use App\Sites;
 use App\Training;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
@@ -14,7 +17,11 @@ class TrainingController extends Controller
 
     public function index()
     {
-        return view('Training/index', ['trainings' => Training::where('email', Auth::user()->email)->orderBy('expiry_date', 'asc')->get()]);
+        return view('Training/index', [
+            'trainings' => Training::where('email', Auth::user()->email)
+                ->orderBy('expiry_date', 'asc')
+                ->get()
+        ]);
     }
 
 
@@ -114,26 +121,7 @@ class TrainingController extends Controller
         $expiry_date_from = $request->filled('expiry_date_from') ? $request->expiry_date_from : null;
         $expiry_date_to = $request->filled('expiry_date_to') ? $request->expiry_date_to : null;
 
-        $trainings = Training::when($email, function ($query, $email) {
-                return $query->where('email', 'like', '%' . $email . '%');
-            })
-            ->when($site, function ($query, $site) {
-                return $query->where('site', 'like', '%' . $site . '%');
-            })
-            ->when($course, function ($query, $course) {
-                return $query->where('course', 'like', '%' . $course . '%');
-            })
-            ->when($course_date, function ($query, $course_date) {
-                return $query->where('course_date', $course_date);
-            })
-            ->when($expiry_date_from, function ($query, $expiry_date_from) {
-                return $query->where('expiry_date', '>=', $expiry_date_from);
-            })
-            ->when($expiry_date_to, function ($query, $expiry_date_to) {
-                return $query->where('expiry_date', '<=', $expiry_date_to);
-            })
-            ->orderBy('expiry_date', 'asc')
-            ->paginate(25);
+        $trainings = QueryHelper::getTrainings($email, $site, $course, $course_date, $expiry_date_from, $expiry_date_to, 25);
 
         return view('Training/report', [
             'trainings' => $trainings,
@@ -161,6 +149,74 @@ class TrainingController extends Controller
         }
 
         return response()->json($trainings);
+    }
+
+
+    // export report as csv
+    public function export(Request $request)
+    {
+        // get optional search filtering parameters
+        $email = $request->filled('email') ? strtolower(str_replace(' ', '.', $request->email)) : null;
+        $course = $request->filled('course') ? $request->course : null;
+        $expiry_date_from = $request->filled('expiry_date_from') ? $request->expiry_date_from : null;
+        $expiry_date_to = $request->filled('expiry_date_to') ? $request->expiry_date_to : null;
+        $site = $request->filled('site') ? $request->site : null;
+        $course_date = $request->filled('course_date') ? $request->course_date : null;
+
+        // prepare export
+        $filename = "training-export_" . Carbon::now() . ".csv";
+        $headers = [
+            'Cache-Control' => 'must-revalidate, post-check=0, pre-check=0',
+            'Content-type' => 'text/csv',
+            'Content-Disposition' => "attachment; filename=$filename",
+            'Expires' => '0',
+            'Pragma' => 'public'
+        ];
+
+        // get report data and convert to array
+        $trainings = QueryHelper::getTrainings($email, $site, $course, $course_date, $expiry_date_from, $expiry_date_to);
+
+        // map through each submission and customize each row
+        $list = $trainings->map(function ($training) {
+
+            $export = [
+                'Email' => $training->email,
+                'Course' => $training->course,
+                'Site' => $training->site,
+                'Expires In' => $training->expiry_date ? Carbon::now()->diffInDays($training->expiry_date, false) . " days" : "N/A",
+                'Course Date' => $training->course_date,
+                'Expiry Date' => $training->expiry_date ,
+                'Inspection Date' => $training->inspection_date,
+                'Designated First Aid Attendant' => $training->designated_fa_attendant ? "True" : "False",
+                'Union' => $training->union,
+                'Level of First Aid Required by WorkSafe at this Site' => $training->fa_level,
+                'Full/Part Time/Hours' => $training->full_part_hours,
+                'Training Entry Date' => $training->created_at,
+                'Notes' => $training->notes,
+            ];
+
+            return $export;
+        })->toArray();
+
+        // if there is no data, return message that there is nothing to export
+        if (!$list) {
+            return redirect()->back()->with('error', 'Nothing to export');
+        }
+
+        // add headers for each column in the CSV download
+        array_unshift($list, array_keys($list[0]));
+
+        // write data to csv
+        $callback = function () use ($list) {
+            $FH = fopen('php://output', 'w');
+            foreach ($list as $row) {
+                fputcsv($FH, $row);
+            }
+            fclose($FH);
+        };
+
+        // return csv as a downloadable
+        return Response::stream($callback, 200, $headers);
     }
 
 }

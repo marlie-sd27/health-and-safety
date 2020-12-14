@@ -2,13 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Events;
 use App\Fields;
 use App\Forms;
 use App\Groups;
 use App\Helpers\Helper;
 use App\Helpers\QueryHelper;
-use App\Helpers\ReportHelper;
 use App\Http\Requests\StoreSubmission;
 use App\Sites;
 use App\Submissions;

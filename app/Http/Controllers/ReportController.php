@@ -80,7 +80,6 @@ class ReportController extends Controller
 
     public function export(Request $request)
     {
-//        dd($this->collection);
         // prepare export
         $filename = $request->form . "_" . $request->site . "_" . Carbon::now() . ".csv";
         $headers = [

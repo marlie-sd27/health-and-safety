@@ -8,6 +8,7 @@ use App\Events;
 use App\Groups;
 use App\Sites;
 use App\Submissions;
+use App\Training;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
@@ -217,6 +218,31 @@ class QueryHelper
             })
             ->orderBy('created_at', 'asc')
             ->select('submissions.*','forms.title')
+            ->paginate($paginate, ['*'], 'completed');
+    }
+
+
+    public static function getTrainings($email = null, $site = null, $course = null, $course_date = null, $expiry_date_from = null, $expiry_date_to = null, $paginate = null)
+    {
+        return Training::when($email, function ($query, $email) {
+            return $query->where('email', 'like', '%' . $email . '%');
+        })
+            ->when($site, function ($query, $site) {
+                return $query->where('site', 'like', '%' . $site . '%');
+            })
+            ->when($course, function ($query, $course) {
+                return $query->where('course', 'like', '%' . $course . '%');
+            })
+            ->when($course_date, function ($query, $course_date) {
+                return $query->where('course_date', $course_date);
+            })
+            ->when($expiry_date_from, function ($query, $expiry_date_from) {
+                return $query->where('expiry_date', '>=', $expiry_date_from);
+            })
+            ->when($expiry_date_to, function ($query, $expiry_date_to) {
+                return $query->where('expiry_date', '<=', $expiry_date_to);
+            })
+            ->orderBy('expiry_date', 'asc')
             ->paginate($paginate, ['*'], 'completed');
     }
 }
