@@ -9,6 +9,7 @@ use App\Helpers\QueryHelper;
 use App\Sites;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 
 class AssignmentsController extends Controller
 {
@@ -61,6 +62,14 @@ class AssignmentsController extends Controller
 
         $overdues = QueryHelper::getOverdues($user, $form, $date_from, $date_to, $site_staff, $group, $site_due);
 
+        // gather all the email addresses from the users pulled
+        $emails = new Collection();
+        $overdues->each(function ($item) use ($emails) {
+            if($item->email != null){
+                $emails->push($item->email);
+            }
+        });
+
         return view('Assignments/overdue', [
             'overdues' => $overdues,
             'user' => $user,
@@ -72,6 +81,7 @@ class AssignmentsController extends Controller
             'sites' => Sites::all(),
             'group' => $group,
             'groups' => Groups::all(),
+            'emails' => $emails->join(';')
         ]);
     }
 
