@@ -12,13 +12,13 @@ class Assignments extends Model
     // get the site associated with this submission
     public function sites()
     {
-        return $this->hasOne('App\Sites');
+        return $this->belongsTo('App\Sites');
     }
 
 
     // get the event associated with this submission
     public function events()
     {
-        return $this->hasOne('App\Events');
+        return $this->belongsTo('App\Events');
     }
 }

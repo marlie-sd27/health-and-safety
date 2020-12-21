@@ -14,9 +14,29 @@ use Illuminate\Support\Collection;
 class AssignmentsController extends Controller
 {
     // show all assignments
-    public function index()
+    public function index(Request $request)
     {
-        return view('Manage/assignments', ['assignments' => Assignments::paginate(25)]);
+        // get optional search filtering parameters
+        $user = $request->filled('user') ? strtolower(str_replace(' ', '.', $request->user)) : null;
+        $form = $request->filled('form') ? $request->form : null;
+        $date_from = $request->filled('date_from') ? $request->date_from : null;
+        $date_to = $request->filled('date_to') ? $request->date_to : null;
+        $site_staff = $request->filled('site_staff') ? $request->site_staff : null;
+        $site_due = $request->filled('site_due') ? $request->site_due : null;
+        $group = $request->filled('group') ? $request->group : null;
+
+        return view('Manage/assignments', [
+            'assignments' => QueryHelper::getAssignments($user, $form, $date_from, $date_to, $site_staff, $group, $site_due, 25),
+            'user' => $user,
+            'form' => $form,
+            'date_from' => $date_from,
+            'date_to' => $date_to,
+            'site_staff' => $site_staff,
+            'site_due' => $site_due,
+            'sites' => Sites::all(),
+            'group' => $group,
+            'groups' => Groups::all(),
+        ]);
     }
 
 
