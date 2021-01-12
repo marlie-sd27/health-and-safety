@@ -76,7 +76,7 @@
 
                     @if($form)
                         <div class="col-4">
-                            <a href="{{ route('submissions.export', ['form'=>$form, 'user'=>$user, 'site'=>$site_due, 'date_from'=>$date_from, 'date_to'=>$date_to]) }}"
+                            <a href="{{ route('submissions.export', ['form'=>$form, 'user'=>$user, 'site_due'=>$site_due, 'site_staff'=>$site_staff, 'group' => $group, 'date_from'=>$date_from, 'date_to'=>$date_to]) }}"
                               class="btn btn-success w-100">Export</a>
                         </div>
                     @endif

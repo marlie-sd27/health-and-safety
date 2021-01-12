@@ -61,10 +61,10 @@ class AssignmentsController extends Controller
 
 
     // delete specified assignment
-    public function delete(Assignments $assignment)
+    public function destroy(Assignments $assignment, Request $request)
     {
         Assignments::destroy($assignment->id);
-        return redirect()->route('assignments');
+        return redirect()->route('assignments')->with('message','Successfully removed assignment');
     }
 
 

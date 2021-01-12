@@ -40,6 +40,6 @@ class ReportingPrivilegesController extends Controller
         $user->update([
             'report_access' => false,
         ]);
-        return redirect()->route('reporters');
+        return redirect()->route('reporters')->with('message', "Successfully removed reporting privileges from $user->name");
     }
 }

@@ -59,14 +59,15 @@
                            aria-haspopup="true" aria-expanded="false">Manage
                         </a>
                         <div class="dropdown-menu dropdown-menu-right">
+                            <a href="{{ route('admins') }}" class="dropdown-item {{ strpos( $_SERVER['REQUEST_URI'], 'admins') != false ? ' active' : ''}}">Admins</a>
                             <a href="{{ route('assignments') }}" class="dropdown-item {{ strpos( $_SERVER['REQUEST_URI'], 'assignments') != false ? ' active' : ''}}">Assignments</a>
-                            <a href="{{ route('users') }}" class="dropdown-item {{ strpos( $_SERVER['REQUEST_URI'], 'users') != false ? ' active' : ''}}">Users</a>
-                            <a href="{{route('admins')}}" class="dropdown-item {{ strpos( $_SERVER['REQUEST_URI'], 'admins') != false ? ' active' : ''}}">Admins</a>
+                            <a href="{{ route('courses') }}" class="dropdown-item {{ strpos( $_SERVER['REQUEST_URI'], 'courses') != false ? ' active' : ''}}">Courses</a>
+                            <a href="{{ route('events') }}" class="dropdown-item {{ strpos( $_SERVER['REQUEST_URI'], 'events') != false ? ' active' : ''}}">Deadlines</a>
+                            <a href="{{ route('forms.index') }}" class="dropdown-item {{ strpos( $_SERVER['REQUEST_URI'], 'forms') != false ? ' active' : ''}}">Forms</a>
+                            <a href="{{ route('groups') }}" class="dropdown-item {{ strpos( $_SERVER['REQUEST_URI'], 'groups') != false ? ' active' : ''}}">Groups</a>
                             <a href="{{ route('reporters') }}" class="dropdown-item {{ strpos( $_SERVER['REQUEST_URI'], 'reporters') != false ? ' active' : ''}}">Reporting Privileges</a>
                             <a href="{{ route('sites') }}" class="dropdown-item {{ strpos( $_SERVER['REQUEST_URI'], 'sites') != false ? ' active' : ''}}">Sites</a>
-                            <a href="{{ route('groups') }}" class="dropdown-item {{ strpos( $_SERVER['REQUEST_URI'], 'groups') != false ? ' active' : ''}}">Groups</a>
-                            <a href="{{ route('courses') }}" class="dropdown-item {{ strpos( $_SERVER['REQUEST_URI'], 'courses') != false ? ' active' : ''}}">Courses</a>
-                            <a href="{{ route('forms.index') }}" class="dropdown-item {{ strpos( $_SERVER['REQUEST_URI'], 'forms') != false ? ' active' : ''}}">Forms</a>
+                            <a href="{{ route('users') }}" class="dropdown-item {{ strpos( $_SERVER['REQUEST_URI'], 'users') != false ? ' active' : ''}}">Users</a>
                         </div>
                     </li>
                 @elseif($principal | $report_access)

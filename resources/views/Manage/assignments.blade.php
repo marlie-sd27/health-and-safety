@@ -92,7 +92,7 @@
                         <td>
                             <form method="post"
                                   class="delete_form float-right"
-                                  action="{{route('assignments.destroy', $assignment->id)}}">
+                                  action="{{route('assignments.destroy', $assignment->id, ['form'=>$form, 'user'=>$user, 'site_due'=>$site_due, 'site_staff'=>$site_staff, 'group' => $group, 'date_from'=>$date_from, 'date_to'=>$date_to])}}">
                                 @csrf
                                 @method('delete')
                                 <button type="submit" onclick="return confirm('Are you sure?')" class="border-0">
@@ -104,7 +104,7 @@
                 @endforeach
             </table>
         </div>
-        <p>{{ $assignments->links() }}</p>
+        <p>{{ $assignments->withQueryString()->links() }}</p>
     </div>
 
 @endsection
