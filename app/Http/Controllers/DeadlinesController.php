@@ -19,7 +19,7 @@ class DeadlinesController extends Controller
             $deadlines = Events::with('forms')
 
                 // if user doesn't have reporting privileges, filter query to only return deadlines assigned to them
-                ->when(!Auth::user()->hasReportingPrivileges(), function ($query) {
+                ->when(!Auth::user()->isAdmin() & !Auth::user()->isReporter(), function ($query) {
                     return $query->join('assignments', 'assignments.events_id', '=', 'events.id')
                         ->where('assignments.email', Auth::user()->email);
                 })
@@ -32,7 +32,7 @@ class DeadlinesController extends Controller
                 $deadline['title'] = $deadline->forms->title;
 
                 // check to see if user has submitted for the assigned deadline
-                if (!Auth::user()->hasReportingPrivileges())
+                if (!Auth::user()->isAdmin() & !Auth::user()->isReporter())
                 {
                     // query for a completed submission for this event for this user
                     $submission = QueryHelper::getCompleted(Auth::user()->email, null, null, null, $deadline->id);

@@ -19,6 +19,6 @@ class Assignments extends Model
     // get the event associated with this submission
     public function events()
     {
-        return $this->belongsTo('App\Events');
+        return $this->belongsTo('App\Events')->withTrashed();
     }
 }
