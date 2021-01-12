@@ -49,7 +49,7 @@ Route::middleware(['auth','isadmin'])->group(function ()
     Route::put('training/{training}', 'TrainingController@update')->name('training.update');
     Route::get('training/{training}/edit', 'TrainingController@edit')->name('training.edit');
     Route::get('training/ajax', 'TrainingController@ajax')->name('training.ajax');
-    Route::get('training/export', 'TrainingController@export')->name('training.export');
+
 
     // managing courses list
     Route::get('courses', 'CoursesController@index')->name('courses');
@@ -71,7 +71,6 @@ Route::middleware(['auth','isadmin'])->group(function ()
     Route::post('assignments', 'AssignmentsController@store')->name('assignments.store');
     Route::put('assignment/{assignment}', 'AssignmentsController@update')->name('assignments.update');
     Route::delete('assignment/{assignment}', 'AssignmentsController@destroy')->name('assignments.destroy');
-    Route::get('assignments/overdue', 'AssignmentsController@overdue')->name('assignments.overdue');
 
 });
 
@@ -83,10 +82,12 @@ Route::middleware('auth')->group(function () {
     Route::middleware('reporting_access')->group(function() {
         Route::get('submissions/export', 'SubmissionsController@export')->name('submissions.export');
         Route::get('training/report', 'TrainingController@report')->name('training.report');
+        Route::get('training/export', 'TrainingController@export')->name('training.export');
 
         // report on deadlines
         Route::get('report/bysite', 'ReportController@bySite')->name('report.bysite');
         Route::get('assignments/report', 'AssignmentsController@report')->name('assignments.report');
+        Route::get('assignments/overdue', 'AssignmentsController@overdue')->name('assignments.overdue');
         Route::get('report-deadlines/export', 'ReportController@export')->name('report-deadlines.export');
     });
 

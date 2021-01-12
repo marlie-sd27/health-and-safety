@@ -59,27 +59,30 @@
                            aria-haspopup="true" aria-expanded="false">Manage
                         </a>
                         <div class="dropdown-menu dropdown-menu-right">
+                            <a href="{{ route('forms.index') }}" class="dropdown-item {{ strpos( $_SERVER['REQUEST_URI'], 'forms') != false ? ' active' : ''}}">Forms</a>
                             <a href="{{ route('admins') }}" class="dropdown-item {{ strpos( $_SERVER['REQUEST_URI'], 'admins') != false ? ' active' : ''}}">Admins</a>
-                            <a href="{{ route('assignments') }}" class="dropdown-item {{ strpos( $_SERVER['REQUEST_URI'], 'assignments') != false ? ' active' : ''}}">Assignments</a>
+                            <a href="{{ route('reporters') }}" class="dropdown-item {{ strpos( $_SERVER['REQUEST_URI'], 'reporters') != false ? ' active' : ''}}">Reporting Privileges</a>
                             <a href="{{ route('courses') }}" class="dropdown-item {{ strpos( $_SERVER['REQUEST_URI'], 'courses') != false ? ' active' : ''}}">Courses</a>
                             <a href="{{ route('events') }}" class="dropdown-item {{ strpos( $_SERVER['REQUEST_URI'], 'events') != false ? ' active' : ''}}">Deadlines</a>
-                            <a href="{{ route('forms.index') }}" class="dropdown-item {{ strpos( $_SERVER['REQUEST_URI'], 'forms') != false ? ' active' : ''}}">Forms</a>
+                            <a href="{{ route('assignments') }}" class="dropdown-item {{ strpos( $_SERVER['REQUEST_URI'], 'assignments') != false ? ' active' : ''}}">Assignments</a>
                             <a href="{{ route('groups') }}" class="dropdown-item {{ strpos( $_SERVER['REQUEST_URI'], 'groups') != false ? ' active' : ''}}">Groups</a>
-                            <a href="{{ route('reporters') }}" class="dropdown-item {{ strpos( $_SERVER['REQUEST_URI'], 'reporters') != false ? ' active' : ''}}">Reporting Privileges</a>
                             <a href="{{ route('sites') }}" class="dropdown-item {{ strpos( $_SERVER['REQUEST_URI'], 'sites') != false ? ' active' : ''}}">Sites</a>
-                            <a href="{{ route('users') }}" class="dropdown-item {{ strpos( $_SERVER['REQUEST_URI'], 'users') != false ? ' active' : ''}}">Users</a>
+{{--                            <a href="{{ route('users') }}" class="dropdown-item {{ strpos( $_SERVER['REQUEST_URI'], 'users') != false ? ' active' : ''}}">Users</a>--}}
                         </div>
                     </li>
                 @elseif($principal | $report_access)
-                    <li>
-                        <a href="{{ route('report-deadlines') }}" class="nav-link {{ $_SERVER['REQUEST_URI'] == '/report-deadlines' ? ' active' : '' }}">Report</a>
+                    <li class="nav-item">
+                        <a href="{{ route('assignments.report') }}" class="nav-link {{ str_contains($_SERVER['REQUEST_URI'], '/assignments/report') ? ' active' : ''}}">Report</a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ route('submissions.index') }}" class="nav-link {{$_SERVER['REQUEST_URI'] == '/submissions' ? ' active' : ''}}">Submissions</a>
+                        <a href="{{ route('assignments.overdue') }}" class="nav-link {{ str_contains($_SERVER['REQUEST_URI'] , '/assignments/overdue') ? ' active' : ''}}">Overdue</a>
                     </li>
-{{--                    <li class="nav-item">--}}
-{{--                        <a href="{{ route('training.report') }}" class="nav-link {{$_SERVER['REQUEST_URI'] == '/training/report' ? ' active' : ''}}">Training</a>--}}
-{{--                    </li>--}}
+                    <li class="nav-item">
+                        <a href="{{ route('submissions.index') }}" class="nav-link {{ str_contains($_SERVER['REQUEST_URI'] , '/submissions') ? ' active' : ''}}">Submissions</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('training.report') }}" class="nav-link {{$_SERVER['REQUEST_URI'] == '/training/report' ? ' active' : ''}}">Training</a>
+                    </li>
 
                 @else
                     <li class="nav-item">
