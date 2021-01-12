@@ -51,17 +51,31 @@
             <div class="col-lg card">
                 <h2>Recent Submissions</h2>
                 <table class="table table-bordered table-hover">
+                    <tr>
+                        <th>User</th>
+                        <th>Site</th>
+                        <th>Form</th>
+                        <th>Due</th>
+                        <th>Submitted</th>
+                        <th>View</th>
+                    </tr>
                     @foreach( $recents as $recent)
                         <tr>
-                            <td>{{ $recent->sites->site ?? str_replace(['@sd27.bc.ca','.'], ' ', $recent->email) }}</td>
+                            <td>{{ str_replace(['@sd27.bc.ca','.'], ' ', $recent->email) }}</td>
+                            <td>{{ $recent->sites->site }}</td>
                             <td>{{ $recent->forms->title }}</td>
+                            @if(isset($recent->events->date))
+                                <td>{{ \App\Helpers\Helper::makeDateReadable($recent->events->date) }}</td>
+                            @else
+                                <td>N/A</td>
+                            @endif
                             @if(isset($recent->created_at))
                                 <td>{{ \App\Helpers\Helper::makeDateReadable($recent->created_at) }}</td>
                             @else
                                 <td>N/A</td>
                             @endif
-                            <td><a href="{{ route('submissions.show', ['submission' => $recent->id]) }}">View
-                                    Submission</a>
+                            <td>
+                                <a href="{{ route('submissions.show', ['submission' => $recent->id]) }}">View</a>
                             </td>
                         </tr>
                     @endforeach
