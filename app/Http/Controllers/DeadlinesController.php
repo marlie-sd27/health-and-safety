@@ -21,7 +21,9 @@ class DeadlinesController extends Controller
                 // if user doesn't have reporting privileges, filter query to only return deadlines assigned to them
                 ->when(!Auth::user()->isAdmin() & !Auth::user()->isReporter(), function ($query) {
                     return $query->join('assignments', 'assignments.events_id', '=', 'events.id')
-                        ->where('assignments.email', Auth::user()->email);
+                        ->leftJoin('sites','sites.id','=','assignments.sites_id')
+                        ->where('assignments.email', Auth::user()->email)
+                        ->orWhere('sites.code', Auth::user()->site);
                 })
                 ->select('events.*')
                 ->get();
@@ -34,8 +36,11 @@ class DeadlinesController extends Controller
                 // check to see if user has submitted for the assigned deadline
                 if (!Auth::user()->isAdmin() & !Auth::user()->isReporter())
                 {
-                    // query for a completed submission for this event for this user
-                    $submission = QueryHelper::getCompleted(Auth::user()->email, null, null, null, $deadline->id);
+                    // query for a completed submission for this event for this user or their site
+                    $submission = QueryHelper::getCompleted(null, null, null, null, $deadline->id);
+                    $submission = $submission->filter(function($s) {
+                        return $s->email === Auth::user()->email || $s->code === Auth::user()->site;
+                    });
 
                     // if a submissions is found, mark the deadline green
                     if (sizeof($submission) > 0)

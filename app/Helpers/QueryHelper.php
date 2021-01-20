@@ -153,7 +153,7 @@ class QueryHelper
                 return $query->where('assignments.sites_id', $site_due);
             })
             ->orderBy('date', 'asc')
-            ->select('events.date', 'assignments.email','forms.title', 'submissions.id', 'sites.site')
+            ->select('events.date', 'assignments.email','forms.title', 'submissions.id', 'sites.site','sites.code')
             ->paginate($paginate, ['*'], 'completed');
     }
 

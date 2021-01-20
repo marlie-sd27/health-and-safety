@@ -6,6 +6,7 @@ use App\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use League\OAuth2\Client\Provider\GenericProvider;
 use Microsoft\Graph\Graph;
 use Microsoft\Graph\Model;
@@ -83,7 +84,7 @@ class LoginController extends Controller
                 $graph = new Graph();
                 $graph->setAccessToken($accessToken->getToken());
                 $queryParams = array(
-                    '$select' => 'displayName,mail,jobTitle,department'
+                    '$select' => 'displayName,mail,jobTitle,officeLocation'
                 );
                 $getMeUrl = '/me?'.http_build_query($queryParams);
 
@@ -132,7 +133,7 @@ class LoginController extends Controller
                         'elementary_principal' => $elementary,
                         'last_login' => Carbon::now()->format('Y-m-d H:i:s'),
                         'job_title' => $user->getJobTitle(),
-                        'site' => $user->getDepartment(),
+                        'site' => $user->getOfficeLocation(),
                     ]);
 
                     // otherwise update the principal status and last login timestamp
@@ -142,7 +143,7 @@ class LoginController extends Controller
                         'elementary_principal' => $elementary,
                         'last_login' => Carbon::now()->format('Y-m-d H:i:s'),
                         'job_title' => $user->getJobTitle(),
-                        'site' => $user->getDepartment(),
+                        'site' => $user->getOfficeLocation(),
                     ]);
                     $localUser->save();
                 }
@@ -151,6 +152,8 @@ class LoginController extends Controller
                 // attempt to login
                 try {
                     Auth::login($localUser);
+                    Auth::user()->generateToken();
+
                 } catch(Throwable $exception){
                     return "Failed to Auth";
                 }
@@ -173,6 +176,15 @@ class LoginController extends Controller
     {
         $tokenCache = new TokenCache();
         $tokenCache->clearTokens();
+
+        // remove token from user
+        $user = Auth::guard('api')->user();
+
+        if($user) {
+            $user->api_token = null;
+            $user->save();
+        }
+
         Auth::logout();
         return redirect('/');
     }

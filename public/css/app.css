@@ -117,6 +117,10 @@ tr, td, th {
     padding-right: 2em;
 }
 
+.purple {
+    color: #8149d9;
+}
+
 .required {
     color: red;
 }
@@ -147,7 +151,7 @@ tr, td, th {
 }
 
 #create {
-    max-height: 12em;
+    height: fit-content;
 }
 
 #main {

@@ -5,7 +5,14 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 import listPlugin from '@fullcalendar/list';
 
 document.addEventListener('DOMContentLoaded', function () {
-    var calendarEl = document.getElementById('calendar');
+    var calendarEl = document.getElementById('calendar')
+
+    // var eventSources = [
+    //     {
+    //         url: '/api/calendar/allDeadlines',
+    //         headers: {'Authorization': "Bearer DcIimzp3M2118X2flCHuN1ybn9Au3uRIlaKLJdjSXL8uuO1Af4GZNupppWnv"}
+    //     }
+    // ];
 
 
     var calendar = new Calendar(calendarEl, {
@@ -18,14 +25,14 @@ document.addEventListener('DOMContentLoaded', function () {
         initialDate: new Date(),
         navLinks: true, // can click day/week names to navigate views
         editable: true,
-        // events:
-        eventSources: [
+        eventSources:
+            [
             {
-                url: '/events/ajax',
+                url: '/calendar/deadlines',
             },
             {
                 url: '/training/ajax',
-                color: '#24b924',
+                color: '#8149d9',
             }
         ],
     });
