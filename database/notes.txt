@@ -25,3 +25,5 @@ UPDATE submissions
 *** search for any submissions without a sites_id. They'll break the csv export
 
 https://login.microsoftonline.com/sd27.bc.ca/adminconsent?client_id=f57a0b2f-40f5-47d1-8e5b-458f9bc213e2&state=12345&redirect_uri=https://healthandsafety.test/token-response
+
+Be sure to run npm install and composer install for security updates
