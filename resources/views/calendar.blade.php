@@ -29,9 +29,9 @@
                 <li class="nav-item padding-right">
                     <p> <i class="fa fa-square orange"></i> Overdue</p>
                 </li>
-                <li class="nav-item padding-right">
-                    <p> <i class="fa fa-square purple"></i> Training</p>
-                </li>
+{{--                <li class="nav-item padding-right">--}}
+{{--                    <p> <i class="fa fa-square purple"></i> Training</p>--}}
+{{--                </li>--}}
             </ul>
         </nav>
     @endif

@@ -12,8 +12,6 @@ use App\Submissions;
 use App\Training;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\DB;
-use Microsoft\Graph\Model\Group;
 
 class QueryHelper
 {
@@ -83,8 +81,13 @@ class QueryHelper
                 return $query->where('assignments.sites_id', $site_due);
             })
             ->orderBy('date', 'asc')
-            ->select('events.*', 'assignments.email', 'forms.title', 'sites.site')
-            ->paginate($paginate, ['*'], 'overdue');
+            ->select('events.*', 'assignments.email', 'forms.title', 'sites.site','sites.code')
+            ->when($paginate, function ($query, $paginate) {
+                return $query->paginate($paginate, ['*'], 'overdue');
+            }, function($query) {
+                return $query->get();
+            });
+
     }
 
 

@@ -46,6 +46,17 @@ class User extends Authenticatable
         return $this->api_token;
     }
 
+
+    public function getSites_id()
+    {
+        return $this->sites()->id;
+    }
+
+    public function sites()
+    {
+        return Sites::firstWhere('code',$this->site);
+    }
+
     public function isAdmin() {
         return $this->admin;
     }
