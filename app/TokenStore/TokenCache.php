@@ -2,7 +2,7 @@
 
 namespace App\TokenStore;
 
-use App\User;
+use League\OAuth2\Client\Provider\GenericProvider;
 
 class TokenCache {
     public function storeTokens($accessToken) {
@@ -35,7 +35,7 @@ class TokenCache {
             // so let's refresh
 
             // Initialize the OAuth client
-            $oauthClient = new \League\OAuth2\Client\Provider\GenericProvider([
+            $oauthClient = new GenericProvider([
                 'clientId'                => env('OAUTH_APP_ID'),
                 'clientSecret'            => env('OAUTH_APP_PASSWORD'),
                 'redirectUri'             => env('OAUTH_REDIRECT_URI'),
@@ -63,6 +63,7 @@ class TokenCache {
         // Token is still valid, just return it
         return session('accessToken');
     }
+
 
     public function updateTokens($accessToken) {
         session([

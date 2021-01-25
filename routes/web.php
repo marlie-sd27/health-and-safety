@@ -1,5 +1,8 @@
 <?php
 
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 
 // Authentication
@@ -8,6 +11,12 @@ Route::get('/signin', 'LoginController@signin')->name('signin');
 Route::get('/callback', 'LoginController@callback');
 Route::get('/signout', 'LoginController@signout')->name('signout');
 
+Route::get('/token-response', function(\Illuminate\Http\Request $request) {
+    echo $request->consent;
+});
+
+Route::get('/groups', 'UserController@groups');
+
 
 // Admin routes
 Route::middleware(['auth','isadmin'])->group(function ()
@@ -15,10 +24,6 @@ Route::middleware(['auth','isadmin'])->group(function ()
     //forms
     Route::resource('forms', 'FormsController')->except('show');
     Route::post('toggle-live', 'FormsController@toggleLive');
-
-    //submission reporting
-    Route::get('submissions/overdue', 'SubmissionsReportsController@overdue')->name('submissions.overdue');
-    Route::get('submissions/upcoming', 'SubmissionsReportsController@upcoming')->name('submissions.upcoming');
 
     // manage users
     Route::get('users', 'UserController@index')->name('users');
@@ -31,13 +36,14 @@ Route::middleware(['auth','isadmin'])->group(function ()
     Route::delete('admins/{admin}', 'AdminController@destroy')->name('admins.destroy');
 
     // managing users with report access (who aren't principals)
-    Route::get('reporters', 'ReportAccessController@index')->name('reporters');
-    Route::post('reporters', 'ReportAccessController@store')->name('reporters.store');
-    Route::delete('reporter/{user}', 'ReportAccessController@destroy')->name('reporters.destroy');
+    Route::get('reporters', 'ReportingPrivilegesController@index')->name('reporters');
+    Route::post('reporters', 'ReportingPrivilegesController@store')->name('reporters.store');
+    Route::delete('reporter/{user}', 'ReportingPrivilegesController@destroy')->name('reporters.destroy');
 
-    // events
-    Route::delete('events/{event}', 'EventsController@destroy')->name('events.destroy');
-    Route::get('events', 'EventsController@index')->name('events');
+    // events (deadlines)
+    Route::delete('events/{event}', 'DeadlinesController@destroy')->name('events.destroy');
+    Route::get('events', 'DeadlinesController@index')->name('events');
+    Route::get('events/upcoming', 'DeadlinesController@upcoming')->name('events.upcoming');
 
     // training
     Route::post('training', 'TrainingController@store')->name('training.store');
@@ -46,15 +52,27 @@ Route::middleware(['auth','isadmin'])->group(function ()
     Route::put('training/{training}', 'TrainingController@update')->name('training.update');
     Route::get('training/{training}/edit', 'TrainingController@edit')->name('training.edit');
 
+
     // managing courses list
     Route::get('courses', 'CoursesController@index')->name('courses');
     Route::post('course', 'CoursesController@store')->name('courses.store');
     Route::delete('course/{course}', 'CoursesController@destroy')->name('courses.destroy');
 
+    // managing groups list
+    Route::get('groups', 'GroupsController@index')->name('groups');
+    Route::post('group', 'GroupsController@store')->name('groups.store');
+    Route::delete('group/{group}', 'GroupsController@destroy')->name('groups.destroy');
+
     // managing sites list
     Route::get('sites', 'SitesController@index')->name('sites');
     Route::post('site', 'SitesController@store')->name('sites.store');
     Route::delete('site/{site}', 'SitesController@destroy')->name('sites.destroy');
+
+    // managing assignments
+    Route::get('assignments', 'AssignmentsController@index')->name('assignments');
+    Route::post('assignments', 'AssignmentsController@store')->name('assignments.store');
+    Route::put('assignment/{assignment}', 'AssignmentsController@update')->name('assignments.update');
+    Route::delete('assignment/{assignment}', 'AssignmentsController@destroy')->name('assignments.destroy');
 
 });
 
@@ -64,13 +82,16 @@ Route::middleware('auth')->group(function () {
 
     // reporting submissions/training requires admin or principal designation
     Route::middleware('reporting_access')->group(function() {
-        Route::get('submissions/report', 'SubmissionsReportsController@report')->name('submissions.report');
-        Route::get('submissions/export', 'SubmissionsReportsController@export')->name('submissions.export');
+        Route::get('submissions/export', 'SubmissionsController@export')->name('submissions.export');
         Route::get('training/report', 'TrainingController@report')->name('training.report');
+        Route::get('training/export', 'TrainingController@export')->name('training.export');
+        Route::get('training/ajax', 'TrainingController@ajax')->name('training.ajax');
 
         // report on deadlines
-        Route::get('report-deadlines', 'ReportOnDeadlinesController@index')->name('report-deadlines');
-        Route::get('report-deadlines/export', 'ReportOnDeadlinesController@export')->name('report-deadlines.export');
+        Route::get('report/bysite', 'ReportController@bySite')->name('report.bysite');
+        Route::get('assignments/report', 'AssignmentsController@report')->name('assignments.report');
+        Route::get('assignments/overdue', 'AssignmentsController@overdue')->name('assignments.overdue');
+        Route::get('report-deadlines/export', 'ReportController@export')->name('report-deadlines.export');
     });
 
     Route::get('training', 'TrainingController@index')->name('training.index');
@@ -88,7 +109,8 @@ Route::middleware('auth')->group(function () {
 
     // Calendar
     Route::get('/calendar', 'CalendarController@calendar')->name('calendar');
-    Route::get('/events/ajax', 'EventsController@ajax')->name('events.ajax');
+    Route::get('/calendar/deadlines', 'CalendarController@deadlines')->name('calendar.deadlines');
+    Route::get('/events/ajax', 'DeadlinesController@ajax')->name('events.ajax');
 });
 
 

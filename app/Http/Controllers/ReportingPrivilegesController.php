@@ -2,13 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\ReportAccess;
 use App\User;
 use Carbon\Carbon;
-use Facade\FlareClient\Report;
 use Illuminate\Http\Request;
 
-class ReportAccessController extends Controller
+class ReportingPrivilegesController extends Controller
 {
 
     public function index()
@@ -42,6 +40,6 @@ class ReportAccessController extends Controller
         $user->update([
             'report_access' => false,
         ]);
-        return redirect()->route('reporters');
+        return redirect()->route('reporters')->with('message', "Successfully removed reporting privileges from $user->name");
     }
 }

@@ -49,7 +49,8 @@
                             employee, but will still be available to fill out and submit.</b></small></p>
                 <div class="form-group">
                     <label for="first_occurence_at">Enter one or more due dates separated by a comma</label>
-                    <p><small>Examples: '2020-09-01,2020-12-01' or '2020-10-30'. Dates must be in the format yyyy-mm-dd. Leave blank for no due dates</small></p>
+                    <p><small>Examples: '2020-09-01,2020-12-01' or '2020-10-30'. Dates must be in the format yyyy-mm-dd.
+                            Leave blank for no due dates</small></p>
                     <input class="form-control @error('first_occurence_at') border-danger @enderror"
                            type="text"
                            name="first_occurence_at"
@@ -57,7 +58,7 @@
                            value="@if (old('first_occurence_at')){{ old('first_occurence_at') }}@else{{ $form->first_occurence_at }}@endif">
 
                     @error('first_occurence_at')
-                        <p class=" text-danger">{{ $errors->first('first_occurence_at') }}</p>
+                    <p class=" text-danger">{{ $errors->first('first_occurence_at') }}</p>
                     @enderror
                 </div>
                 <div class="form-group">
@@ -67,9 +68,9 @@
                            type="text"
                            name="interval"
                            placeholder="Define an interval"
-                           value="@if (old('interval')){{ old('interval') }}@else {{ $form->interval }} @endif">
+                           value="@if (old('interval')){{ old('interval') }}@else{{ $form->interval }}@endif">
                     @error('interval')
-                        <p class=" text-danger">{{ $errors->first('interval') }}</p>
+                    <p class=" text-danger">{{ $errors->first('interval') }}</p>
                     @enderror
                 </div>
                 <div class="form-group">
@@ -78,32 +79,89 @@
                            name="full_year" @if ($form->full_year | is_array(old('full_year'))) checked @endif>
                     <label for="full_year">Include July and August for scheduling?</label>
                     @error('full_year')
-                        <p class=" text-danger">{{ $errors->first('full_year') }}</p>
+                    <p class=" text-danger">{{ $errors->first('full_year') }}</p>
                     @enderror
-                    <p><small><b>Note that due dates will not be scheduled in July or August unless otherwise specified</b>
+                    <p><small><b>Note that due dates will not be scheduled in July or August unless otherwise
+                                specified</b>
                         </small></p>
                 </div>
                 <div class="form-group">
-                    <label for="required_for"><span class="required">*</span>Who is required to submit this form?</label>
-                    <select class="form-control @error('required_for') border-danger @enderror" name="required_for">
-                        <option value="All Staff" @if (old('required_for') == "All Staff" || $form->required_for == "All Staff" ) {{ 'selected' }} @endif>
-                            All staff
-                        </option>
-                        <option
-                            value="Principals and Vice Principals" @if (old('required_for') == "Principals and Vice Principals" || $form->required_for == "Principals and Vice Principals" ) {{ 'selected' }} @endif>
-                            Principals and Vice Principals
-                        </option>
-                        <option
-                            value="Secondary Principals Only" @if (old('required_for') == "Secondary Principals Only" || $form->required_for == "Secondary Principals Only" ) {{ 'selected' }} @endif>
-                            Secondary Principals Only
-                        </option>
-                        <option
-                            value="Elementary Principals Only" @if (old('required_for') == "Elementary Principals Only" || $form->required_for == "Elementary Principals Only" ) {{ 'selected' }} @endif>
-                            Elementary Principals Only
-                        </option>
+                    <label for="required_for"><span class="required">*</span>Who is required to submit this
+                        form?</label>
+                    <select id="required_for"
+                            class="form-control @error('required_for') border-danger @enderror @error('requirees_sites') border-danger @enderror"
+                            name="required_for">
+                        <option @if ($form->required_for == "") {{ 'selected' }} @endif></option>
+                        <option @if ($form->required_for == "Staff") {{ 'selected' }} @endif>Staff</option>
+                        <option @if ($form->required_for == "Sites") {{ 'selected' }} @endif>Sites</option>
                     </select>
                     @error('required_for')
-                        <p class=" text-danger">{{ $errors->first('required_for') }}</p>
+                    <p class="text-danger">{{ $errors->first('required_for') }}</p>
+                    @enderror
+                    @error('requirees_sites')
+                    <p class="text-danger">{{ $errors->first('requirees_sites') }}</p>
+                    @enderror
+                </div>
+
+                <div id="requirees_sites"
+                     class="{{ $form->required_for == 'Sites' ? '' : 'd-none' }} form-group">
+                    <label>Which sites would you like to make this due for?</label>
+                    <button type="button"
+                            class="help"
+                            data-container="body"
+                            data-toggle="popover"
+                            data-placement="right"
+                            data-content="The form will be required for each site to complete once per deadline. If somebody completes this form for a site, nobody else at that site is required to complete it.">
+                        <b>?</b>
+                    </button>
+                    <div>
+                        <label>
+                            <input type="checkbox"
+                                   id="checkAll"
+                                   class="@error('requirees_sites') border-danger @enderror"/> Select All</label>
+                    </div>
+                    <div class="row container">
+                        @foreach($sites as $site)
+                            <div class="col-sm-4 d-flex align-items-stretch">
+                                <label>
+                                    <input type="checkbox"
+                                           name="requirees_sites[]"
+                                           value="{{ $site->id }}"
+                                            {{ in_array($site->id, $form->requirees_sites) ? "checked" : "" }}/> {{$site->site}}
+                                </label>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+
+                <div id="requirees_emails" class="{{ $form->required_for == 'Staff' ? '' : 'd-none' }} form-group">
+                    <label>Which staff groups would you like to make this due for?</label>
+                    <button type="button"
+                            class="help"
+                            data-container="body"
+                            data-toggle="popover"
+                            data-placement="right"
+                            data-content="The form will be required for each user to complete once per deadline. ">
+                        <b>?</b>
+                    </button>
+                    <div class="row container">
+                        @foreach($groups as $group)
+                            <div class="col-sm-4 d-flex align-items-stretch">
+                                <label>
+                                    <input type="checkbox"
+                                           class="@error('requirees_groups') border-danger @enderror"
+                                           name= "requirees_groups[]"
+                                           value="{{ $group->id }}"
+                                           {{ in_array($group->id, $form->requirees_groups) ? "checked" : "" }}/> {{$group->name}}
+                                </label>
+                            </div>
+                        @endforeach
+                    </div>
+                    <label>Enter any additional staff individually here. Separate each email with a comma</label>
+                    <textarea class="form-control @error('requirees_emails') border-danger @enderror"
+                              name="requirees_emails">{{ old('requirees_emails') ?? $form->requirees_emails }}</textarea>
+                    @error('requirees_emails')
+                    <p class=" text-danger">{{ $errors->first('requirees_emails') }}</p>
                     @enderror
                 </div>
             </article>
@@ -123,20 +181,22 @@
 
                                 <div class="form-group">
                                     <label for="section_title">Title</label>
-                                    <input class="form-control @error("section_title.$loop->index") border-danger @enderror"
-                                           type="text"
-                                           name="section_title[]"
-                                           value="@if (old("section_title.$loop->index")){{ old("section_title.$loop->index") }}@else{{ $section->title }} @endif">
+                                    <input
+                                        class="form-control @error("section_title.$loop->index") border-danger @enderror"
+                                        type="text"
+                                        name="section_title[]"
+                                        value="@if (old("section_title.$loop->index")){{ old("section_title.$loop->index") }}@else{{ $section->title }} @endif">
                                     @error("section_title.$loop->index")
-                                        <p class=" text-danger">{{ $errors->first("section_title.$loop->index") }}</p>
+                                    <p class=" text-danger">{{ $errors->first("section_title.$loop->index") }}</p>
                                     @enderror
                                 </div>
                                 <div class="form-group">
                                     <label for="section_description">Description</label>
-                                    <textarea class="form-control @error("section_description.$loop->index") border-danger @enderror"
-                                              name="section_description[]">@if (old("section_description[$loop->index]")){{ old("section_description[$loop->index]") }}@else{{ $section->description }}@endif</textarea>
+                                    <textarea
+                                        class="form-control @error("section_description.$loop->index") border-danger @enderror"
+                                        name="section_description[]">@if (old("section_description[$loop->index]")){{ old("section_description[$loop->index]") }}@else{{ $section->description }}@endif</textarea>
                                     @error("section_description.$loop->index")
-                                        <p class=" text-danger">{{ $errors->first("section_description.$loop->index") }}</p>
+                                    <p class=" text-danger">{{ $errors->first("section_description.$loop->index") }}</p>
                                     @enderror
                                 </div>
                                 <h3>Add fields to your section</h3>
@@ -153,21 +213,22 @@
                                                 <input type='hidden' name="field_name[]" value="{{ $field->name }}"/>
                                                 <div class="form-group">
                                                     <label for="type"><span class="required">*</span>Label</label>
-                                                    <input class="form-control @error("label.$loop->index") border-danger @enderror"
-                                                           type="text"
-                                                           name="label[]"
-                                                           value="@if (old("label.$loop->index")){{ old("label.$loop->index") }}@else{{ $field->label }}@endif"/>
+                                                    <input
+                                                        class="form-control @error("label.$loop->index") border-danger @enderror"
+                                                        type="text"
+                                                        name="label[]"
+                                                        value="@if (old("label.$loop->index")){{ old("label.$loop->index") }}@else{{ $field->label }}@endif"/>
                                                     @error("label.$loop->index")
-                                                        <p class=" text-danger">{{ $errors->first("label.$loop->index") }}</p>
+                                                    <p class=" text-danger">{{ $errors->first("label.$loop->index") }}</p>
                                                     @enderror
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="help[]">Help Description (optional)</label>
                                                     <button type="button"
-                                                        class="help"
-                                                        data-container="body"
-                                                        data-toggle="popover"
-                                                        data-placement="right"
+                                                            class="help"
+                                                            data-container="body"
+                                                            data-toggle="popover"
+                                                            data-placement="right"
                                                             data-content="A help description looks just like this! It\'ll be right beside the field and give your users more clarification as to what this field is.">
                                                         <b>?</b>
                                                     </button>
@@ -177,9 +238,9 @@
                                                            placeholder="Help Description"
                                                            value="@if (old("help.$loop->index")){{ old("help.$loop->index") }}@else{{ $field->help }}@endif"/>
                                                     @error("help.$loop->index")
-                                                        <p class=" text-danger">{{ $errors->first("help.$loop->index") }}</p>
+                                                    <p class=" text-danger">{{ $errors->first("help.$loop->index") }}</p>
                                                     @enderror
-                                                    </div>
+                                                </div>
                                                 <div class="form-group">
                                                     <input type="checkbox"
                                                            name="required[{{ $field->id }}]" {{ $field->required ? "checked" : "" }}

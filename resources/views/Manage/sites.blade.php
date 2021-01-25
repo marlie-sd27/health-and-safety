@@ -14,16 +14,18 @@
             is complete.</p>
         <p><b>It is very important to change the Azure Group Object ID here if the Group Object ID on Azure is changed or deleted.</b></p>
         <div class="row">
-            <table class="table table-bordered table-hover col-7 container">
+            <table class="table table-bordered table-hover col-8 container">
                 <tr>
                     <th>Site</th>
                     <th>Azure Group Object ID</th>
+                    <th>Site Code</th>
                     <th></th>
                 </tr>
                 @foreach($sites as $site)
                     <tr>
                         <td>{{ $site->site }}</td>
                         <td> {{ $site->azure_group_id }}</td>
+                        <td>{{ $site->code }}</td>
                         <td>
                             <form method="post"
                                   class="delete_form float-right"
@@ -38,12 +40,23 @@
                     </tr>
                 @endforeach
             </table>
-            <article class="col-4 text-center container" id="create">
+            <article class="col-3 text-center container" id="create">
                 <h2>Add a New Site</h2>
                 <form action="{{ route('sites.store') }}" method="post">
                     @csrf
-                    <input type="text" name="site" class="form-control" placeholder="Site Name">
-                    <input type="text" name="azure_group_id" class="form-control" placeholder="Azure Group Object ID">
+                    @csrf
+                    <input type="text" name="site" class="form-control @error('site') border-danger @enderror" placeholder="Site Name" value="{{ old('site') }}" required>
+                    @error('site')
+                    <p class=" text-danger">{{ $errors->first('site') }}</p>
+                    @enderror
+                    <input type="text" name="azure_group_id" class="form-control @error('azure_group_id') border-danger @enderror" placeholder="Azure Group Object ID" value="{{ old('azure_group_id')}}" required>
+                    @error('azure_group_id')
+                    <p class=" text-danger">{{ $errors->first('azure_group_id') }}</p>
+                    @enderror
+                    <input type="number" name="code" class="form-control @error('code') border-danger @enderror" placeholder="Site Code" value="{{ old('code') }}" required/>
+                    @error('code')
+                    <p class=" text-danger">{{ $errors->first('code') }}</p>
+                    @enderror
                     <div class="container align-content-center">
                         <button class="btn btn-block btn-sm btn-success" type="submit">Save</button>
                     </div>

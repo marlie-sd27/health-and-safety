@@ -4,8 +4,8 @@
 
     <script type="module" src="/js/autolinker.js"></script>
 
-    @if($admin)
         <a href="{{ url()->previous() }}">Back</a>
+    @if($admin)
         <a class="float-right" href="{{ route('forms.edit', ['form' => $form->id]) }}"><i class="fa fa-pencil-alt"></i> Edit</a>
     @endif
     <div class="container">
@@ -14,7 +14,7 @@
             <h3>Due: {{ App\Helpers\Helper::makeDateReadable($event->date) }}</h3>
         @endif
         @if ($form->interval != null)
-            <p><small>To be completed every {{ $form->interval }} by <b>{{ $form->required_for }}</b></small></p>
+            <p><small>To be completed every {{ $form->interval }} </small></p>
         @endif
         <p style="white-space: pre-wrap;" class="autolink">{{ $form->description }}</p>
     </div>
@@ -26,15 +26,15 @@
                 <input type="hidden" value="{{ $event->id }}" name="event_id"/>
             @endif
             <span class="required">*</span><label>School/Site</label>
-            <select name="site" class="form-control @error('site') border-danger @enderror">
-                <option @if(old('site') == '') {{ 'selected' }} @endif></option>
+            <select name="sites_id" class="form-control @error('sites_id') border-danger @enderror">
+                <option @if(old('sites_id') == '') {{ 'selected' }} @endif></option>
                 @foreach($sites as $site)
-                    <option @if(old('site') == $site->site) {{ 'selected' }} @endif>{{ $site->site}}</option>
+                    <option value="{{ $site->id }}" @if(old('sites_id') == $site->id) {{ 'selected' }} @endif>{{ $site->site}}</option>
                 @endforeach
             </select>
             <div class="form-group">
-                @error("site")
-                <p class="text-danger">{{ $errors->first("site") }}</p>
+                @error("sites_id")
+                <p class="text-danger">{{ $errors->first("sites_id") }}</p>
                 @enderror
             </div>
         </article>

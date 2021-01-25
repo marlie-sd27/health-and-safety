@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Events;
 use App\Forms;
+use App\Helpers\GraphAPIHelper;
+use App\Helpers\QueryHelper;
 use App\Sites;
 use App\Submissions;
 use App\TokenStore\TokenCache;
+use GuzzleHttp\Psr7\Query;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
@@ -14,10 +17,10 @@ use Microsoft\Graph\Graph;
 use Microsoft\Graph\Model;
 use Illuminate\Support\Facades\Response;
 
-class ReportOnDeadlinesController extends Controller
+class ReportController extends Controller
 {
 
-    public function index(Request $request)
+    public function bySite(Request $request)
     {
         // get filter parameters
         $raw_site = $request->filled('site') ? $request->site : null;
@@ -35,7 +38,7 @@ class ReportOnDeadlinesController extends Controller
 
         // if site and event don't exist, return to view with message saying select those things
         if (!$site || !$event || !$form) {
-            return view('ReportOnDeadlines/index', [
+            return view('Report/bysite', [
                 'users' => null,
                 'submissions' => null,
                 'event' => $event,
@@ -46,25 +49,8 @@ class ReportOnDeadlinesController extends Controller
             ]);
         }
 
-        // build query to get user data
-        $tokenCache = new TokenCache();
-
-        $graph = new Graph();
-        $graph->setAccessToken($tokenCache->getAccessToken());
-
-
-        //build and execute query to pull group members for specified site
-        $queryParams = array(
-            '$select' => 'displayName,mail,jobTitle,department',
-            '$top' => 999,
-        );
-        $getUsersUrl = "/groups/{$site->azure_group_id}/members?" . http_build_query($queryParams);
-
-        $users = $graph->createRequest('GET', $getUsersUrl)
-            ->execute();
-
         // convert users into a collection of Microsoft Graph Users
-        $collection = collect($users->getResponseAsObject(Model\User::class))->sort();
+        $collection = collect(GraphAPIHelper::getSiteStaff($site))->sort();
 
         // gather all the email addresses from the users pulled
         $emails = new Collection();
@@ -72,14 +58,13 @@ class ReportOnDeadlinesController extends Controller
             $emails->push($item->getMail());
         });
 
-//        return $emails;
         // run a query to check who has submitted for that deadline
         $submissions = Submissions::whereIn('email', $emails)
             ->where('events_id', $event->id)
             ->pluck('id', 'email');
 
         $outstanding = $emails->diff($submissions->keys());
-        return view('ReportOnDeadlines/index', [
+        return view('Report/bysite', [
             'users' => $collection,
             'submissions' => $submissions,
             'event' => $event,
@@ -95,7 +80,6 @@ class ReportOnDeadlinesController extends Controller
 
     public function export(Request $request)
     {
-        dd($this->collection);
         // prepare export
         $filename = $request->form . "_" . $request->site . "_" . Carbon::now() . ".csv";
         $headers = [
@@ -106,7 +90,7 @@ class ReportOnDeadlinesController extends Controller
             'Pragma' => 'public'
         ];
 
-        // if there is no data, return nessage that there is nothing to export
+//         if there is no data, return nessage that there is nothing to export
 //        if(!$list){
 //            return redirect()->back()->with('error', 'Nothing to export');
 //        }

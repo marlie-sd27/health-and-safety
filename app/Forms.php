@@ -2,10 +2,14 @@
 
 namespace App;
 
+use App\Helpers\CollectionHelper;
+use App\Helpers\GraphAPIHelper;
 use App\Helpers\Helper;
+use App\Helpers\QueryHelper;
 use App\Http\Requests\StoreForm;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -14,7 +18,7 @@ use Illuminate\Support\Str;
 class Forms extends Model
 {
     protected $fillable = [
-        'title', 'description', 'first_occurence_at', 'interval', 'required_for', 'full_year', 'live'
+        'title', 'description', 'first_occurence_at', 'interval', 'required_for', 'full_year', 'live', 'requirees_groups', 'requirees_emails', 'requirees_sites'
     ];
 
 
@@ -53,6 +57,9 @@ class Forms extends Model
             }
         }
 
+        $this['requirees_sites'] = explode(',', $this->requirees_sites);
+        $this['requirees_groups'] = explode(',', $this->requirees_groups);
+
         return $this;
     }
 
@@ -60,7 +67,6 @@ class Forms extends Model
     // Create sections and fields for the form
     public function createSectionsandFields(StoreForm $request)
     {
-
         // keep track of any errors that exist while submitting the form
         $errors = array();
 
@@ -161,25 +167,18 @@ class Forms extends Model
 
     public function closestDueDate()
     {
-        // get all the relevant overdue dates for this event for this user
-        $overdues = Events::join('forms', 'forms_id', '=', 'forms.id')
-            ->where('date', '<', Carbon::now())
-            ->where('events.forms_id', '=', $this->id)
-            ->whereNotIn('events.id', function ($query) {
-                $query->select('events_id')
-                    ->from('submissions')
-                    ->where('email', Auth::user()->email)
-                    ->get();
-            })
-            ->select('events.*')
-            ->orderBy('date', 'desc')
-            ->get();
+        // check if there are any overdue assignment deadlines for this form/user
+        $first_overdue = QueryHelper::getOverdues(Auth::user()->email, $this->title);
 
-        $overdues = Helper::filterEvents($overdues);
+        // if there is an overdue assignment, return the event id
+        if($first_overdue->isNotEmpty())
+        {
+            return $first_overdue->first()->id;
+        }
 
-
-        // get the next closest due date for this event for this user
-        $next_due_date = Events::join('forms', 'forms_id', '=', 'forms.id')
+        // otherwise, check for the next closest assignment deadline for this user/form
+        $next_deadline = Events::join('assignments', 'assignments.events_id', '=', 'events.id')
+            ->where('assignments.email', Auth::user()->email)
             ->where('date', '>=', Carbon::now())
             ->where('events.forms_id', '=', $this->id)
             ->whereNotIn('events.id', function ($query) {
@@ -190,18 +189,15 @@ class Forms extends Model
             })
             ->select('events.*')
             ->orderBy('date', 'asc')
-            ->get();
+            ->first();
 
-        $next_due_date = Helper::filterEvents($next_due_date);
+        // if there is an upcoming assignment, return the event id
+        if($next_deadline)
+        {
+            return $next_deadline->id;
+        }
 
-
-        // if there's an overdue event for this form, return it's id
-        if (sizeof($overdues) > 0) {
-            return $overdues->first()->id;
-        } // otherwise, if there's an upcoming due date for it, return the upcoming id
-        else if (sizeof($next_due_date) > 0) {
-            return $next_due_date->first()->id;
-        } // otherwise return null
+        // if the user has no assignment for this form, return null
         else return null;
     }
 
@@ -209,6 +205,15 @@ class Forms extends Model
     {
         foreach ($this->events as $event) {
             Events::destroy($event->id);
+        }
+    }
+
+
+    public function deleteAssignments()
+    {
+        foreach($this->events as $event)
+        {
+            $event->deleteAssignments();
         }
     }
 }

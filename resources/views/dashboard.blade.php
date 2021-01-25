@@ -42,6 +42,9 @@
                         <th>Form</th>
                         <th>Due</th>
                         <th>Submitted</th>
+                        @if($principal)
+                            <th>Submitter</th>
+                        @endif
                         <th>View</th>
                     </tr>
                     @foreach( $completeds as $completed)
@@ -54,8 +57,10 @@
                                 <td>N/A</td>
                             @endif
                             <td>{{ \App\Helpers\Helper::makeDateReadable($completed->created_at) }}</td>
-                            <td><a href="{{ route('submissions.show', ['submission' => $completed->id]) }}">View
-                                    Submission</a></td>
+                            @if($principal)
+                                <td>{{ str_replace(['@sd27.bc.ca','.'], ' ', $completed->email) }}</td>
+                            @endif
+                            <td><a href="{{ route('submissions.show', ['submission' => $completed->id]) }}">View</a></td>
                         </tr>
                     @endforeach
                 </table>

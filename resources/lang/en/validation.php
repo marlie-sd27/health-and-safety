@@ -133,6 +133,12 @@ return [
         'attribute-name' => [
             'rule-name' => 'custom-message',
         ],
+        'requirees_sites' => [
+            'required_if' => 'At least one site must be checked',
+        ],
+        'requirees_emails' => [
+            'required_if' => 'Please enter at least one email address'
+        ]
     ],
 
     /*

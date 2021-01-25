@@ -5,45 +5,58 @@
         <a href="{{ url()->previous() }}">Back</a>
         <article class="container">
             <form method="get" action="{{ route('training.report') }}">
-                <label>Search by course:
-                    <select class="form-control text-reset" name='course'>
-                        <option @if ($course == "") {{ 'selected' }} @endif></option>
-                        @foreach($courses as $_course)
-                            <option @if ($course == $_course->course) {{ 'selected' }} @endif>{{ $_course->course }}</option>
-                        @endforeach
-                    </select>
-                </label>
-                <label>Search by site:
-                    <select class="form-control text-reset" name='site'>
-                        <option @if ($site == "") {{ 'selected' }} @endif></option>
-                        @foreach($sites as $_site)
-                            <option @if ($site == $_site->site) {{ 'selected' }} @endif>{{$_site->site}}</option>
-                        @endforeach
-                    </select>
-                </label>
-                <label>Search by email:
-                    <input class="form-control" type="text" placeholder="Search" name='email'
-                           value="{{ $email ?? ""}}"
-                           aria-label="Search"/>
-                </label>
-                <label>Search by expiry date from:
-                    <input class="form-control text-reset" type="date" placeholder="Search" name='expiry_date_from'
-                           value="{{ $expiry_date_from ?? "" }}"
-                           aria-label="Search"/>
-                </label>
-                <label>to:
-                    <input class="form-control text-reset" type="date" placeholder="Search" name='expiry_date_to'
-                           value="{{ $expiry_date_to ?? "" }}"
-                           aria-label="Search"/>
-                </label>
-                <label>Search by course date:
-                    <input class="form-control text-reset" type="date" placeholder="Search" name='course_date'
-                           value="{{ $course_date ?? "" }}"
-                           aria-label="Search"/>
-                </label>
+                <h2>Search Filters</h2>
+                <div class="row">
+                    <label class="col-2">Course:
+                        <select class="form-control text-reset" name='course'>
+                            <option @if ($course == "") {{ 'selected' }} @endif></option>
+                            @foreach($courses as $_course)
+                                <option @if ($course == $_course->course) {{ 'selected' }} @endif>{{ $_course->course }}</option>
+                            @endforeach
+                        </select>
+                    </label>
+                    <label class="col-2">Site:
+                        <select class="form-control text-reset" name='site'>
+                            <option @if ($site == "") {{ 'selected' }} @endif></option>
+                            @foreach($sites as $_site)
+                                <option @if ($site == $_site->site) {{ 'selected' }} @endif>{{$_site->site}}</option>
+                            @endforeach
+                        </select>
+                    </label>
+                    <label class="col-2">User:
+                        <input class="form-control" type="text" placeholder="Search" name='email'
+                               value="{{ $email ?? ""}}"
+                               aria-label="Search"/>
+                    </label>
+                    <label class="col-2">Expiry Date From:
+                        <input class="form-control text-reset" type="date" placeholder="Search" name='expiry_date_from'
+                               value="{{ $expiry_date_from ?? "" }}"
+                               aria-label="Search"/>
+                    </label>
+                    <label class="col-2">Expiry Date To:
+                        <input class="form-control text-reset" type="date" placeholder="Search" name='expiry_date_to'
+                               value="{{ $expiry_date_to ?? "" }}"
+                               aria-label="Search"/>
+                    </label>
+                    <label class="col-2">Course Date:
+                        <input class="form-control text-reset" type="date" placeholder="Search" name='course_date'
+                               value="{{ $course_date ?? "" }}"
+                               aria-label="Search"/>
+                    </label>
+                </div>
 
-                <button class="btn btn-primary" type="submit">Search</button>
-                <button class="btn btn-dark" type="button" id="clear">Clear Search Fields</button>
+                <div class="row container">
+                    <div class="col-4">
+                        <button class="btn btn-primary w-100" type="submit">Search</button>
+                    </div>
+                    <div class="col-4 ">
+                        <button class="btn btn-dark w-100" type="button" id="clear">Clear Search Fields</button>
+                    </div>
+                    <div class="col-4">
+                        <a href="{{ route('training.export', ['course'=>$course, 'email'=>$email, 'site'=>$site, 'expiry_date_from'=>$expiry_date_from, 'expiry_date_to'=>$expiry_date_to, 'course_date' => $course_date]) }}"
+                           class="btn btn-success w-100">Export</a>
+                    </div>
+                </div>
             </form>
 
         </article>
@@ -63,7 +76,7 @@
             @foreach($trainings as $training)
                 <tr class="row-data">
                     <td>{{ $training->course }}</td>
-                    <td>{{ $training->users->name ?? $training->email}}</td>
+                    <td>{{ str_replace(['@sd27.bc.ca','.'], ' ', $training->email) }}</td>
                     <td>{{ $training->site }}</td>
                     <td>{{ $training->expiry_date ? Carbon\Carbon::now()->diffInDays($training->expiry_date, false) . " days" : "N/A"}}</td>
                     <td>{{ date('M d, Y', strtotime($training->course_date)) }}</td>

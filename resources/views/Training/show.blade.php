@@ -15,6 +15,10 @@
                 <td>{{ $training->users->name ?? $training->email}}</td>
             </tr>
             <tr>
+                <th>Course</th>
+                <td>{{ $training->course }}</td>
+            </tr>
+            <tr>
                 <th>School/Site</th>
                 <td>{{ $training->site }}</td>
             </tr>

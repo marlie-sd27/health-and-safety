@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Str;
 
 class User extends Authenticatable
 {
@@ -37,6 +38,25 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    public function generateToken()
+    {
+        $this->api_token = Str::random(60);
+        $this->save();
+
+        return $this->api_token;
+    }
+
+
+    public function getSites_id()
+    {
+        return $this->sites()->id;
+    }
+
+    public function sites()
+    {
+        return Sites::firstWhere('code',$this->site);
+    }
+
     public function isAdmin() {
         return $this->admin;
     }
@@ -60,5 +80,9 @@ class User extends Authenticatable
     public function submissions()
     {
         return $this->hasMany('App\Submissions');
+    }
+
+    public function hasReportingPrivileges() {
+        return $this->isAdmin() | $this->isPrincipal() | $this->isReporter();
     }
 }

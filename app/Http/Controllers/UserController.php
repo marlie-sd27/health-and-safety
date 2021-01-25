@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+
+use App\Helpers\CollectionHelper;
+use App\Helpers\GraphAPIHelper;
 use App\User;
-use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller
 {
@@ -17,24 +21,36 @@ class UserController extends Controller
 
     public function index(Request $request)
     {
-        $name = $request->filled('name') ? $request->name : null;
+        // get the optional search parameter
+        $name = $request->filled('name') ? strtolower($request->name) : null;
 
-        // filter query by user
-        $users = User::when($name, function ($query, $name) {
-            return $query->where('name', 'like', '%' . $name . '%')
-                ->orWhere('email', 'like', '%'.$name.'%');
-        })
-            ->orderBy('name')
-            ->paginate(20);
+        // check if users is stored in session. If not, send request to Azure and get all staff.
+        // Store in collection for easier use of methods (ex, filter, paginate, sort)
+        $users = session('users') ?? collect(GraphAPIHelper::getAllStaff());
 
-        return view('Manage/users', ['users' => $users, 'name'=>$name]);
+        // set session variable users for loading users more efficiently with further requests
+        session(['users' => $users]);
+
+
+        // if name parameter is set, filter users by name
+        if($name)
+        {
+            $users = $users->filter(function ($value) use ($name) {
+                // if mail address exists for user, check if it contains the name search parameter to filter
+                if($value->getMail())
+                {
+                    return str_contains(strtolower($value->getMail()), $name);
+                } else return false;
+            });
+        }
+
+        return view('Manage/users', ['users' => CollectionHelper::paginate($users, 25), 'name' => $name]);
     }
 
 
     public function destroy(User $user)
     {
         User::destroy($user->id);
-        return redirect()->route('users')->with('message',"Successfully deleted $user->name");
+        return redirect()->route('users')->with('message', "Successfully deleted $user->name");
     }
-
 }

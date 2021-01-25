@@ -59,6 +59,11 @@ tr, td, th {
         margin-left: 0;
     }
 }
+
+.blue {
+    color: #007bff;
+}
+
 .btn {
     color: white;
 }
@@ -73,8 +78,13 @@ tr, td, th {
     padding-top: 1.3em;
     padding-bottom: 1.3em;
 }
+
 .form-group {
     position: relative;
+}
+
+.green {
+    color: #24b924;
 }
 
 .help {
@@ -97,6 +107,18 @@ tr, td, th {
 
 .navbar {
     padding: 1em 3em;
+}
+
+.orange {
+    color: #ff9400;
+}
+
+.padding-right {
+    padding-right: 2em;
+}
+
+.purple {
+    color: #8149d9;
 }
 
 .required {
@@ -129,7 +151,7 @@ tr, td, th {
 }
 
 #create {
-    max-height: 12em;
+    height: fit-content;
 }
 
 #main {

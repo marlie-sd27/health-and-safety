@@ -11,7 +11,7 @@
 
         <article class="row" id="create">
             <h3>Select Site, Form and Deadline to report on</h3>
-            <form action="{{ route('report-deadlines') }}" method="get">
+            <form action="{{ route('report.bysite') }}" method="get">
                 @csrf
                 <label><span class="required">*</span>Select Site:
                     <select class="form-control text-reset" type="text" name='site' required>

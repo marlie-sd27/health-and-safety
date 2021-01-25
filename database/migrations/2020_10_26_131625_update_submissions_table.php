@@ -13,7 +13,18 @@ class UpdateSubmissionsTable extends Migration
      */
     public function up()
     {
-        //
+        Schema::table('submissions', function (Blueprint $table) {
+            $table->bigInteger('sites_id')->nullable();
+            $table->foreign('sites_id')
+                ->references('id')
+                ->on('sites')
+                ->onDelete('set null');
+            $table->bigInteger('assignments_id')->nullable();
+            $table->foreign('assignments_id')
+                ->references('id')
+                ->on('assignments')
+                ->onDelete('set null');
+        });
     }
 
     /**
@@ -23,6 +34,9 @@ class UpdateSubmissionsTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn( ['sites_id', 'assignments_id']);
+            $table->string('site');
+        });
     }
 }

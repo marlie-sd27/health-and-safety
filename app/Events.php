@@ -25,4 +25,20 @@ class Events extends Model
         return $this->hasMany('App\Submissions');
     }
 
+
+    public function assignments()
+    {
+        return $this->hasMany('App\Assignments');
+    }
+
+
+    public function deleteAssignments()
+    {
+        $assignments = $this->assignments;
+        foreach($assignments as $assignment)
+        {
+            Assignments::destroy($assignment->id);
+        }
+    }
+
 }
