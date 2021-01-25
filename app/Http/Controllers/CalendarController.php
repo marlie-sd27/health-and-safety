@@ -94,11 +94,8 @@ class CalendarController extends Controller
             $deadline['url'] = route('forms.show', ['form' => $deadline->forms_id, 'event' => $deadline]);
             $deadline['title'] = $deadline->forms->title;
 
-            // query for a completed submission for this event for this user or their site
-            $submission = QueryHelper::getCompleted(null, null, null, null, $deadline->id);
-            $submission = $submission->filter(function ($s) {
-                return $s->email === Auth::user()->email;
-            });
+            // query for a completed submission for this event for this user
+            $submission = QueryHelper::getCompleted(Auth::user()->email, null, null, null, $deadline->id);
 
             // if a submissions is found, mark the deadline green
             if (sizeof($submission) > 0) {
