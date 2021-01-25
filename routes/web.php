@@ -51,6 +51,7 @@ Route::middleware(['auth','isadmin'])->group(function ()
     Route::delete('training/{training}', 'TrainingController@destroy')->name('training.destroy');
     Route::put('training/{training}', 'TrainingController@update')->name('training.update');
     Route::get('training/{training}/edit', 'TrainingController@edit')->name('training.edit');
+    Route::get('training/ajax', 'TrainingController@ajax')->name('training.ajax');
 
 
     // managing courses list
@@ -85,7 +86,6 @@ Route::middleware('auth')->group(function () {
         Route::get('submissions/export', 'SubmissionsController@export')->name('submissions.export');
         Route::get('training/report', 'TrainingController@report')->name('training.report');
         Route::get('training/export', 'TrainingController@export')->name('training.export');
-        Route::get('training/ajax', 'TrainingController@ajax')->name('training.ajax');
 
         // report on deadlines
         Route::get('report/bysite', 'ReportController@bySite')->name('report.bysite');
