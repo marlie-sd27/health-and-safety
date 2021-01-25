@@ -1,6 +1,7 @@
 @extends('layout')
 
 @section('content')
+    @if($principal)
     <div class="alert alert-info alert-dismissible alert-dismissible fade show" role="alert">
         There have been many updates/changes to the Health & Safety Dashboard. Please report any bugs you may encounter
         to marlie.dueck@sd27.bc.ca. The "Help/Tutorials" section will contain useful information on how to use the new
@@ -10,6 +11,7 @@
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
+    @endif
     <h1>{{ $userName }}'s Dashboard</h1>
     <div class="container">
         <div class="row">
