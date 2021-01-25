@@ -10,15 +10,6 @@
         "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
     },
     "devDependencies": {
-<<<<<<< HEAD
-        "@fullcalendar/list": "^5.1.0",
-        "axios": "^0.19",
-        "cross-env": "^7.0",
-        "laravel-mix": "^5.0.5",
-        "lodash": "^4.17.13",
-        "resolve-url-loader": "^3.1.0",
-        "sass": "^1.15.2",
-=======
         "@fullcalendar/list": "^5.5.0",
         "axios": "^0.21.1",
         "cross-env": "^7.0.3",
@@ -26,7 +17,6 @@
         "lodash": "^4.17.20",
         "resolve-url-loader": "^3.1.2",
         "sass": "^1.32.5",
->>>>>>> 6fa4489787970f2cc2f4dc0243cd340f5219c676
         "sass-loader": "^8.0.0",
         "vue-template-compiler": "^2.6.12"
     },
