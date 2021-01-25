@@ -1,6 +1,15 @@
 @extends('layout')
 
 @section('content')
+    <div class="alert alert-info alert-dismissible alert-dismissible fade show" role="alert">
+        There have been many updates/changes to the Health & Safety Dashboard. Please report any bugs you may encounter
+        to marlie.dueck@sd27.bc.ca. The "Help/Tutorials" section will contain useful information on how to use the new
+        searching and reporting interfaces and will be available soon. Please be patient while it's under
+        construction. Thank you!
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
     <h1>{{ $userName }}'s Dashboard</h1>
     <div class="container">
         <div class="row">
@@ -60,7 +69,8 @@
                             @if($principal)
                                 <td>{{ str_replace(['@sd27.bc.ca','.'], ' ', $completed->email) }}</td>
                             @endif
-                            <td><a href="{{ route('submissions.show', ['submission' => $completed->id]) }}">View</a></td>
+                            <td><a href="{{ route('submissions.show', ['submission' => $completed->id]) }}">View</a>
+                            </td>
                         </tr>
                     @endforeach
                 </table>

@@ -25,11 +25,7 @@
         </tr>
         <tr>
             <th>Department</th>
-            <td>{{ Auth::user()->department }}</td>
-        </tr>
-        <tr>
-            <th>Job Title</th>
-            <td>{{ Auth::user()->position }}</td>
+            <td>{{ Auth::user()->site }}</td>
         </tr>
     </table>
 @endsection

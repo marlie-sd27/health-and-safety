@@ -64,7 +64,7 @@
                             <a href="{{ route('reporters') }}" class="dropdown-item {{ strpos( $_SERVER['REQUEST_URI'], 'reporters') != false ? ' active' : ''}}">Reporting Privileges</a>
                             <a href="{{ route('courses') }}" class="dropdown-item {{ strpos( $_SERVER['REQUEST_URI'], 'courses') != false ? ' active' : ''}}">Courses</a>
                             <a href="{{ route('events') }}" class="dropdown-item {{ strpos( $_SERVER['REQUEST_URI'], 'events') != false ? ' active' : ''}}">Deadlines</a>
-                            <a href="{{ route('assignments') }}" class="dropdown-item {{ strpos( $_SERVER['REQUEST_URI'], 'assignments') != false ? ' active' : ''}}">Assignments</a>
+                            <a href="{{ route('assignments') }}" class="dropdown-item {{  $_SERVER['REQUEST_URI']== 'assignments' ? ' active' : ''}}">Assignments</a>
                             <a href="{{ route('groups') }}" class="dropdown-item {{ strpos( $_SERVER['REQUEST_URI'], 'groups') != false ? ' active' : ''}}">Groups</a>
                             <a href="{{ route('sites') }}" class="dropdown-item {{ strpos( $_SERVER['REQUEST_URI'], 'sites') != false ? ' active' : ''}}">Sites</a>
 {{--                            <a href="{{ route('users') }}" class="dropdown-item {{ strpos( $_SERVER['REQUEST_URI'], 'users') != false ? ' active' : ''}}">Users</a>--}}
@@ -82,6 +82,9 @@
                     </li>
                     <li class="nav-item">
                         <a href="{{ route('training.report') }}" class="nav-link {{$_SERVER['REQUEST_URI'] == '/training/report' ? ' active' : ''}}">Training</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link disabled">Help/Tutorials</a>
                     </li>
 
                 @else
