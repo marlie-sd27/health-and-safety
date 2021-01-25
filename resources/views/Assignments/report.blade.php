@@ -5,7 +5,11 @@
 
     <article class="container">
         <form method="get" action="{{ route('assignments.report') }}">
-            @include('Reusable/searchFiltersAdmin', ['prefix' => 'Due for'])
+{{--            @if($admin)--}}
+                @include('Reusable/searchFiltersAdmin', ['prefix' => 'Due for'])
+{{--            @else--}}
+{{--                @include('Reusable/searchFiltersPrincipal')--}}
+{{--            @endif--}}
             <div class="row container">
                 <div class="col-6">
                     <button class="btn btn-primary w-100" type="submit">Search</button>

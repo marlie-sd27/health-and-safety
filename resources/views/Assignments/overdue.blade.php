@@ -3,10 +3,13 @@
 @section('content')
     <a href="{{ url()->previous() }}">Back</a>
     @isset($emails)<p class="d-none" id="emails">{{ $emails }}</p>@endisset
-    <div class="container">
         <article class="container">
             <form method="get" action="{{ route('assignments.overdue') }}">
-                @include('Reusable/searchFiltersAdmin', ['prefix' => 'Due For'])
+{{--                @if($admin)--}}
+                    @include('Reusable/searchFiltersAdmin', ['prefix' => 'Due for'])
+{{--                @else--}}
+{{--                    @include('Reusable/searchFiltersPrincipal')--}}
+{{--                @endif--}}
                 <div class="row container">
                     <div class="col-4">
                         <button class="btn btn-primary w-100" type="submit">Search <i class="fas fa-search"></i></button>
@@ -41,7 +44,6 @@
             @endforeach
         </table>
         <p class="text-center">{{ $overdues->withQueryString()->links() }}</p>
-    </div>
 
     <script type="text/javascript">
         function copyToClipboard(element) {

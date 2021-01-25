@@ -10,7 +10,11 @@
         @endif
         <article class="container">
             <form method="get" action="{{ route('submissions.index') }}">
-                @include('Reusable/searchFiltersAdmin', ['prefix' => 'Submitted By'])
+{{--                @if($admin)--}}
+                    @include('Reusable/searchFiltersAdmin', ['prefix' => 'Submitted By'])
+{{--                @else--}}
+{{--                    @include('Reusable/searchFiltersPrincipal')--}}
+{{--                @endif--}}
 
                 <div class="row container">
                     <div class="col-4">

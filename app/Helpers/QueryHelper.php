@@ -81,7 +81,7 @@ class QueryHelper
                 return $query->where('assignments.sites_id', $site_due);
             })
             ->orderBy('date', 'asc')
-            ->select('events.*', 'assignments.email', 'forms.title', 'sites.site','sites.code')
+            ->select('events.*', 'assignments.email', 'forms.title', 'sites.site','sites.code', 'assignments.sites_id')
             ->when($paginate, function ($query, $paginate) {
                 return $query->paginate($paginate, ['*'], 'overdue');
             }, function($query) {

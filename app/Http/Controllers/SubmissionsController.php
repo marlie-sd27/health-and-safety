@@ -35,6 +35,12 @@ class SubmissionsController extends Controller
             $site_due = $request->filled('site_due') ? $request->site_due : null;
             $group = $request->filled('group') ? $request->group : null;
 
+            // if user is principal, filter submissions to only be for users at their site
+//            if(Auth::user()->isPrincipal())
+//            {
+//                 $site_staff = Auth::user()->getSites_id();
+//            }
+
             // generate report with filtering parameters
             $submissions = QueryHelper::getSubmissions($user, $form, $date_from, $date_to, null, $site_staff, $group, $site_due);
 
