@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Submissions extends Model
 {
     protected $fillable = [
-        'events_id', 'forms_id', 'site', 'email', 'data', 'files',
+        'events_id', 'forms_id', 'site', 'email', 'data', 'files', 'assignments_id', 'sites_id'
     ];
 
 
@@ -22,7 +22,7 @@ class Submissions extends Model
     // get the events associated with this submission
     public function events()
     {
-        return $this->belongsTo('App\Events');
+        return $this->belongsTo('App\Events')->withTrashed();
     }
 
 
@@ -31,6 +31,20 @@ class Submissions extends Model
     {
         return $this->belongsTo('App\Forms');
     }
+
+
+    // get the form associated with this submission
+    public function sites()
+    {
+        return $this->belongsTo('App\Sites');
+    }
+
+
+//    // get the assignment associated with this submission
+//    public function assignments()
+//    {
+//        return $this->hasOne('App\Assignments');
+//    }
 
 
     // convert data string to array
@@ -44,8 +58,6 @@ class Submissions extends Model
     public function prepareSubmission()
     {
         $this->prepareData();
-        $this->created_at_readable = Helper::makeTimeStampReadable($this->created_at);
-        $this->updated_at_readable = Helper::makeTimeStampReadable($this->updated_at);
         $this->form = $this->forms->fullForm();
 
         return $this;

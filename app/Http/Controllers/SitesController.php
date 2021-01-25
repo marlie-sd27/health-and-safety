@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Rules\ValidAzureObjectID;
 use App\Sites;
 use Illuminate\Http\Request;
 
@@ -18,7 +19,7 @@ class SitesController extends Controller
     {
         $validated = $request->validate([
             'site' => 'string|required',
-            'azure_group_id' => 'string'
+            'azure_group_id' => ['string', 'required', new ValidAzureObjectID()]
         ]);
 
         Sites::create($validated);

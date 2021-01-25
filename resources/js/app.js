@@ -127,7 +127,7 @@ $(document).ready(function () {
         let parent = $(this).closest('article')
         let selected = $(this).children("option:selected").val();
 
-        if (selected === "select" | selected === "checkbox" | selected === "radio" | selected === "slider") {
+        if (selected === "select" || selected === "checkbox" || selected === "radio" || selected === "slider") {
             parent.find("#options").removeClass("d-none");
 
         } else {
@@ -202,10 +202,30 @@ $(document).ready(function () {
     });
 
 
-    $('body').on('click', '#copy-to-clipboard', function(event) {
-        console.log(event);
-        // document.getElementById(id).select();
-        // document.execCommand('copy');
+    // for create and editing forms. Toggle display for site or email input
+    $('body').on('click', "#required_for", function () {
+        let selected = $(this).children("option:selected").val();
+
+        let parent = $(this).closest('article')
+
+        parent.find("#requirees_sites").addClass("d-none");
+        parent.find("#requirees_emails").addClass("d-none");
+
+        if(selected === "Sites")
+        {
+            parent.find("#requirees_sites").removeClass("d-none");
+        }
+
+        if(selected === "Staff")
+        {
+            parent.find("#requirees_emails").removeClass("d-none");
+        }
+    });
+
+
+    // check all boxes if clicked
+    $('body').on('click',"#checkAll", function(){
+        $('input:checkbox[name="requirees_sites[]"]').not(this).prop('checked', this.checked);
     });
 
 

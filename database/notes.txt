@@ -1,0 +1,29 @@
+SELECT events.id,events.date,assignments.email 
+	FROM assignments 
+	JOIN events on assignments.events_id=events.id 
+	WHERE date<now() 
+	AND assignments.email is not null 
+	AND assignments.id not in 
+		(SELECT assignments.id 
+			FROM events 
+			JOIN submissions on submissions.events_id=events.id 
+			JOIN assignments on events.id=assignments.events_id
+			WHERE assignments.email is not null 
+			AND submissions.email=assignments.email);
+
+
+UPDATE submissions 
+	SET sites_id=
+		(SELECT id 
+			FROM sites 
+			WHERE site=submissions.site);
+
+UPDATE submissions 
+	SET sites_id=28 
+	WHERE site='Maintenance Yard';
+
+*** search for any submissions without a sites_id. They'll break the csv export
+
+https://login.microsoftonline.com/sd27.bc.ca/adminconsent?client_id=f57a0b2f-40f5-47d1-8e5b-458f9bc213e2&state=12345&redirect_uri=https://healthandsafety.test/token-response
+
+Be sure to run npm install and composer install for security updates

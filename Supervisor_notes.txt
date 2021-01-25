@@ -1,0 +1,24 @@
+# get supervisor
+sudo apt-get supervisor
+
+# directory for configuration file
+/etc/supervisor/conf.d/laravel-worker.conf
+
+# configuration file
+[program:laravel-worker]
+process_name:%(program_name)s_%(process_num)02d
+command=php /home/vagrant/Laravel/healthandsafety/artisan queue:work
+autostart=true
+autorestart=true
+user=vagrant
+numprocs=8
+redirect_stderr=true
+stdout_logfile=/home/vagrant/Laravel/healthandsafety/storage/logs/worker.log
+stopwaitsecs=3600
+
+# be sure to open a log file at the stdout_logfile location
+
+# commands to start supervisor
+sudo supervisorctl reread
+sudo supervisorctl update
+sudo supervisorctl start laravel-worker:*

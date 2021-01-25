@@ -5,15 +5,13 @@
 
     <table class="table table-bordered table-hover">
         <tr>
-            <th>ID</th>
-            <th>Date</th>
+            <th>Deadline</th>
             <th>Form</th>
             <th>Required For</th>
-            <th>Delete</th>
+            <th></th>
         </tr>
         @foreach($events as $event)
             <tr>
-                <td><small>{{ $event->id}}</small></td>
                 <td>{{ \App\Helpers\Helper::makeDateReadable($event->date) }}</td>
                 <td>{{ $event->forms->title }}</td>
                 <td>{{ $event->forms->required_for }}</td>
@@ -22,8 +20,8 @@
                           action="{{route('events.destroy', $event->id)}}">
                         @csrf
                         @method('delete')
-                        <button type="submit" class="btn btn-secondary" onclick="return confirm('Are you sure?')">
-                            Remove Event
+                        <button type="submit" class="border-0" onclick="return confirm('Are you sure?')">
+                            <i class="fa fa-trash"></i>
                         </button>
                     </form>
                 </td>

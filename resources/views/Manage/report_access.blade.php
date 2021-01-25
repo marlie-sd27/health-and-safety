@@ -3,9 +3,9 @@
 @section('content')
     <a href="{{ url()->previous() }}">Back</a>
     <div class="container">
-        <h1>Manage Users with Reporting Access</h1>
+        <h1>Manage Users with Reporting Privileges</h1>
         <p>
-            These users have access to reporting submissions. They can search for submissions like principals and administrators,
+            These users have access to view all submissions, upcoming deadlines and overdue assignments. They can search for submissions like principals and administrators,
             but they are unable to create, edit or delete forms. In addition, they have no access to anything under the "Manage"
             drop down tab.
         </p>
@@ -28,7 +28,7 @@
                 @endforeach
             </table>
             <article class="col-4 text-center container" id="create">
-                <h2>Add a New Reporter</h2>
+                <h2>Grant Privileges to User</h2>
                 <form action="{{ route('reporters.store') }}" method="post">
                     @csrf
                     <input class="form-control @error('email') border-danger @enderror"

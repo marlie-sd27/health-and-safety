@@ -6,9 +6,12 @@ namespace App\Http\Controllers;
 
 use App\Events;
 use App\Helpers\Helper;
+use App\Helpers\QueryHelper;
+use App\Helpers\ReportHelper;
 use App\Submissions;
 use App\User;
 use Carbon\Carbon;
+use GuzzleHttp\Psr7\Query;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -16,122 +19,129 @@ class HomeController extends Controller
 {
     public function dashboard()
     {
-
-        // if user is admin
-        if (Auth::user()->isAdmin()) {
-
-            // get the first 5 upcoming events in the next 3 months
-            $viewData['upcomings'] = Events::with('forms')
-                ->where('date', '>', Carbon::now())
-                ->where('date', '<', Carbon::now()->addMonths(3))
-                ->orderBy('date', 'asc')
-                ->limit(5)
-                ->get();
-
-
-            // get first 5 overdue events for all users
-            $viewData['overdues'] = array();
-
-            // for each user, get all the overdue submissions (with form and event info)
-            foreach (User::all() as $user) {
-                $overdues = DB::select(DB::raw(
-                    'SELECT e.*, f.title, f.required_for ' .
-                    "FROM events e " .
-                    "JOIN forms f ON f.id = e.forms_id " .
-
-                    // get only overdue events
-                    "WHERE e.date < :now " .
-
-                    // filter events by only taking events that don't have an entry in the user's submissions
-                    "AND NOT EXISTS " .
-                    "(SELECT null FROM submissions s " .
-                    "WHERE e.id = s.events_id " .
-                    "AND s.email = :user) " .
-                    "LIMIT 1 "),
-                    array(
-                        'now' => Carbon::now(),
-                        'user' => $user->email,
-                    )
-                );
-
-                // filter events to make sure only events applicable to the user's group apply
-                // ie. an elementary principal shouldn't be getting a secondary principal's events
-                $overdues = Helper::filterEventsDashboard(collect($overdues), $user);
-
-                // push the user's overdues to the array with their name as the index
-                $viewData['overdues'][$user->name] = $overdues;
-            }
-
-            // convert our array of users' overdue submissions into an Eloquent collection for easy filtering
-            $viewData['overdues'] = collect($viewData['overdues'])
-
-                // filter out users with no overdue events
-                ->filter( function( $value, $key) {
-                    return sizeof($value) > 0;
-                })
-
-                // only take the first 5 overdues to report on the dashboard
-                ->slice(0,5);
-
-
-
-            // get all recent submissions
-            $viewData['recents'] = Submissions::with('forms')
-                ->where('created_at', '<', Carbon::now())
-                ->orderBy('created_at', 'desc')
-                ->limit(5)
-                ->get();
-
-            return view('Admin/dashboard', $viewData);
-
-            // otherwise
-        } else {
-            // get all relevant upcoming events for the user that they haven't made a submission for
-            $viewData['upcomings'] = Events::with('forms')
-                ->where('date', '>=', Carbon::now())
-                ->where('date', '<', Carbon::now()->addMonths(4))
-                ->whereNotIn('events.id', function ($query) {
-                    $query->select('events_id')
-                        ->from('submissions')
-                        ->where('email', Auth::user()->email)
-                        ->get();
-                })
-                ->orderBy('date', 'asc')
-                ->limit(5)
-                ->get();
-
-            $viewData['upcomings'] = Helper::filterEvents($viewData['upcomings']);
-
-
-            // get all overdue events for the user
-            $viewData['overdues'] = Events::with('forms')
-                ->where('date', '<', Carbon::now())
-                ->whereNotIn('events.id', function ($query) {
-                    $query->select('events_id')
-                        ->from('submissions')
-                        ->where('email', Auth::user()->email)
-                        ->whereNotNull('events_id')
-                        ->get();
-                })
-                ->orderBy('date', 'asc')
-                ->limit(5)
-                ->get();
-
-            $viewData['overdues'] = Helper::filterEvents($viewData['overdues']);
-
-
-            // get first 5 completed submissions for the user
-            $viewData['completeds'] = Submissions::with('forms')
-                ->where('email', Auth::user()->email)
-                ->orderBy('created_at', 'desc')
-                ->limit(5)
-                ->get();
-
-            return view('dashboard', $viewData);
+        // if user is admin...
+        if (Auth::user()->isAdmin() || Auth::user()->isReporter())
+        {
+            return $this->adminDashboard();
         }
 
+        // if user is a principal...
+        else if(Auth::user()->isPrincipal())
+        {
+            return $this->principalDashboard();
+        }
+
+        // if not an admin or principal...
+        else {
+            return $this->staffDashboard();
+        }
 
     }
+
+
+    // populate and return admin dashboard
+    private function adminDashboard()
+    {
+        // get the first 5 upcoming events in the next 4 months
+        $viewData['upcomings'] = Events::with('forms')
+            ->where('date', '>', Carbon::now())
+            ->where('date', '<', Carbon::now()->addMonths(4))
+            ->orderBy('date', 'asc')
+            ->limit(5)
+            ->get();
+
+
+        // get first 5 overdue events
+        $viewData['overdues'] = QueryHelper::getOverdues()->take(5);
+
+        // get all recent submissions
+        $viewData['recents'] = Submissions::with('forms')
+            ->where('created_at', '<', Carbon::now())
+            ->orderBy('created_at', 'desc')
+            ->limit(5)
+            ->get();
+
+        return view('Admin/dashboard', $viewData);
+    }
+
+
+    // populate and return principal dashboard
+    private function principalDashboard()
+    {
+        // get first 5 completed submissions for the user
+        $viewData['completeds'] = Submissions::with(['forms', 'sites'])
+            ->where('email', Auth::user()->email)
+            ->orWhere('submissions.sites_id', Auth::user()->getSites_id())
+            ->orderBy('created_at', 'desc')
+            ->limit(5)
+            ->get();
+
+
+        // get all relevant upcoming events in the next 4 months for the user that they haven't made a submission for
+        $upcomings = Events::with('forms')
+            ->join('assignments', 'assignments.events_id', '=', 'events.id')
+            ->where( function($query) {
+                $query->where('assignments.email', Auth::user()->email)
+                    ->orWhere('assignments.sites_id', Auth::user()->getSites_id());
+            })
+            ->where('date', '>=', Carbon::now())
+            ->where('date', '<', Carbon::now()->addMonths(4))
+            ->orderBy('date', 'asc')
+            ->limit(5)
+            ->select('events.*')
+            ->get();
+
+
+        $viewData['upcomings'] = $upcomings->filter( function($upcoming) use ($viewData) {
+            return !in_array($upcoming->id, $viewData['completeds']->pluck('events_id')->toArray());
+        });
+
+
+        // get all overdue events for the user and their site
+        $overdues = QueryHelper::getOverdues(null,null,null,null,null,null,null,null);
+        $viewData['overdues'] = $overdues->filter( function($overdue) {
+            return $overdue->email === Auth::user()->email || $overdue->code === Auth::user()->site;
+        })->take(5);
+
+
+        return view('dashboard', $viewData);
+    }
+
+
+    // populate and return staffDashboard
+    private function staffDashboard()
+    {
+        // get first 5 completed submissions for the user
+        $viewData['completeds'] = Submissions::with(['forms','sites'])
+            ->where('email', Auth::user()->email)
+            ->orderBy('created_at', 'desc')
+            ->limit(5)
+            ->get();
+
+
+        // get all relevant upcoming events in the next 4 months for the user that they haven't made a submission for
+        $upcomings = Events::with('forms')
+            ->join('assignments', 'assignments.events_id', '=', 'events.id')
+            ->where('assignments.email', Auth::user()->email)
+            ->where('date', '>=', Carbon::now())
+            ->where('date', '<', Carbon::now()->addMonths(4))
+            ->orderBy('date', 'asc')
+            ->limit(5)
+            ->select('events.*')
+            ->get();
+
+
+        $viewData['upcomings'] = $upcomings->filter( function($upcoming) use ($viewData) {
+            return !in_array($upcoming->id, $viewData['completeds']->pluck('events_id')->toArray());
+        });
+
+        // get all overdue events for the user
+        $viewData['overdues'] = QueryHelper::getOverdues(Auth::user()->email)->take(5);
+
+
+        return view('dashboard', $viewData);
+    }
+
 
     public function welcome()
     {
