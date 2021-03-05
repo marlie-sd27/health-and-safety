@@ -174,7 +174,7 @@ class Forms extends Model
         } else {
             // if principal, get overdues for the user and the site
             $first_overdue = QueryHelper::getOverdues(null, $this->title)->filter(function ($value, $key) {
-                return $value->email = Auth::user()->email | $value->code = Auth::user()->site;
+                return $value->email = Auth::user()->email or $value->code = Auth::user()->site;
             });
         }
 
