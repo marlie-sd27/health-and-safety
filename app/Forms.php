@@ -178,7 +178,17 @@ class Forms extends Model
 
         // otherwise, check for the next closest assignment deadline for this user/form
         $next_deadline = Events::join('assignments', 'assignments.events_id', '=', 'events.id')
-            ->where('assignments.email', Auth::user()->email)
+
+            // if the user is a principal, return assignments for the user AND for the school
+            ->when(Auth::user()->principal, function($query) {
+                return $query->where( function($query) {
+                    $query->where('assignments.email', Auth::user()->email)
+                        ->orWhere('assignments.sites_id', Auth::user()->getSites_id());
+                });
+            })
+            ->whenNot(Auth::user()->principal, function ($query) {
+                return $query->where('assignments.email', Auth::user()->email);
+            })
             ->where('date', '>=', Carbon::now())
             ->where('events.forms_id', '=', $this->id)
             ->whereNotIn('events.id', function ($query) {
