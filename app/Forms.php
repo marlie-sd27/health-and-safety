@@ -186,7 +186,7 @@ class Forms extends Model
                         ->orWhere('assignments.sites_id', Auth::user()->getSites_id());
                 });
             })
-            ->whenNot(Auth::user()->principal, function ($query) {
+            ->when(!Auth::user()->principal, function ($query) {
                 return $query->where('assignments.email', Auth::user()->email);
             })
             ->where('date', '>=', Carbon::now())
