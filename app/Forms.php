@@ -167,8 +167,17 @@ class Forms extends Model
 
     public function closestDueDate()
     {
-        // check if there are any overdue assignment deadlines for this form/user
-        $first_overdue = QueryHelper::getOverdues(Auth::user()->email, $this->title);
+        $first_overdue = new Collection();
+        // check if there are any overdue assignment deadlines for this form/user is they are not a principal
+        if (!Auth::user()->principal) {
+            $first_overdue = QueryHelper::getOverdues(Auth::user()->email, $this->title);
+        } else {
+            // if principal, get overdues for the user and the site
+            $first_overdue = QueryHelper::getOverdues(null, $this->title)->filter(function ($value, $key) {
+                return $value->email = Auth::user()->email | $value->code = Auth::user()->site;
+            });
+        }
+
 
         // if there is an overdue assignment, return the event id
         if($first_overdue->isNotEmpty())
