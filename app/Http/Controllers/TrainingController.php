@@ -156,12 +156,12 @@ class TrainingController extends Controller
     public function export(Request $request)
     {
         // get optional search filtering parameters
-        $email = $request->filled('email') ? strtolower(str_replace(' ', '.', $request->email)) : null;
+        $email = $request->filled('email') ? $request->email : null;
+        $site = $request->filled('site') ? $request->site : null;
         $course = $request->filled('course') ? $request->course : null;
+        $course_date = $request->filled('course_date') ? $request->course_date : null;
         $expiry_date_from = $request->filled('expiry_date_from') ? $request->expiry_date_from : null;
         $expiry_date_to = $request->filled('expiry_date_to') ? $request->expiry_date_to : null;
-        $site = $request->filled('site') ? $request->site : null;
-        $course_date = $request->filled('course_date') ? $request->course_date : null;
 
         // prepare export
         $filename = "training-export_" . Carbon::now() . ".csv";
@@ -174,7 +174,7 @@ class TrainingController extends Controller
         ];
 
         // get report data and convert to array
-        $trainings = QueryHelper::getTrainings($email, $site, $course, $course_date, $expiry_date_from, $expiry_date_to);
+        $trainings = QueryHelper::getTrainings($email, $site, $course, $course_date, $expiry_date_from, $expiry_date_to, null);
 
         // map through each submission and customize each row
         $list = $trainings->map(function ($training) {

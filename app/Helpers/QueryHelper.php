@@ -222,11 +222,16 @@ class QueryHelper
             })
             ->orderBy('created_at', 'asc')
             ->select('submissions.*','forms.title')
-            ->paginate($paginate, ['*']);
+            ->when($paginate === null, function ($query) {
+                return $query->get();
+            })
+            ->when($paginate !== null, function($query) use ($paginate) {
+                return $query->paginate($paginate);
+            });
     }
 
 
-    public static function getTrainings($email = null, $site = null, $course = null, $course_date = null, $expiry_date_from = null, $expiry_date_to = null, $paginate = null)
+    public static function getTrainings($email = null, $site = null, $course = null, $course_date = null, $expiry_date_from = null, $expiry_date_to = null, $paginate = 25)
     {
         return Training::when($email, function ($query, $email) {
             return $query->where('email', 'like', '%' . $email . '%');
@@ -247,7 +252,12 @@ class QueryHelper
                 return $query->where('expiry_date', '<=', $expiry_date_to);
             })
             ->orderBy('expiry_date', 'asc')
-            ->paginate($paginate, ['*']);
+            ->when($paginate === null, function ($query) {
+                return $query->get();
+            })
+            ->when($paginate !== null, function($query) use ($paginate) {
+                return $query->paginate($paginate);
+            });
     }
 
 

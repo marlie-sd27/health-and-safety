@@ -189,7 +189,7 @@ class SubmissionsController extends Controller
         ];
 
         // get report data and convert to array
-        $submissions = QueryHelper::getSubmissions($user, $form, $date_from, $date_to, null, $site_staff, $group, $site_due);
+        $submissions = QueryHelper::getSubmissions($user, $form, $date_from, $date_to, null, $site_staff, $group, $site_due, null);
 
         // map through each submission and customize each row
         $list = $submissions->map(function ($submission) {
