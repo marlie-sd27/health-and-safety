@@ -97,12 +97,10 @@ class HomeController extends Controller
         });
 
 
-        // get all overdue events for the user and their site
-        $overdues = QueryHelper::getOverdues(null,null,null,null,null,null,null,null);
-        $viewData['overdues'] = $overdues->filter( function($overdue) {
-            return $overdue->email === Auth::user()->email || $overdue->code === Auth::user()->site;
-        })->take(5);
-
+        // get first 5 overdue events for the user and their site
+        $overdue_for_site = QueryHelper::getOverdues(null, null, null, null, null, null, Auth::user()->getSites_id());
+        $overdue_for_user = QueryHelper::getOverdues(Auth::user()->email);
+        $viewData['overdues'] = $overdue_for_site->merge($overdue_for_user)->sortBy('date')->take(5);
 
         return view('dashboard', $viewData);
     }
@@ -147,6 +145,5 @@ class HomeController extends Controller
     {
         return view('welcome');
     }
-
 
 }
